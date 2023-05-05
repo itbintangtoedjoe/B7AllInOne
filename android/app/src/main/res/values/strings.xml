@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">B7 Connect</string>
+    <string name="default_notification_channel_id">b7con-chan-id</string>
+</resources>
