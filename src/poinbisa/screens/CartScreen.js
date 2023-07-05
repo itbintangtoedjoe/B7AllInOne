@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,30 +9,30 @@ import {
   TouchableOpacity,
   Alert,
   RefreshControl,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import Modal from 'react-native-modal';
-import NumberFormat from 'react-number-format';
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import Modal from "react-native-modal";
+import NumberFormat from "react-number-format";
 
-import Colors from '../../general/constants/Colors';
-import MilliardText from '../../general/components/MilliardText';
-import MilliardBoldText from '../../general/components/MilliardBoldText';
-import CartItem from '../components/CartItem';
-import * as actions from '../redux/actions';
-import Card from '../components/Card';
+import Colors from "../../general/constants/Colors";
+import MilliardText from "../../general/components/MilliardText";
+import MilliardBoldText from "../../general/components/MilliardBoldText";
+import CartItem from "../components/CartItem";
+import * as actions from "../redux/actions";
+import Card from "../components/Card";
 
-const CartScreen = props => {
+const CartScreen = (props) => {
   //   const [isLoading, setIsLoading] = useState(false);
 
-  const activeUser = useSelector(state => state.auth.activeUser);
-  const loadingState = useSelector(state => state.cart.loadingState);
+  const activeUser = useSelector((state) => state.auth.activeUser);
+  const loadingState = useSelector((state) => state.cart.loadingState);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const cartGrandTotal = useSelector(state => state.cart.grandTotal);
+  const cartGrandTotal = useSelector((state) => state.cart.grandTotal);
   // const oldCartItems = useSelector(state => state.cart.cartItems);
   // const [cartItems, setCartItems] = useState(
   //   useSelector(state => state.cart.cartItems),
   // );
-  const cartItems = useSelector(state => state.cart.cartItems);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
@@ -63,7 +63,7 @@ const CartScreen = props => {
 
   useEffect(() => {
     dispatch(actions.fetchCartItems(activeUser.nik));
-    console.log({useffect: cartItems});
+    // console.log({useffect: cartItems});
     // setIsLoading(false);
   }, [dispatch]);
 
@@ -74,9 +74,9 @@ const CartScreen = props => {
     setIsRefreshing(false);
   }, [isRefreshing]);
 
-  const addItemQuantity = itemID => {
+  const addItemQuantity = (itemID) => {
     // console.log('halo iya masuk add');
-    dispatch(actions.editItemQuantity(activeUser.nik, itemID, 'ADD'));
+    dispatch(actions.editItemQuantity(activeUser.nik, itemID, "ADD"));
     // .then(
     //   () => {
     //     const newItems = [...cartItems];
@@ -91,27 +91,27 @@ const CartScreen = props => {
     // );
   };
 
-  const substractItemQuantity = itemID => {
+  const substractItemQuantity = (itemID) => {
     // console.log('halo iya masuk sub');
-    cartItems.map(item => {
+    cartItems.map((item) => {
       if (item.id == itemID) {
         if (item.jumlah_item <= 1) {
           Alert.alert(
-            'Buang',
-            'Buang item dari keranjang?',
+            "Buang",
+            "Buang item dari keranjang?",
             [
               {
-                text: 'Tidak',
+                text: "Tidak",
               },
               {
-                text: 'Ya',
+                text: "Ya",
                 onPress: () => {
                   dispatch(
                     actions.editItemQuantity(
                       activeUser.nik,
                       itemID,
-                      'SUBSTRACT',
-                    ),
+                      "SUBSTRACT"
+                    )
                   );
                   // .then(() => {
                   //   // const newItems = [...cartItems];
@@ -120,41 +120,40 @@ const CartScreen = props => {
                 },
               },
             ],
-            {cancelable: true},
+            { cancelable: true }
           );
           return;
         }
       }
     });
-    dispatch(
-      actions.editItemQuantity(activeUser.nik, itemID, 'SUBSTRACT'),
-    ).then(() => {
-      const newItems = [...cartItems];
-      newItems.map(item => {
-        if (item.id == itemID) {
-          item.jumlah_item--;
-        }
-      });
-      setCartItems(newItems);
-      // dispatch(actions.fetchCartItems(activeUser.nik));
-    });
+    dispatch(actions.editItemQuantity(activeUser.nik, itemID, "SUBSTRACT"));
+    // .then(() => {
+    //   const newItems = [...cartItems];
+    //   newItems.map((item) => {
+    //     if (item.id == itemID) {
+    //       item.jumlah_item--;
+    //     }
+    //   });
+    //   setCartItems(newItems);
+    //   // dispatch(actions.fetchCartItems(activeUser.nik));
+    // });
   };
 
   const konfirmasiRedeem = () => {
-    console.log(cartGrandTotal, activeUser.poin_bisa);
+    // console.log(cartGrandTotal, activeUser.poin_bisa);
     if (cartGrandTotal > activeUser.poin_bisa) {
-      Alert.alert('Gagal', 'Total poin yang dimiliki tidak mencukupi');
+      Alert.alert("Gagal", "Total poin yang dimiliki tidak mencukupi");
     } else {
       let subtotalVoucher = 0;
       let subtotal = 0;
-      cartItems.map(item => {
-        if (item.nama_item.toLowerCase().startsWith('voucher')) {
+      cartItems.map((item) => {
+        if (item.nama_item.toLowerCase().startsWith("voucher")) {
           subtotal = item.jumlah_item * item.poin_item;
           subtotalVoucher += subtotal;
         }
       });
       if (subtotalVoucher > 2000) {
-        Alert.alert('Gagal', 'Maksimal poin redeem voucher adalah 2,000');
+        Alert.alert("Gagal", "Maksimal poin redeem voucher adalah 2,000");
       }
       // try {
       //   dispatch(actions.sendRedeemOrder(activeUser.nik));
@@ -166,23 +165,26 @@ const CartScreen = props => {
     }
   };
 
-  const checkOutDataList = element => {
+  const checkOutDataList = (element) => {
     // console.log(element);
     return element != undefined ? (
       <View
         key={element.item.id}
         style={{
-          flexDirection: 'row',
+          flexDirection: "row",
           // margin: 3,
-          justifyContent: 'space-between',
-        }}>
-        <MilliardText style={{flex: 1}}>
+          justifyContent: "space-between",
+        }}
+      >
+        <MilliardText style={{ flex: 1 }}>
           {element.item.jumlah_item} x
         </MilliardText>
-        <MilliardText style={{flex: 9 / 2}}>
+        <MilliardText style={{ flex: 9 / 2 }}>
           {element.item.nama_item}
         </MilliardText>
-        <MilliardText style={{flex: 3 / 2, textAlign: 'right', color: 'green'}}>
+        <MilliardText
+          style={{ flex: 3 / 2, textAlign: "right", color: "green" }}
+        >
           {element.item.jumlah_item * element.item.poin_item}
         </MilliardText>
         {/* <NumberFormat
@@ -231,13 +233,13 @@ const CartScreen = props => {
       <Card style={styles.summary}>
         <View style={styles.row}>
           <MilliardText style={styles.summaryText}>
-            Total poin BISA yang dimiliki:{' '}
+            Total poin BISA yang dimiliki:{" "}
           </MilliardText>
           <NumberFormat
             value={activeUser.poin_bisa}
-            displayType={'text'}
+            displayType={"text"}
             thousandSeparator={true}
-            renderText={value => (
+            renderText={(value) => (
               <MilliardText style={styles.amount}>{value}</MilliardText>
             )}
           />
@@ -251,9 +253,9 @@ const CartScreen = props => {
           ) : cartGrandTotal != undefined ? (
             <NumberFormat
               value={cartGrandTotal}
-              displayType={'text'}
+              displayType={"text"}
               thousandSeparator={true}
-              renderText={value => (
+              renderText={(value) => (
                 <MilliardText style={styles.amount}>{value}</MilliardText>
               )}
             />
@@ -264,7 +266,7 @@ const CartScreen = props => {
       </Card>
       {loadingState ? (
         <ActivityIndicator size="small" color={Colors.primaryColor} />
-      ) : cartItems.length > 0 ? (
+      ) : cartItems.length > 0 && cartItems[0].id != undefined ? (
         <View>
           <FlatList
             refreshControl={
@@ -276,13 +278,13 @@ const CartScreen = props => {
               />
             }
             data={cartItems}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
             contentContainerStyle={{
               borderRadius: 7,
-              overflow: 'hidden',
+              overflow: "hidden",
             }}
-            style={{height: '78%'}}
-            renderItem={itemData => (
+            style={{ height: "78%" }}
+            renderItem={(itemData) => (
               <CartItem
                 itemID={itemData.item.id}
                 jumlahItem={itemData.item.jumlah_item}
@@ -292,9 +294,6 @@ const CartScreen = props => {
                 addItemFunction={addItemQuantity}
                 substractItemFunction={substractItemQuantity}
                 deletable
-                // onRemove={() => {
-                //   dispatch(actions.removeFromCart(itemData.item.productId));
-                // }}
               />
             )}
           />
@@ -307,11 +306,12 @@ const CartScreen = props => {
               style={{
                 // flex: 1,
                 padding: 15,
-                backgroundColor: 'white',
-                justifyContent: 'center',
+                backgroundColor: "white",
+                justifyContent: "center",
                 paddingVertical: 30,
                 borderRadius: 7,
-              }}>
+              }}
+            >
               <MilliardBoldText style={styles.summaryTitle}>
                 SUMMARY ITEMS YANG DIPILIH
               </MilliardBoldText>
@@ -319,47 +319,50 @@ const CartScreen = props => {
                 {/* {checkOutDataList()} */}
                 <FlatList
                   data={cartItems}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                   renderItem={checkOutDataList}
                 />
                 <View
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                     borderTopColor: Colors.accentColor,
                     borderTopWidth: 1,
                     marginTop: 15,
                     paddingTop: 15,
-                  }}>
+                  }}
+                >
                   <MilliardBoldText>GRAND TOTAL</MilliardBoldText>
 
                   <NumberFormat
                     value={cartGrandTotal}
-                    displayType={'text'}
+                    displayType={"text"}
                     thousandSeparator={true}
-                    renderText={value => (
-                      <MilliardBoldText style={{color: 'green'}}>
+                    renderText={(value) => (
+                      <MilliardBoldText style={{ color: "green" }}>
                         {value}
                       </MilliardBoldText>
                     )}
                   />
                   {/* <MilliardBoldText style={{color: 'green'}}>
-                    {cartGrandTotal}
-                  </MilliardBoldText> */}
+                      {cartGrandTotal}
+                    </MilliardBoldText> */}
                 </View>
               </View>
               {/* {list()} */}
               {/* <Text>{cartItems[0].nama_item}</Text> */}
               <TouchableOpacity
                 style={styles.button}
-                onPress={konfirmasiRedeem}>
+                onPress={konfirmasiRedeem}
+              >
                 <MilliardText style={styles.buttonText}>
                   Konfirmasi Redeem Poin
                 </MilliardText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonCancel}
-                onPress={handleModal}>
+                onPress={handleModal}
+              >
                 <MilliardText style={styles.buttonCancelText}>
                   Batalkan
                 </MilliardText>
@@ -368,7 +371,9 @@ const CartScreen = props => {
           </Modal>
         </View>
       ) : (
-        <MilliardText>Belum ada item dalam keranjang</MilliardText>
+        <View style={styles.centeredContent}>
+          <MilliardText>Belum ada item dalam keranjang</MilliardText>
+        </View>
       )}
     </View>
   );
@@ -384,8 +389,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   summaryText: {
     fontSize: 16,
@@ -396,28 +401,28 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 40,
-    width: '100%',
+    width: "100%",
     borderRadius: 7,
     backgroundColor: Colors.primaryColor,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderColor: Colors.primaryColor,
     borderWidth: 1,
     marginTop: 15,
   },
   buttonCancel: {
     height: 40,
-    width: '100%',
+    width: "100%",
     borderRadius: 7,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
     borderColor: Colors.softPurple,
     borderWidth: 1,
     marginTop: 10,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     // fontWeight: 'bold',
     fontSize: 15,
     lineHeight: 26,
@@ -428,7 +433,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 26,
   },
-  summaryTitle: {marginBottom: 10},
+  summaryTitle: { marginBottom: 10 },
   listDataContainer: {
     borderColor: Colors.primaryColor,
     borderWidth: 1,
@@ -439,7 +444,10 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     marginTop: 15,
     paddingTop: 15,
-    fontFamily: 'Milliard-Book',
+    fontFamily: "Milliard-Book",
+  },
+  centeredContent: {
+    alignItems: "center",
   },
 });
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -7,13 +7,13 @@ import {
   Platform,
   Image,
   Button,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import NumberFormat from 'react-number-format';
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import NumberFormat from "react-number-format";
 
-import MilliardBoldText from '../../general/components/MilliardBoldText';
-import MilliardText from '../../general/components/MilliardText';
-import Colors from '../../general/constants/Colors';
+import MilliardBoldText from "../../general/components/MilliardBoldText";
+import MilliardText from "../../general/components/MilliardText";
+import Colors from "../../general/constants/Colors";
 
 // id,
 //     nik,
@@ -23,12 +23,12 @@ import Colors from '../../general/constants/Colors';
 //     jumlah_item,
 //     img_url,
 
-const CartItem = props => {
+const CartItem = (props) => {
   return (
     <View style={styles.cartItem}>
       <View style={styles.itemData}>
         <View style={styles.imageContainer}>
-          <Image source={{uri: props.image}} style={styles.image} />
+          <Image source={{ uri: props.image }} style={styles.image} />
         </View>
         <View style={styles.titleContainer}>
           <View>
@@ -36,9 +36,9 @@ const CartItem = props => {
           </View>
           <NumberFormat
             value={props.subtotal}
-            displayType={'text'}
+            displayType={"text"}
             thousandSeparator={true}
-            renderText={value => (
+            renderText={(value) => (
               <MilliardBoldText style={styles.subtotal}>
                 P{value}
               </MilliardBoldText>
@@ -55,7 +55,8 @@ const CartItem = props => {
               borderBottomColor: Colors.softPurple,
               borderBottomWidth: 1,
             }}
-            onPress={() => props.addItemFunction(props.itemID)}>
+            onPress={() => props.addItemFunction(props.itemID)}
+          >
             <MilliardBoldText style={styles.qtyOperatorText}>
               +
             </MilliardBoldText>
@@ -72,7 +73,8 @@ const CartItem = props => {
               borderTopColor: Colors.softPurple,
               borderTopWidth: 1,
             }}
-            onPress={() => props.substractItemFunction(props.itemID)}>
+            onPress={() => props.substractItemFunction(props.itemID)}
+          >
             <MilliardBoldText style={styles.qtyOperatorText}>
               -
             </MilliardBoldText>
@@ -106,7 +108,7 @@ const CartItem = props => {
 const styles = StyleSheet.create({
   cartItem: {
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     // flexDirection: 'row',
     // justifyContent: 'space-between',
     // borderRadius: 7,
@@ -115,22 +117,22 @@ const styles = StyleSheet.create({
     // marginHorizontal: 20,
   },
   itemData: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   quantity: {
-    color: '#888',
-    fontFamily: 'Milliard-Book',
+    color: "#888",
+    fontFamily: "Milliard-Book",
     fontSize: 18,
     marginRight: 10,
   },
   quantityOperator: {
-    color: 'white',
+    color: "white",
     // borderBottomColor: Colors.primaryColor,
     // borderBottomWidth: 1,
     // borderRadius: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     height: 30,
     width: 60,
   },
@@ -144,31 +146,32 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   titleContainer: {
-    width: '56%',
+    width: "56%",
+    marginHorizontal: "1%",
   },
-  mainText: {fontFamily: 'Milliard-Book', fontSize: 16},
+  mainText: { fontFamily: "Milliard-Book", fontSize: 16 },
   deleteButton: {
     marginLeft: 20,
   },
   imageContainer: {
-    width: '30%',
+    width: "30%",
     height: 100,
     // borderTopLeftRadius: 10,
     // borderTopRightRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   quantityContainer: {
-    width: '12%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "12%",
+    justifyContent: "center",
+    alignItems: "center",
     borderColor: Colors.primaryColor,
     borderWidth: 1,
     borderRadius: 3,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
 });
 

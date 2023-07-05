@@ -27,10 +27,10 @@ import User from "../models/User";
 const AuthenticationScreen = (props) => {
   const DEFAULTPASSWORD = "b7c#default";
   const [email, setEmail] = useState({
-    value: "feliciabrilliantb@gmail.com",
+    value: "laura.odin@gmail.com",
     error: "",
   });
-  const [password, setPassword] = useState({ value: "Hahaha0!", error: "" });
+  const [password, setPassword] = useState({ value: "zuppass.", error: "" });
   const activeUser = useSelector((state) => state.auth.activeUser);
   const [loadingState, setLoadingState] = useState(false);
   const loginStatus = useSelector((state) => state.auth.loginStatus);

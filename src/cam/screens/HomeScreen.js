@@ -25,9 +25,9 @@ const HomeScreen = (props) => {
   const userPendingTask = useSelector((state) => state.cam.userPendingTask);
   const [searchResult, setSearchResult] = useState([]);
   const loadingState = useSelector((state) => state.cam.fetchLoadingState);
-  const approvalLoadingState = useSelector(
-    (state) => state.cam.approvalLoadingState
-  );
+  // const approvalLoadingState = useSelector(
+  //   (state) => state.cam.approvalLoadingState
+  // );
   const refreshing = false;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -101,36 +101,36 @@ const HomeScreen = (props) => {
       );
     }
     return (
-      <View style={styles.transList}>
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              title="Pull to refresh"
-              colors={[Colors.camPrimaryColor]}
-            />
-          }
-          data={searchResult}
-          keyExtractor={(item) => item.TransactionID + item.TransactionDate}
-          renderItem={(itemData) => (
-            <TaskItem
-              transactionID={itemData.item.TransactionID}
-              date={itemData.item.TransactionDate}
-              appID={itemData.item.AppID}
-              appName={itemData.item.AppName}
-              modulID={itemData.item.ModulID}
-              url={itemData.item.Url}
-              requestor={itemData.item.Requestor}
-              remarks={itemData.item.Remarks}
-              activeUser={activeUser.user_ad}
-              multipleData={true}
-              // onPress={() => console.log(itemData.item.Url)}
-              // onPress={() => openEmbeddedBrowser(itemData.item)}
-            />
-          )}
-        />
-      </View>
+      // <View style={styles.transList}>
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            title="Pull to refresh"
+            colors={[Colors.camPrimaryColor]}
+          />
+        }
+        data={searchResult}
+        keyExtractor={(item) => item.TransactionID + item.TransactionDate}
+        renderItem={(itemData) => (
+          <TaskItem
+            transactionID={itemData.item.TransactionID}
+            date={itemData.item.TransactionDate}
+            appID={itemData.item.AppID}
+            appName={itemData.item.AppName}
+            modulID={itemData.item.ModulID}
+            url={itemData.item.Url}
+            requestor={itemData.item.Requestor}
+            remarks={itemData.item.Remarks}
+            activeUser={activeUser.user_ad}
+            multipleData={true}
+            // onPress={() => console.log(itemData.item.Url)}
+            // onPress={() => openEmbeddedBrowser(itemData.item)}
+          />
+        )}
+      />
+      // </View>
     );
   };
 
@@ -175,6 +175,9 @@ const HomeScreen = (props) => {
     }
 
     return (
+      // <View>
+      //   <Text>Ada isinya</Text>
+      // </View>
       <FlatList
         data={userPendingTask}
         keyExtractor={(item) => item.TransactionID}

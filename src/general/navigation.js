@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import {
   createAppContainer,
   createSwitchNavigator,
   getActiveChildNavigationOptions,
-} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
-import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
-import IonIcon from 'react-native-vector-icons/Ionicons';
+} from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import IonIcon from "react-native-vector-icons/Ionicons";
 
 import {
   HomeScreen as TARAHomeScreen,
@@ -18,7 +18,7 @@ import {
   // AuthenticationScreen,
   // ChangePasswordScreen,
   // ProfileScreen,
-} from '../tara/screens';
+} from "../tara/screens";
 
 import {
   HomeScreen as EOHomeScreen,
@@ -27,11 +27,15 @@ import {
   DeliveryDetailScreen as EODeliveryDetailScreen,
   DeliveryTimelineScreen as EODeliveryTimelineScreen,
   ScanPackageScreen as EOScanPackageScreen,
-} from '../ekspedisionline/screens';
+} from "../ekspedisionline/screens";
 
-import {PoinBisaCatalogueScreen, CartScreen} from '../poinbisa/screens';
+import {
+  PoinBisaCatalogueScreen,
+  CartScreen as PBCartScreen,
+  OrderHistoryScreen as PBOrderHistoryScreen,
+} from "../poinbisa/screens";
 
-import {HomeScreen as CAMHomeScreen, CAMDetailScreen} from '../cam/screens';
+import { HomeScreen as CAMHomeScreen, CAMDetailScreen } from "../cam/screens";
 
 import {
   HomeScreen as BaseHomeScreen,
@@ -41,11 +45,11 @@ import {
   ChangePasswordAuthenticated,
   NotificationScreen,
   EmbeddedBrowserScreen,
-} from './screens';
+} from "./screens";
 
-import Colors from '../general/constants/Colors';
-import Fonts from '../general/constants/Fonts';
-import {Button, Dimensions, Platform, TouchableOpacity} from 'react-native';
+import Colors from "../general/constants/Colors";
+import Fonts from "../general/constants/Fonts";
+import { Button, Dimensions, Platform, TouchableOpacity } from "react-native";
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -54,7 +58,7 @@ const defaultStackNavOptions = {
   // headerTitleStyle: {
   //   color: 'white',
   // },
-  headerTintColor: 'white',
+  headerTintColor: "white",
 };
 
 const noHeaderOptions = {
@@ -63,7 +67,7 @@ const noHeaderOptions = {
 
 const baseHeaderStyle = {
   headerStyle: {
-    height: Platform.OS == 'android' ? 50 : 80,
+    height: Platform.OS == "android" ? 50 : 80,
   },
 };
 
@@ -76,8 +80,8 @@ const taraDefaultStackNavOptions = {
   // headerTitleStyle: {
   //   color: 'white',
   // },
-  headerTintColor: 'white',
-  cardStyle: {backgroundColor: 'white'},
+  headerTintColor: "white",
+  cardStyle: { backgroundColor: "white" },
 };
 
 const TARAHomeNavigator = createStackNavigator(
@@ -93,9 +97,9 @@ const TARAHomeNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       ...taraDefaultStackNavOptions,
-      title: Platform.OS == 'android' ? 'Home' : ' ',
+      title: Platform.OS == "android" ? "Home" : " ",
     },
-  },
+  }
 );
 
 const TARASocializationNavigator = createStackNavigator(
@@ -123,9 +127,9 @@ const TARASocializationNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       ...taraDefaultStackNavOptions,
-      title: Platform.OS == 'android' ? 'Home' : ' ',
+      title: Platform.OS == "android" ? "Home" : " ",
     },
-  },
+  }
 );
 
 const ProfileNavigator = createStackNavigator(
@@ -139,22 +143,22 @@ const ProfileNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
-  },
+  }
 );
 
 const taraTabScreenConfig = {
   TARAHome: {
     screen: TARAHomeNavigator,
     navigationOptions: {
-      tabBarLabel: 'Home',
-      tabBarIcon: ({focused, color, size}) => {
-        const icon = focused ? 'home' : 'home-outline';
+      tabBarLabel: "Home",
+      tabBarIcon: ({ focused, color, size }) => {
+        const icon = focused ? "home" : "home-outline";
         return (
           <IonIcon
             name={icon}
             size={22}
             color={
-              Platform.OS === 'android' ? 'white' : Colors.taraPrimaryColor
+              Platform.OS === "android" ? "white" : Colors.taraPrimaryColor
             }
           />
         );
@@ -177,15 +181,15 @@ const taraTabScreenConfig = {
   TARASocialization: {
     screen: TARASocializationNavigator,
     navigationOptions: {
-      tabBarLabel: 'Dokumen',
-      tabBarIcon: ({focused}) => {
-        const icon = focused ? 'documents' : 'documents-outline';
+      tabBarLabel: "Dokumen",
+      tabBarIcon: ({ focused }) => {
+        const icon = focused ? "documents" : "documents-outline";
         return (
           <IonIcon
             name={icon}
             size={22}
             color={
-              Platform.OS === 'android' ? 'white' : Colors.taraPrimaryColor
+              Platform.OS === "android" ? "white" : Colors.taraPrimaryColor
             }
           />
         );
@@ -220,9 +224,9 @@ const taraTabScreenConfig = {
 
 const TARAHomeTabNavigator =
   //code here
-  Platform.OS === 'android'
+  Platform.OS === "android"
     ? createMaterialBottomTabNavigator(taraTabScreenConfig, {
-        activeColor: 'white',
+        activeColor: "white",
         shifting: true,
         //kalo shifting false, pake ini supaya isa ganti warna sesuai keinginan
         //kalo pake yg di tabbarcolor ga kebaca
@@ -232,11 +236,11 @@ const TARAHomeTabNavigator =
       })
     : createBottomTabNavigator(taraTabScreenConfig, {
         tabBarOptions: {
-          activeBackgroundColor: 'white',
-          activeTintColor: 'white',
+          activeBackgroundColor: "white",
+          activeTintColor: "white",
           labelStyle: {
             fontSize: 12,
-            color: 'black',
+            color: "black",
             fontFamily: Fonts.primaryFont,
           },
         },
@@ -257,7 +261,7 @@ const TARAContentNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: noHeaderOptions,
-  },
+  }
 );
 
 const TARAMainNavigator = createSwitchNavigator({
@@ -273,7 +277,7 @@ const EkspedisiOnlineNavigator = createStackNavigator(
     EOHome: {
       screen: EOHomeScreen,
       navigationOptions: {
-        cardStyle: {backgroundColor: Colors.ekspedisiPrimaryColor},
+        cardStyle: { backgroundColor: Colors.ekspedisiPrimaryColor },
       },
     },
     // EOHome: EOHomeScreen,
@@ -286,9 +290,9 @@ const EkspedisiOnlineNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       ...noHeaderOptions,
-      cardStyle: {backgroundColor: Colors.ekspedisiPrimaryColor},
+      cardStyle: { backgroundColor: Colors.ekspedisiPrimaryColor },
     },
-  },
+  }
 );
 
 // const TARAMainNavigator = createSwitchNavigator({
@@ -298,14 +302,14 @@ const EkspedisiOnlineNavigator = createStackNavigator(
 
 //#endregion
 
-//#region EKSPEDISI ONLINE
+//#region CAM
 
 const CAMNavigator = createStackNavigator(
   {
     CAMHome: {
       screen: CAMHomeScreen,
       navigationOptions: {
-        cardStyle: {backgroundColor: Colors.camPrimaryColor},
+        cardStyle: { backgroundColor: Colors.camPrimaryColor },
       },
     },
     CAMDetail: CAMDetailScreen,
@@ -313,9 +317,9 @@ const CAMNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       ...noHeaderOptions,
-      cardStyle: {backgroundColor: Colors.camPrimaryColor},
+      cardStyle: { backgroundColor: Colors.camPrimaryColor },
     },
-  },
+  }
 );
 
 // const TARAMainNavigator = createSwitchNavigator({
@@ -328,8 +332,9 @@ const CAMNavigator = createStackNavigator(
 const PickerHeaderRight = () => {
   return (
     <TouchableOpacity
-      style={{marginRight: 10}}
-      onPress={() => props.navigation.navigate('PoinBisaCart')}>
+      style={{ marginRight: 10 }}
+      onPress={() => props.navigation.navigate("PoinBisaCart")}
+    >
       <IonIcon name="cart" size={25} color={Colors.primaryColor} />
     </TouchableOpacity>
     //   <Button
@@ -342,53 +347,191 @@ const PickerHeaderRight = () => {
 };
 
 //#region POIN BISA
-const PoinBisaNavigator = createStackNavigator(
+const PBHomeNavigator = createStackNavigator(
   {
-    PoinBisaHome: {
+    PBHome: {
       screen: PoinBisaCatalogueScreen,
-      // navigationOptions: {
-      //   // headerLeft: () => null,
-      //   headerRight: PickerHeaderRight,
-      // },
-      // navigationOptions: {
-      //   cardStyle: {backgroundColor: Colors.ekspedisiPrimaryColor},
-      // },
+      navigationOptions: {
+        headerShown: false,
+      },
     },
-    PoinBisaCart: CartScreen,
+    PBCart: PBCartScreen,
   },
   {
-    initialRouteName: 'PoinBisaHome',
     defaultNavigationOptions: {
-      // ...noHeaderOptions,
-      headerTitle: 'REDEEM POIN BISA',
-      headerTitleStyle: {
-        fontFamily: Fonts.primaryFont,
-      },
-      // headerRight: PickerHeaderRight,
-      // cardStyle: {backgroundColor: Colors.ekspedisiPrimaryColor},
+      ...taraDefaultStackNavOptions,
+      title: Platform.OS == "android" ? "Home" : " ",
     },
-
-    navigationOptions: {
-      headerShown: false,
-      // headerTitle: 'REDEEM POIN BISA',
-      // headerTitleStyle: {
-      //   fontFamily: Fonts.primaryFont,
-      // },
-      // headerRight: PickerHeaderRight,
-    },
-
-    // navigationOptions: ({navigation}) => {
-    //   const {index, routes} = navigation.state;
-    //   const {routeName} = routes[index];
-
-    //   if (routeName === 'PoinBisaHome') {
-    //     return {
-    //       ...getActiveChildNavigationOptions(navigation),
-    //     };
-    //   }
-    // },
-  },
+  }
 );
+
+const PBHistoryNavigator = createStackNavigator(
+  {
+    PBOrderHistory: {
+      screen: PBOrderHistoryScreen,
+      navigationOptions: {
+        headerShown: false,
+      },
+    },
+    PBCart: PBCartScreen,
+  },
+  {
+    defaultNavigationOptions: {
+      ...taraDefaultStackNavOptions,
+      title: Platform.OS == "android" ? "Home" : " ",
+    },
+  }
+);
+
+const pbTabScreenConfig = {
+  PBHome: {
+    screen: PBHomeNavigator,
+    navigationOptions: {
+      tabBarLabel: "Home",
+      tabBarIcon: ({ focused, color, size }) => {
+        const icon = focused ? "home" : "home-outline";
+        return (
+          <IonIcon
+            name={icon}
+            size={22}
+            color={
+              Platform.OS === "android"
+                ? Colors.primaryColor
+                : Colors.primaryColor
+            }
+          />
+        );
+      },
+      tabBarColor: Colors.primaryColor,
+      // headerShown: false,
+    },
+  },
+
+  PBHistory: {
+    screen: PBHistoryNavigator,
+    navigationOptions: {
+      tabBarLabel: "History",
+      tabBarIcon: ({ focused }) => {
+        const icon = focused ? "clipboard" : "clipboard-outline";
+        return (
+          <IonIcon
+            name={icon}
+            size={22}
+            color={
+              Platform.OS === "android"
+                ? Colors.primaryColor
+                : Colors.primaryColor
+            }
+          />
+        );
+      },
+      tabBarColor: Colors.primaryColor,
+      // headerShown: false,
+    },
+  },
+};
+
+const PBHomeTabNavigator =
+  Platform.OS === "android"
+    ? createBottomTabNavigator(pbTabScreenConfig, {
+        tabBarOptions: {
+          // activeBackgroundColor: 'white',
+          // activeTintColor: 'white',
+          // showLabel: false,
+          style: {
+            position: "absolute",
+            bottom: 20,
+            left: 20,
+            backgroundColor: "#ffffff",
+            right: 20,
+            borderWidth: 1,
+            borderColor: "#bbcff2",
+            borderRadius: 15,
+            height: 50,
+          },
+          labelStyle: {
+            color: Colors.primaryColor,
+            fontFamily: Fonts.primaryFont,
+          },
+        },
+      })
+    : createBottomTabNavigator(pbTabScreenConfig, {
+        tabBarOptions: {
+          activeBackgroundColor: "white",
+          activeTintColor: "white",
+          labelStyle: {
+            fontSize: 12,
+            color: "black",
+            fontFamily: Fonts.primaryFont,
+          },
+        },
+      });
+
+const PBContentNavigator = createStackNavigator(
+  {
+    PBHome: PBHomeTabNavigator,
+    PBHistory: PBHistoryNavigator,
+    // Auth: AuthenticationNavigator,
+  },
+  {
+    defaultNavigationOptions: noHeaderOptions,
+  }
+);
+
+const PoinBisaMainNavigator = createSwitchNavigator({
+  PoinBisaApp: PBContentNavigator,
+});
+
+//#endregion
+
+// const PoinBisaNavigator = createStackNavigator(
+//   {
+//     PoinBisaHome: {
+//       screen: PoinBisaCatalogueScreen,
+//       // navigationOptions: {
+//       //   // headerLeft: () => null,
+//       //   headerRight: PickerHeaderRight,
+//       // },
+//       // navigationOptions: {
+//       //   cardStyle: {backgroundColor: Colors.ekspedisiPrimaryColor},
+//       // },
+//     },
+//     PoinBisaCart: PBCartScreen,
+//     PoinBisaHistory: PBOrderHistoryScreen,
+//   },
+//   {
+//     initialRouteName: "PoinBisaHome",
+//     defaultNavigationOptions: {
+//       // ...noHeaderOptions,
+//       headerTitle: "REDEEM POIN BISA",
+//       headerTitleStyle: {
+//         fontFamily: Fonts.primaryFont,
+//       },
+//       // headerRight: PickerHeaderRight,
+//       // cardStyle: {backgroundColor: Colors.ekspedisiPrimaryColor},
+//     },
+
+//     navigationOptions: {
+//       headerShown: false,
+//       // headerTitle: 'REDEEM POIN BISA',
+//       // headerTitleStyle: {
+//       //   fontFamily: Fonts.primaryFont,
+//       // },
+//       // headerRight: PickerHeaderRight,
+//     },
+
+//     // navigationOptions: ({navigation}) => {
+//     //   const {index, routes} = navigation.state;
+//     //   const {routeName} = routes[index];
+
+//     //   if (routeName === 'PoinBisaHome') {
+//     //     return {
+//     //       ...getActiveChildNavigationOptions(navigation),
+//     //     };
+//     //   }
+//     // },
+//   }
+// );
 //#endregion
 
 const AuthenticationNavigator = createStackNavigator(
@@ -398,16 +541,16 @@ const AuthenticationNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: noHeaderOptions,
-  },
+  }
 );
 
 const baseTabScreenConfig = {
   BaseHome: {
     screen: BaseHomeScreen,
     navigationOptions: {
-      tabBarLabel: 'Home',
-      tabBarIcon: ({focused, color, size}) => {
-        const icon = focused ? 'home' : 'home-outline';
+      tabBarLabel: "Home",
+      tabBarIcon: ({ focused, color, size }) => {
+        const icon = focused ? "home" : "home-outline";
         return <IonIcon name={icon} size={22} color={Colors.primaryColor} />;
       },
       // tabBarColor: '#bbcff2',
@@ -417,9 +560,9 @@ const baseTabScreenConfig = {
   Profile: {
     screen: ProfileNavigator,
     navigationOptions: {
-      tabBarLabel: 'Profile',
-      tabBarIcon: ({focused, color, size}) => {
-        const icon = focused ? 'person' : 'person-outline';
+      tabBarLabel: "Profile",
+      tabBarIcon: ({ focused, color, size }) => {
+        const icon = focused ? "person" : "person-outline";
         return <IonIcon name={icon} size={22} color={Colors.primaryColor} />;
       },
       // tabBarColor: '#bbcff2',
@@ -429,20 +572,20 @@ const baseTabScreenConfig = {
 };
 
 const BaseHomeTabNavigator =
-  Platform.OS === 'android'
+  Platform.OS === "android"
     ? createBottomTabNavigator(baseTabScreenConfig, {
         tabBarOptions: {
           // activeBackgroundColor: 'white',
           // activeTintColor: 'white',
           // showLabel: false,
           style: {
-            position: 'absolute',
+            position: "absolute",
             bottom: 20,
             left: 20,
-            backgroundColor: '#ffffff',
+            backgroundColor: "#ffffff",
             right: 20,
             borderWidth: 1,
-            borderColor: '#bbcff2',
+            borderColor: "#bbcff2",
             borderRadius: 15,
             height: 50,
           },
@@ -454,11 +597,11 @@ const BaseHomeTabNavigator =
       })
     : createBottomTabNavigator(baseTabScreenConfig, {
         tabBarOptions: {
-          activeBackgroundColor: 'white',
-          activeTintColor: 'white',
+          activeBackgroundColor: "white",
+          activeTintColor: "white",
           labelStyle: {
             fontSize: 12,
-            color: 'black',
+            color: "black",
             fontFamily: Fonts.primaryFont,
           },
         },
@@ -475,11 +618,11 @@ const BaseStackNavigator = createStackNavigator(
     Notification: {
       screen: NotificationScreen,
       navigationOptions: {
-        headerTitle: 'Notification',
+        headerTitle: "Notification",
         headerTitleStyle: {
           fontFamily: Fonts.primaryFont,
         },
-        headerTintColor: 'white',
+        headerTintColor: "white",
         headerStyle: {
           backgroundColor: Colors.primaryColor,
         },
@@ -488,11 +631,11 @@ const BaseStackNavigator = createStackNavigator(
     EmbeddedBrowser: {
       screen: EmbeddedBrowserScreen,
       navigationOptions: {
-        headerTitle: 'Detail Transaksi',
+        headerTitle: "Detail Transaksi",
         headerTitleStyle: {
           fontFamily: Fonts.primaryFont,
         },
-        headerTintColor: 'white',
+        headerTintColor: "white",
         headerStyle: {
           backgroundColor: Colors.camPrimaryColor,
         },
@@ -501,7 +644,7 @@ const BaseStackNavigator = createStackNavigator(
     TARA: {
       screen: TARAMainNavigator,
       navigationOptions: {
-        headerTitle: 'TARA',
+        headerTitle: "TARA",
         headerTitleStyle: {
           fontFamily: Fonts.primaryFont,
         },
@@ -510,19 +653,25 @@ const BaseStackNavigator = createStackNavigator(
     EkspedisiOnline: {
       screen: EkspedisiOnlineNavigator,
       navigationOptions: {
-        headerTitle: 'Ekspedisi Online',
+        headerTitle: "Ekspedisi Online",
         headerTitleStyle: {
           fontFamily: Fonts.primaryFont,
         },
       },
     },
     PoinBisa: {
-      screen: PoinBisaNavigator,
+      screen: PoinBisaMainNavigator,
+      navigationOptions: {
+        headerTitle: "Poin BISA",
+        headerTitleStyle: {
+          fontFamily: Fonts.primaryFont,
+        },
+      },
     },
     CAM: {
       screen: CAMNavigator,
       navigationOptions: {
-        headerTitle: 'CAM',
+        headerTitle: "CAM",
         headerTitleStyle: {
           fontFamily: Fonts.primaryFont,
         },
@@ -532,9 +681,9 @@ const BaseStackNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       ...baseHeaderStyle,
-      title: 'Home',
+      title: "Home",
     },
-  },
+  }
 );
 
 const BaseNavigator = createSwitchNavigator({

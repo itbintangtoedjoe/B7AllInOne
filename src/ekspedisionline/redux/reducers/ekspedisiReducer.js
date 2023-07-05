@@ -3,7 +3,7 @@ import {
   FETCH_DETAIL_PENGIRIMAN,
   FETCH_TIMELINE_PENGIRIMAN,
   UPDATE_STATUS_PENGIRIMAN,
-} from '../actions';
+} from "../actions";
 
 const initialState = {
   historiPengiriman: [],
@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        fetchDetailLoadingState: action.loadingState,
+        fetchDetailLoadingState: action.fetchDetailLoadingState,
         detailPengiriman: action.detailPengiriman,
       };
     case FETCH_TIMELINE_PENGIRIMAN:
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
       // console.log(action.selectedSensory.urgency);
       return {
         ...state,
-        fetchTimelineLoadingState: action.loadingState,
+        fetchTimelineLoadingState: action.fetchTimelineLoadingState,
         timelinePengiriman: action.timelinePengiriman,
       };
     case UPDATE_STATUS_PENGIRIMAN:

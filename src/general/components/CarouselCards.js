@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Dimensions } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from "./CarouselCardItem";
@@ -60,6 +60,10 @@ const CarouselCards = (props) => {
       url: "https://portal.bintang7.com/tara/uploadedfiles/b7connect/banners/banner5.png",
     },
   ];
+
+  // useEffect(() => {
+  //   console.log(props.data);
+  // }, []);
 
   return (
     <View

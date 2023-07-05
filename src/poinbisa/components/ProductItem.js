@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from "react";
 import {
   View,
   Text,
@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
-} from 'react-native';
-import NumberFormat from 'react-number-format';
+} from "react-native";
+import NumberFormat from "react-number-format";
 
-import Card from './Card';
-import MilliardText from '../../general/components/MilliardText';
-import MilliardBoldText from '../../general/components/MilliardBoldText';
+import Card from "./Card";
+import MilliardText from "../../general/components/MilliardText";
+import MilliardBoldText from "../../general/components/MilliardBoldText";
 
-const ProductItem = props => {
+const ProductItem = memo((props) => {
   let TouchableComp = TouchableOpacity;
 
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
+  if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableComp = TouchableNativeFeedback;
   }
 
@@ -28,16 +28,16 @@ const ProductItem = props => {
         {/* <TouchableComp onPress={props.onSelect} useForeground> */}
         <View>
           <View style={styles.imageContainer}>
-            <Image source={{uri: props.image}} style={styles.image} />
+            <Image source={{ uri: props.image }} style={styles.image} />
           </View>
           <View style={styles.detailsContainer}>
             <MilliardText style={styles.title}>{props.title}</MilliardText>
             {/* <MilliardBoldText style={styles.price}> */}
             <NumberFormat
               value={props.points}
-              displayType={'text'}
+              displayType={"text"}
               thousandSeparator={true}
-              renderText={value => (
+              renderText={(value) => (
                 <MilliardBoldText style={styles.price}>
                   Poin: {value}
                 </MilliardBoldText>
@@ -52,7 +52,7 @@ const ProductItem = props => {
       </View>
     </Card>
   );
-};
+});
 
 const styles = StyleSheet.create({
   product: {
@@ -62,18 +62,18 @@ const styles = StyleSheet.create({
   },
   touchable: {
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   imageContainer: {
-    width: '100%',
+    width: "100%",
     height: 250,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   title: {
     // fontFamily: 'cassette-tapes',
@@ -81,24 +81,24 @@ const styles = StyleSheet.create({
     marginVertical: 1,
   },
   detailsContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     height: 100,
     padding: 10,
     marginBottom: 40,
   },
   price: {
     fontSize: 18,
-    color: 'black',
+    color: "black",
     // color: '#888',
   },
   detail: {
     fontSize: 15,
-    color: 'black',
+    color: "black",
   },
   actions: {
     // flexDirection: 'row',
     // justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: "center",
     // height: '23%',
     // paddingHorizontal: 20,
   },

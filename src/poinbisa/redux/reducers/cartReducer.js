@@ -1,52 +1,61 @@
+import CartItem from "../../models/CartItem";
 import {
   FETCH_CART_ITEMS,
   ADD_TO_CART,
   REMOVE_FROM_CART,
   SEND_REDEEM_ORDER,
-} from '../actions';
+  EDIT_ITEM_QUANTITY,
+} from "../actions";
 
 const initialState = {
   cartItems: {},
   grandTotal: 0,
   item: {},
   loadingState: false,
+  operation: "add",
+  itemID: 0,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      const addedItem = action.item;
-
+      let addedItem = action.item;
       let newOrUpdatedItem;
-
-      if (state.cartItems[addedItem.id]) {
-        //udah ada di cart
-        newOrUpdatedItem = new CartItem(
-          item.id,
-          'nik',
-          item.nama_item,
-          item.detail_item,
-          item.poin_item,
-          state.cartItems[addedItem.id].quantity + 1,
-          item.img_url,
-        );
+      if (addedItem != undefined) {
+        if (state.cartItems[addedItem.id]) {
+          //udah ada di cart
+          newOrUpdatedItem = new CartItem(
+            addedItem.id,
+            "nik",
+            addedItem.nama_item,
+            addedItem.detail_item,
+            addedItem.poin_item,
+            state.cartItems[addedItem.id].quantity + 1,
+            addedItem.img_url
+          );
+        } else {
+          newOrUpdatedItem = new CartItem(
+            addedItem.id,
+            "nik",
+            addedItem.nama_item,
+            addedItem.detail_item,
+            addedItem.poin_item,
+            1,
+            addedItem.img_url
+          );
+        }
+        return {
+          ...state,
+          cartItems: { ...state.cartItems, [addedItem.id]: newOrUpdatedItem },
+          addToCartStatus: action.addToCartStatus,
+          loadingState: action.loadingState,
+        };
       } else {
-        newOrUpdatedItem = new CartItem(
-          item.id,
-          'nik',
-          item.nama_item,
-          item.detail_item,
-          item.poin_item,
-          1,
-          item.img_url,
-        );
+        return {
+          ...state,
+          loadingState: action.loadingState,
+        };
       }
-      return {
-        ...state,
-        cartItems: {...state.cartItems, [addedItem.id]: newOrUpdatedItem},
-        addToCartStatus: action.addToCartStatus,
-        loadingState: action.loadingState,
-      };
 
     case FETCH_CART_ITEMS:
       // console.log('di reducer');
@@ -66,6 +75,45 @@ export default (state = initialState, action) => {
         loadingState: action.loadingState,
         sendOrderStatus: action.status,
       };
+
+    case EDIT_ITEM_QUANTITY:
+      addedItem = action.item;
+      console.log("item reducer: ");
+      console.log(action);
+      if (addedItem != undefined) {
+        console.log("added item undefined");
+        if (state.cartItems[addedItem.id]) {
+          console.log("cart items di reducer edit");
+          console.log(state.cartItems);
+          //udah ada di cart
+          // newOrUpdatedItem = new CartItem(
+          //   addedItem.id,
+          //   "nik",
+          //   addedItem.nama_item,
+          //   addedItem.detail_item,
+          //   addedItem.poin_item,
+          //   state.cartItems[addedItem.id].quantity + 1,
+          //   addedItem.img_url
+          // );
+          if (action.payload == "ADD") {
+            const itemInCart = state.cartItems.find(
+              (item) => item.id == action.itemID
+            );
+            itemInCart.jumlah_item++;
+          }
+        }
+        return {
+          ...state,
+          // cartItems: { ...state.cartItems, [addedItem.id]: newOrUpdatedItem },
+          addToCartStatus: action.addToCartStatus,
+          // loadingState: action.loadingState,
+        };
+      } else {
+        return {
+          ...state,
+          // loadingState: action.loadingState,
+        };
+      }
 
     // case REMOVE_FROM_CART:
     //   //productid kiriman dari action cart

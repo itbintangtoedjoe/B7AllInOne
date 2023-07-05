@@ -45,6 +45,13 @@ const redeemState = true;
 const listAplikasiAndroid = [
   {
     id: "1",
+    title: "CAM",
+    color: "white",
+    icon: require("../../general/assets/logos/approval.png"),
+    routeName: "CAM",
+  },
+  {
+    id: "2",
     title: "TARA",
     color: "white",
     icon: require("../../general/assets/logos/tara.png"),
@@ -52,7 +59,7 @@ const listAplikasiAndroid = [
     // routeName: 'development',
   },
   {
-    id: "2",
+    id: "3",
     title: "Sensory Online",
     color: "white",
     icon: require("../../general/assets/logos/so.png"),
@@ -64,44 +71,37 @@ const listAplikasiAndroid = [
     playStoreId: "com.b7.sensoryonline",
   },
   {
-    id: "3",
+    id: "4",
     title: "Ekspedisi Online",
     color: "white",
     icon: require("../../general/assets/logos/eo.png"),
     routeName: "EkspedisiOnline",
   },
-  // {
-  //   id: '4',
-  //   title: 'CAM',
-  //   color: 'white',
-  //   icon: require('../../general/assets/logos/approval.png'),
-  //   routeName: 'CAM',
-  // },
 ];
 
 const listAplikasiIOS = [
   // {
   {
     id: "1",
+    title: "CAM",
+    color: "white",
+    icon: require("../../general/assets/logos/approval.png"),
+    routeName: "CAM",
+  },
+  {
+    id: "2",
     title: "TARA",
     color: "white",
     icon: require("../../general/assets/logos/tara.png"),
     routeName: "TARA",
   },
   {
-    id: "2",
+    id: "3",
     title: "Ekspedisi Online",
     color: "white",
     icon: require("../../general/assets/logos/eo.png"),
     routeName: "EkspedisiOnline",
   },
-  // {
-  //   id: '3',
-  //   title: 'CAM',
-  //   color: 'white',
-  //   icon: require('../../general/assets/logos/approval.png'),
-  //   routeName: 'CAM',
-  // },
 ];
 
 // const bannerContents = [
@@ -405,19 +405,19 @@ const HomeScreen = (props) => {
           </View>
         </ImageBackground>
         {/* NOTIFICATION ICON */}
-        {/* <Block flex style={styles.notificationBar}>
+        <Block flex style={styles.notificationBar}>
           <Block style={styles.notificationIcon}>
             <MaterialIcon
-              name={numOfNotifications == 0 ? 'bell-outline' : 'bell-ring'}
+              name={numOfNotifications == 0 ? "bell-outline" : "bell-ring"}
               size={23}
               color="white"
               onPress={() => {
                 // console.log('ke notif');
-                props.navigation.navigate('Notification');
+                props.navigation.navigate("Notification");
               }}
             />
           </Block>
-        </Block> */}
+        </Block>
         {/* NOTIFICATION ICON */}
       </Block>
       <Block
@@ -427,14 +427,14 @@ const HomeScreen = (props) => {
         {/* <CarouselCards data={appBanners} /> */}
       </Block>
       {/* POIN BISA */}
-      {/* <Block row space="between" style={styles.poinBisaContainer}>
+      <Block row space="between" style={styles.poinBisaContainer}>
         <Block middle>
           {activeUser !== undefined && activeUser !== null ? (
             <NumberFormat
               value={activeUser.poin_bisa}
-              displayType={'text'}
+              displayType={"text"}
               thousandSeparator={true}
-              renderText={value => (
+              renderText={(value) => (
                 <MilliardText style={styles.amount}>
                   POIN BISA:&nbsp;{value}
                 </MilliardText>
@@ -448,23 +448,25 @@ const HomeScreen = (props) => {
           row
           middle
           style={
-            redeemable && redeemable == 'false'
+            redeemable && redeemable == "false"
               ? styles.redeemContainerDisabled
               : styles.redeemContainer
-          }>
+          }
+        >
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate('PoinBisaHome');
+              props.navigation.navigate("PBHome");
             }}
-            disabled={redeemable && redeemable == 'false' ? true : false}
-            style={styles.redeemButton}>
-            <MaterialIcon name="wallet-giftcard" size={20} color={'white'} />
+            disabled={redeemable && redeemable == "false" ? true : false}
+            style={styles.redeemButton}
+          >
+            <MaterialIcon name="wallet-giftcard" size={20} color={"white"} />
             <Text size={12} style={styles.redeemText}>
               &nbsp;&nbsp;Redeem
             </Text>
           </TouchableOpacity>
         </Block>
-      </Block> */}
+      </Block>
       {/* POIN BISA */}
       <Block style={styles.pageSection}>
         {/* <BannerCarousel data={bannerContents} /> */}

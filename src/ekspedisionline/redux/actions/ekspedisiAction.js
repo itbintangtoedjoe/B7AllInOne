@@ -130,7 +130,7 @@ export const fetchDetailPengiriman = (filter, value, action, nikScanner) => {
   return async (dispatch, getState) => {
     dispatch({
       type: FETCH_DETAIL_PENGIRIMAN,
-      loadingState: true,
+      fetchDetailLoadingState: true,
     });
 
     const goodToGo = await isReachable();
@@ -187,7 +187,7 @@ export const fetchDetailPengiriman = (filter, value, action, nikScanner) => {
         dispatch({
           type: FETCH_DETAIL_PENGIRIMAN,
           detailPengiriman: detailPengiriman,
-          loadingState: false,
+          fetchDetailLoadingState: false,
         });
       } catch (err) {
         throw err;
@@ -196,7 +196,7 @@ export const fetchDetailPengiriman = (filter, value, action, nikScanner) => {
       dispatch({
         type: FETCH_DETAIL_PENGIRIMAN,
         detailPengiriman: detailPengiriman,
-        loadingState: false,
+        fetchDetailLoadingState: false,
       });
       return goodToGo;
     }
@@ -216,9 +216,10 @@ export const fetchTimelinePengiriman = (idPengiriman) => {
   return async (dispatch, getState) => {
     dispatch({
       type: FETCH_TIMELINE_PENGIRIMAN,
-      loadingState: true,
+      fetchTimelineLoadingState: true,
     });
 
+    let timelinePengiriman = [];
     const goodToGo = await isReachable();
     if (goodToGo === true) {
       try {
@@ -243,8 +244,6 @@ export const fetchTimelinePengiriman = (idPengiriman) => {
         // console.log('action timeline');
         // console.log(responseData);
 
-        let timelinePengiriman = [];
-
         responseData.map(function (item) {
           timelinePengiriman.push(
             new HistoriStatus(
@@ -256,12 +255,12 @@ export const fetchTimelinePengiriman = (idPengiriman) => {
           );
         });
 
-        console.log(timelinePengiriman);
+        // console.log(timelinePengiriman);
 
         dispatch({
           type: FETCH_TIMELINE_PENGIRIMAN,
           timelinePengiriman: timelinePengiriman,
-          loadingState: false,
+          fetchTimelineLoadingState: false,
         });
       } catch (err) {
         throw err;
@@ -270,7 +269,7 @@ export const fetchTimelinePengiriman = (idPengiriman) => {
       dispatch({
         type: FETCH_TIMELINE_PENGIRIMAN,
         timelinePengiriman: timelinePengiriman,
-        loadingState: false,
+        fetchTimelineLoadingState: false,
       });
       return goodToGo;
     }

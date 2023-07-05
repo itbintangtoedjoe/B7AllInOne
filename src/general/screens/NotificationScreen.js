@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -6,20 +6,20 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
-import Colors from '../../general/constants/Colors';
-import * as notificationActions from '../redux/actions';
-import NotificationItem from '../components/NotificationItem';
+import Colors from "../../general/constants/Colors";
+import * as notificationActions from "../redux/actions";
+import NotificationItem from "../components/NotificationItem";
 
-const NotificationScreen = props => {
-  const activeUser = useSelector(state => state.auth.activeUser);
+const NotificationScreen = (props) => {
+  const activeUser = useSelector((state) => state.auth.activeUser);
   const loadingState = useSelector(
-    state => state.general.notificationLoadingState,
+    (state) => state.general.notificationLoadingState
   );
   const userNotifications = useSelector(
-    state => state.general.userNotifications,
+    (state) => state.general.userNotifications
   );
   const dispatch = useDispatch();
   const refreshing = false;
@@ -32,7 +32,8 @@ const NotificationScreen = props => {
     dispatch(notificationActions.getUserNotifications(activeUser.nik));
   }, [refreshing]);
 
-  const notifOnClickHandler = item => {
+  const notifOnClickHandler = (item) => {
+    console.log(item);
     dispatch(notificationActions.setNotificationIsRead(item.ID));
     props.navigation.navigate({
       routeName: item.UrlMobile,
@@ -71,8 +72,8 @@ const NotificationScreen = props => {
       }
       data={userNotifications}
       style={styles.flatlist}
-      keyExtractor={item => item.ID}
-      renderItem={itemData => (
+      keyExtractor={(item) => item.ID}
+      renderItem={(itemData) => (
         <NotificationItem
           title={itemData.item.Title}
           body={itemData.item.Body}
@@ -90,8 +91,8 @@ const NotificationScreen = props => {
 const styles = StyleSheet.create({
   centered: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

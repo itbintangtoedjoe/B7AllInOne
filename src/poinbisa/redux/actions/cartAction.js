@@ -43,6 +43,8 @@ export const fetchCartItems = (userNIK) => {
         // console.log(responseData);
         let cartItems = [];
         const jsonObj = JSON.parse(responseData);
+        // console.log("");
+        // console.log(jsonjsonobjObj);
         const arrayItems = [...jsonObj];
         const grandTotal = arrayItems[0].Grandtotal;
         // console.log(cartItems);
@@ -61,7 +63,7 @@ export const fetchCartItems = (userNIK) => {
             )
           );
         });
-        // console.log('action');
+        // console.log("action");
         // console.log(cartItems);
         // console.log(grandTotal);
         // console.log(cartItems);
@@ -97,7 +99,9 @@ export const addToCart = (nik, item) => {
       type: ADD_TO_CART,
       loadingState: true,
     });
-    console.log("masok add to cart");
+    // console.log("masok add to cart");
+    // console.log("item belakang:");
+    // console.log(item);
     let data = {
       nik,
       itemID: item.id,
@@ -152,7 +156,7 @@ export const editItemQuantity = (nik, itemID, operation) => {
   return async (dispatch, getState) => {
     dispatch({
       type: EDIT_ITEM_QUANTITY,
-      loadingState: true,
+      // loadingState: true,
     });
 
     let data = {
@@ -160,6 +164,7 @@ export const editItemQuantity = (nik, itemID, operation) => {
       itemID,
       operation,
     };
+    console.log("data edit");
     console.log(data);
     const goodToGo = await isReachable();
     if (goodToGo === true) {
@@ -184,7 +189,7 @@ export const editItemQuantity = (nik, itemID, operation) => {
         dispatch({
           type: EDIT_ITEM_QUANTITY,
           // addToCartStatus: responseData,
-          loadingState: false,
+          // loadingState: false,
         });
       } catch (err) {
         throw err;
@@ -192,8 +197,10 @@ export const editItemQuantity = (nik, itemID, operation) => {
     } else {
       dispatch({
         type: EDIT_ITEM_QUANTITY,
-        // addToCartStatus: null,
-        loadingState: false,
+        item: itemID,
+        operation,
+        addToCartStatus: responseData,
+        // loadingState: false,
       });
       return goodToGo;
     }

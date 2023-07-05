@@ -1,4 +1,4 @@
-import {FETCH_ACTIVE_USER, LOGOUT} from '../../../tara/redux/actions';
+import { FETCH_ACTIVE_USER, LOGOUT } from "../../../tara/redux/actions";
 
 const initialState = {
   activeUser: null,
@@ -6,12 +6,14 @@ const initialState = {
 
   loadingState: false,
   isLoggedIn: false,
-  loginStatus: 'none',
+  loginStatus: "none",
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_ACTIVE_USER:
+      // console.log("user di reducer: ");
+      // console.log(action);
       return {
         ...state,
         activeUser: action.activeUser,

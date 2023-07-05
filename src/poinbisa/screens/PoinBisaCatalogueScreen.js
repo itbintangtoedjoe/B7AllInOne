@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   FlatList,
   Platform,
@@ -10,31 +10,31 @@ import {
   RefreshControl,
   TouchableNativeFeedback,
   TouchableOpacity,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Block, Text as GalioText, theme} from 'galio-framework';
-import Toast from 'react-native-fast-toast';
-import {useToast} from 'react-native-toast-notifications';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import NumberFormat from 'react-number-format';
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { Block, Text as GalioText, theme } from "galio-framework";
+import Toast from "react-native-fast-toast";
+import { useToast } from "react-native-toast-notifications";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import IonIcon from "react-native-vector-icons/Ionicons";
+import NumberFormat from "react-number-format";
 
-import ProductItem from '../components/ProductItem';
-import HeaderButton from '../components/HeaderButton';
-import MilliardText from '../../general/components/MilliardText';
-import Card from '../components/Card';
-import Colors from '../../general/constants/Colors';
-import * as poinBisaActions from '../redux/actions';
+import ProductItem from "../components/ProductItem";
+import HeaderButton from "../components/HeaderButton";
+import MilliardText from "../../general/components/MilliardText";
+import Card from "../components/Card";
+import Colors from "../../general/constants/Colors";
+import * as poinBisaActions from "../redux/actions";
 
-const PoinBisaCatalogueScreen = props => {
-  const activeUser = useSelector(state => state.auth.activeUser);
-  const loadingState = useSelector(state => state.poinBisa.loadingState);
+const PoinBisaCatalogueScreen = (props) => {
+  const activeUser = useSelector((state) => state.auth.activeUser);
+  const loadingState = useSelector((state) => state.poinBisa.loadingState);
   const [isLoading, setIsLoading] = useState(false);
   // const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(false);
 
-  const allItems = useSelector(state => state.poinBisa.allItems);
+  const allItems = useSelector((state) => state.poinBisa.allItems);
   const dispatch = useDispatch();
   // const toast = useRef(null);
 
@@ -91,7 +91,7 @@ const PoinBisaCatalogueScreen = props => {
   }, [refreshing]);
 
   const selectItemHandler = (id, title) => {
-    props.navigation.navigate('ProductDetail', {
+    props.navigation.navigate("ProductDetail", {
       productId: id,
       productTitle: title,
     });
@@ -111,14 +111,14 @@ const PoinBisaCatalogueScreen = props => {
   //   );
   // }
 
-  const addToCart = item => {
+  const addToCart = (item) => {
     dispatch(poinBisaActions.addToCart(activeUser.nik, item));
-    toast.show('Berhasil ditambahkan ke keranjang', {
-      type: 'success',
-      position: 'top',
+    toast.show("Berhasil ditambahkan ke keranjang", {
+      type: "success",
+      position: "top",
       duration: 1000,
       offset: 30,
-      animationType: 'zoom-in',
+      animationType: "zoom-in",
     });
   };
 
@@ -167,12 +167,12 @@ const PoinBisaCatalogueScreen = props => {
       </Block> */}
       <View style={styles.options}>
         <MilliardText>
-          TOTAL POIN BISA:{' '}
+          TOTAL POIN BISA:{" "}
           <NumberFormat
             value={activeUser.poin_bisa}
-            displayType={'text'}
+            displayType={"text"}
             thousandSeparator={true}
-            renderText={value => (
+            renderText={(value) => (
               <MilliardText style={styles.amount}>{value}</MilliardText>
             )}
           />
@@ -195,8 +195,8 @@ const PoinBisaCatalogueScreen = props => {
         }
         data={allItems}
         style={styles.flatlist}
-        keyExtractor={item => item.id}
-        renderItem={itemData => (
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
           <ProductItem
             image={itemData.item.img_url}
             title={itemData.item.nama_item}
@@ -204,11 +204,13 @@ const PoinBisaCatalogueScreen = props => {
             detail={itemData.item.detail_item}
             onSelect={() => {
               selectItemHandler(itemData.item.id, itemData.item.title);
-            }}>
+            }}
+          >
             {/* <View style={styles.touchable}> */}
             <TouchableOpacity
               onPress={() => addToCart(itemData.item)}
-              style={styles.touchable}>
+              style={styles.touchable}
+            >
               <View style={styles.addToCartButton}>
                 {/* <Icon name="plus" size={20} color={Colors.primaryColor} /> */}
                 <MilliardText style={styles.addToCartText}>
@@ -239,7 +241,7 @@ const PoinBisaCatalogueScreen = props => {
   );
 };
 
-PoinBisaCatalogueScreen.navigationOptions = ({navigation}) => {
+PoinBisaCatalogueScreen.navigationOptions = ({ navigation }) => {
   // console.log('screen');
   return {
     // headerTitleStyle: {
@@ -250,8 +252,8 @@ PoinBisaCatalogueScreen.navigationOptions = ({navigation}) => {
     headerRightContainerStyle: {
       marginRight: 15,
     },
-    headerRight: (
-      <TouchableOpacity onPress={() => navigation.navigate('PoinBisaCart')}>
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate("PoinBisaCart")}>
         <IonIcon name="md-cart" size={25} color={Colors.primaryColor} />
       </TouchableOpacity>
     ),
@@ -285,23 +287,23 @@ PoinBisaCatalogueScreen.navigationOptions = ({navigation}) => {
 const styles = {
   centered: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   information: {
     marginBottom: 10,
   },
   addToCartButton: {
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 7,
     borderColor: Colors.primaryColor,
     borderWidth: 1,
     // padding: 8,
     height: 38,
-    width: '90%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
   },
   touchable: {
     // overflow: 'hidden',
@@ -310,9 +312,9 @@ const styles = {
     // borderWidth: 1,
     // // padding: 8,
     // height: 38,
-    width: '100%',
+    width: "100%",
     // justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: "center",
     // backgroundColor: 'white',
   },
   addToCartText: {
@@ -322,16 +324,16 @@ const styles = {
     padding: 15,
   },
   options: {
-    position: 'relative',
+    position: "relative",
     padding: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE * 0.7,
     marginTop: 15,
     borderRadius: 13,
     borderColor: Colors.primaryColor,
     borderWidth: 1,
-    backgroundColor: 'white',
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 0},
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
     shadowRadius: 8,
     shadowOpacity: 0.2,
     zIndex: 2,
@@ -344,12 +346,12 @@ const styles = {
     borderRadius: 5,
     borderWidth: 1,
     borderColor: Colors.softBlue,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     // borderStyle: 'dashed',
   },
   flatlist: {
     marginTop: 15,
-    height: '85%',
+    height: "85%",
   },
 };
 

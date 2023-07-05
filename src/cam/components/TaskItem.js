@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useSelector } from "react";
 import {
   View,
   Text,
@@ -25,9 +25,9 @@ const TaskItem = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   const [alasanReject, setAlasanReject] = useState("");
-  const approvalLoadingState = useSelector(
-    (state) => state.cam.approvalLoadingState
-  );
+  // const approvalLoadingState = useSelector(
+  //   (state) => state.cam.approvalLoadingState
+  // );
 
   const handleRejectModal = () => {
     setIsRejectModalVisible(() => !isRejectModalVisible);
@@ -224,44 +224,59 @@ const TaskItem = (props) => {
                   <Text style={styles.textDetail}>{props.remarks}</Text>
                 </View>
                 {(props.multipleData == false || showDetails) && (
-                  <View style={styles.buttons}>
-                    <TouchableOpacity
-                      onPress={
-                        //   () => {
-                        //   Linking.openURL(props.url).catch(err =>
-                        //     console.error("Couldn't load page", err),
-                        //   );
-                        // }
-                        () => {
-                          viewTransactionDetail(props.url);
+                  <>
+                    <View>
+                      <TouchableOpacity
+                        onPress={
+                          //   () => {
+                          //   Linking.openURL(props.url).catch(err =>
+                          //     console.error("Couldn't load page", err),
+                          //   );
+                          // }
+                          () => {
+                            viewTransactionDetail(props.url);
+                          }
                         }
-                      }
-                      style={(styles.button, styles.buttonView)}
-                    >
-                      <View style={styles.buttonDetails}>
-                        <Icon name="search" size={20} color="black" />
-                        <Text style={styles.buttonText}>View</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={handleRejectModal}
-                      style={(styles.button, styles.buttonReject)}
-                    >
-                      <View style={styles.buttonDetails}>
-                        <Icon name="remove" size={20} color="white" />
-                        <Text style={styles.buttonTextWhite}>Reject</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={approveTransaction}
-                      style={(styles.button, styles.buttonApprove)}
-                    >
-                      <View style={styles.buttonDetails}>
-                        <Icon name="check" size={20} color="white" />
-                        <Text style={styles.buttonTextWhite}>Approve</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
+                        style={(styles.button, styles.buttonView)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="search" size={20} color="black" />
+                          <Text style={styles.buttonText}>View</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.buttons}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          viewTransactionDetail(props.url);
+                        }}
+                        style={(styles.button, styles.buttonRevise)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="pencil" size={20} color="white" />
+                          <Text style={styles.buttonTextWhite}>Revise</Text>
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={handleRejectModal}
+                        style={(styles.button, styles.buttonReject)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="remove" size={20} color="white" />
+                          <Text style={styles.buttonTextWhite}>Reject</Text>
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={approveTransaction}
+                        style={(styles.button, styles.buttonApprove)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="check" size={20} color="white" />
+                          <Text style={styles.buttonTextWhite}>Approve</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </>
                 )}
               </View>
             </Card>
@@ -293,42 +308,59 @@ const TaskItem = (props) => {
                   <Text style={styles.textDetail}>{props.remarks}</Text>
                 </View>
                 {(props.multipleData == false || showDetails) && (
-                  <View style={styles.buttons}>
-                    <TouchableOpacity
-                      onPress={
-                        //   () => {
-                        //   Linking.openURL(props.url).catch(err =>
-                        //     console.error("Couldn't load page", err),
-                        //   );
-                        // }
-                        viewTransactionDetail
-                      }
-                      style={(styles.button, styles.buttonView)}
-                    >
-                      <View style={styles.buttonDetails}>
-                        <Icon name="search" size={20} color="black" />
-                        <Text style={styles.buttonText}>View</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={handleRejectModal}
-                      style={(styles.button, styles.buttonReject)}
-                    >
-                      <View style={styles.buttonDetails}>
-                        <Icon name="remove" size={20} color="white" />
-                        <Text style={styles.buttonTextWhite}>Reject</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={approveTransaction}
-                      style={(styles.button, styles.buttonApprove)}
-                    >
-                      <View style={styles.buttonDetails}>
-                        <Icon name="check" size={20} color="white" />
-                        <Text style={styles.buttonTextWhite}>Approve</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
+                  <>
+                    <View>
+                      <TouchableOpacity
+                        onPress={
+                          //   () => {
+                          //   Linking.openURL(props.url).catch(err =>
+                          //     console.error("Couldn't load page", err),
+                          //   );
+                          // }
+                          () => {
+                            viewTransactionDetail(props.url);
+                          }
+                        }
+                        style={(styles.button, styles.buttonView)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="search" size={20} color="black" />
+                          <Text style={styles.buttonText}>View</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.buttons}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          viewTransactionDetail(props.url);
+                        }}
+                        style={(styles.button, styles.buttonRevise)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="pencil" size={20} color="white" />
+                          <Text style={styles.buttonTextWhite}>Revise</Text>
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={handleRejectModal}
+                        style={(styles.button, styles.buttonReject)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="remove" size={20} color="white" />
+                          <Text style={styles.buttonTextWhite}>Reject</Text>
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={approveTransaction}
+                        style={(styles.button, styles.buttonApprove)}
+                      >
+                        <View style={styles.buttonDetailsCentered}>
+                          <Icon name="check" size={20} color="white" />
+                          <Text style={styles.buttonTextWhite}>Approve</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </>
                 )}
               </View>
             </Card>
@@ -459,10 +491,16 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     backgroundColor: "#FFEA00",
+    alignItems: "center",
+    marginTop: 5,
     // backgroundColor: Colors.camPrimaryColor,
+  },
+  buttonRevise: {
+    backgroundColor: Colors.camOrange,
   },
   buttonReject: {
     backgroundColor: Colors.camRed,
+    alignItems: "center",
   },
   buttonApprove: {
     backgroundColor: Colors.camDarkerGreen, //'#3ec9de', //
@@ -475,6 +513,15 @@ const styles = StyleSheet.create({
     height: 40,
     paddingVertical: 5,
     paddingHorizontal: 7,
+  },
+  buttonDetailsCentered: {
+    width: 100,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40,
+    paddingVertical: 5,
+    // paddingHorizontal: 7,
   },
   buttonText: {
     fontFamily: Fonts.primaryFont,

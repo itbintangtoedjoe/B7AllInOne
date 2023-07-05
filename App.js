@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useEffect} from 'react';
+import React, { useEffect } from "react";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -17,20 +17,20 @@ import {
   Image,
   ActivityIndicator,
   Platform,
-} from 'react-native';
-import {Provider} from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
-import {ToastProvider} from 'react-native-toast-notifications';
-import {useSelector, useDispatch} from 'react-redux';
+} from "react-native";
+import { Provider } from "react-redux";
+import SplashScreen from "react-native-splash-screen";
+import { ToastProvider } from "react-native-toast-notifications";
+import { useSelector, useDispatch } from "react-redux";
 
-import Colors from './src/general/constants/Colors';
-import MilliardText from './src/general/components/MilliardText';
-import BaseNavigator from './src/general/navigation';
-import {store} from './src/general/redux/store';
-import NavigationService from './src/general/NavigationService';
-import RemotePushController from './src/general/services/RemotePushController';
-import * as generalAction from './src/general/redux/actions/generalAction';
-import {version} from './package.json';
+import Colors from "./src/general/constants/Colors";
+import MilliardText from "./src/general/components/MilliardText";
+import BaseNavigator from "./src/general/navigation";
+import { store } from "./src/general/redux/store";
+import NavigationService from "./src/general/NavigationService";
+import RemotePushController from "./src/general/services/RemotePushController";
+import * as generalAction from "./src/general/redux/actions/generalAction";
+import { version } from "./package.json";
 
 console.reportErrorsAsExceptions = false;
 
@@ -230,12 +230,13 @@ const App = () => {
     <ToastProvider
       successColor={Colors.primaryColor}
       textStyle={{
-        fontFamily: 'Milliard-Book',
+        fontFamily: "Milliard-Book",
       }}
-      offsetBottom={40}>
+      offsetBottom={40}
+    >
       {/* <Provider store={store}> */}
       <BaseNavigator
-        ref={navigatorRef => {
+        ref={(navigatorRef) => {
           NavigationService.setTopLevelNavigator(navigatorRef);
         }}
       />
@@ -250,8 +251,8 @@ const App = () => {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

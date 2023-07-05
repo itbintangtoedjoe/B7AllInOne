@@ -21,7 +21,7 @@ export const fetchUserPendingTask = (username) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
+          "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
             username,
           {
             method: "GET",
@@ -74,8 +74,8 @@ export const fetchUserPendingTask = (username) => {
             )
           );
         });
-        console.log("halo bos");
-        console.log(userPendingTask);
+        // console.log("halo bos");
+        // console.log(userPendingTask);
 
         dispatch({
           type: FETCH_USER_PENDING_TASK,
@@ -110,7 +110,7 @@ export const fetchTransactionDetail = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
+          "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
             data.username,
           {
             method: "GET",
