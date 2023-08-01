@@ -22,12 +22,15 @@ import Strings from "../constants/Strings";
 import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator";
 import * as authActions from "../redux/actions/authAction";
+import * as generalActions from "../redux/actions/generalAction";
 import User from "../models/User";
 
 const AuthenticationScreen = (props) => {
   const DEFAULTPASSWORD = "b7c#default";
   const [email, setEmail] = useState({
-    value: "laura.odin@gmail.com",
+    // value: "laura.odin@gmail.com",
+    value: "dennyirawan9@gmail.com",
+    // value: "feliciabrilliantb@gmail.com",
     error: "",
   });
   const [password, setPassword] = useState({ value: "zuppass.", error: "" });
@@ -35,6 +38,8 @@ const AuthenticationScreen = (props) => {
   const [loadingState, setLoadingState] = useState(false);
   const loginStatus = useSelector((state) => state.auth.loginStatus);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const deviceToken = useSelector((state) => state.general.deviceToken);
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const dispatch = useDispatch();
 
@@ -44,6 +49,7 @@ const AuthenticationScreen = (props) => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      dispatch(generalActions.saveUserToken(activeUser.nik, deviceToken));
       if (password.value == DEFAULTPASSWORD) {
         props.navigation.navigate("ChangePasswordAuthenticated", {
           origin: "login",

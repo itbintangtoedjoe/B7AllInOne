@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -22,13 +22,15 @@ import { Provider } from "react-redux";
 import SplashScreen from "react-native-splash-screen";
 import { ToastProvider } from "react-native-toast-notifications";
 import { useSelector, useDispatch } from "react-redux";
+import { Notifications } from "react-native-notifications";
 
 import Colors from "./src/general/constants/Colors";
 import MilliardText from "./src/general/components/MilliardText";
 import BaseNavigator from "./src/general/navigation";
 import { store } from "./src/general/redux/store";
 import NavigationService from "./src/general/NavigationService";
-import RemotePushController from "./src/general/services/RemotePushController";
+// import RemotePushController from "./src/general/services/RemotePushController";
+
 import * as generalAction from "./src/general/redux/actions/generalAction";
 import { version } from "./package.json";
 
@@ -41,7 +43,7 @@ const App = () => {
   //   state => state.general.checkingVerLoadingState,
   // );
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // const VersionCheckMessage = () => {
   //   if (Platform.OS === 'ios') {
@@ -225,6 +227,38 @@ const App = () => {
 
   //   return () => backHandler.remove();
   // });
+  useMemo(() => {
+    console.log("This is useMemo");
+    Notifications.registerRemoteNotifications();
+    Notifications.events().registerRemoteNotificationsRegistered((event) => {
+      // TODO: Send the token to my server so it could send back push notifications...
+      console.log("Device Token Received", event.deviceToken);
+      dispatch(generalAction.saveDeviceToken(event.deviceToken));
+    });
+    Notifications.events().registerRemoteNotificationsRegistrationFailed(
+      (event) => {
+        console.error(event);
+      }
+    );
+    // Notifications.events().registerNotificationOpened(
+    //   (notification, completion, action) => {
+    //     console.log("Notification opened by device user", notification.payload);
+    //     console.log(
+    //       `Notification opened with an action identifier: ${action.identifier} and response text: ${action.text}`
+    //     );
+    //     completion();
+    //   }
+    // );
+    //to get notif when the app is opened by user
+    Notifications.events().registerNotificationReceivedForeground(
+      (notification, completion) => {
+        console.log("Notification Received - Foreground", notification.payload);
+
+        // Calling completion on iOS with `alert: true` will present the native iOS inApp notification.
+        completion({ alert: true, sound: true, badge: false });
+      }
+    );
+  }, []);
 
   return (
     <ToastProvider

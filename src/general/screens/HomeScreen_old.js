@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   StyleSheet,
   Dimensions,
@@ -10,28 +10,28 @@ import {
   RefreshControl,
   TouchableOpacity,
   Alert,
-} from 'react-native';
-import {Header} from 'react-navigation-stack';
-import {useSelector, useDispatch} from 'react-redux';
-import {Block, Text, theme} from 'galio-framework';
-import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import NumberFormat from 'react-number-format';
-import AppLink from 'react-native-app-link';
+} from "react-native";
+import { Header } from "react-navigation-stack";
+import { useSelector, useDispatch } from "react-redux";
+import { Block, Text, theme } from "galio-framework";
+import LinearGradient from "react-native-linear-gradient";
+import Icon from "react-native-vector-icons/FontAwesome";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import NumberFormat from "react-number-format";
+import AppLink from "react-native-app-link";
 
 // import { Icon } from '../components';
-import {Images, materialTheme} from '../constants/galio';
-import {HeaderHeight} from '../constants/galio/utils';
-import MilliardText from '../../general/components/MilliardText';
-import Colors from '../constants/Colors';
-import MenuGrid from '../../general/components/MenuGrid';
-import * as actions from '../redux/actions';
-import {LocalNotification} from '../services/LocalPushController';
-import RemotePushController from '../services/RemotePushController';
-import Fonts from '../constants/Fonts';
+import { Images, materialTheme } from "../constants/galio";
+import { HeaderHeight } from "../constants/galio/utils";
+import MilliardText from "../../general/components/MilliardText";
+import Colors from "../constants/Colors";
+import MenuGrid from "../../general/components/MenuGrid";
+import * as actions from "../redux/actions";
+// import { LocalNotification } from "../services/LocalPushController";
+// import RemotePushController from '../services/RemotePushController';
+import Fonts from "../constants/Fonts";
 
-const {width, height} = Dimensions.get('screen');
+const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 const redeemState = true;
 
@@ -44,41 +44,41 @@ const listAplikasi = [
   //   routeName: 'CAM',
   // },
   {
-    id: '1',
-    title: 'TARA',
-    color: 'white',
-    icon: require('../../general/assets/logos/tara.png'),
-    routeName: 'TARA',
+    id: "1",
+    title: "TARA",
+    color: "white",
+    icon: require("../../general/assets/logos/tara.png"),
+    routeName: "TARA",
     // routeName: 'development',
   },
   {
-    id: '2',
-    title: 'Sensory Online',
-    color: 'white',
-    icon: require('../../general/assets/logos/so.png'),
-    routeName: 'openapp',
+    id: "2",
+    title: "Sensory Online",
+    color: "white",
+    icon: require("../../general/assets/logos/so.png"),
+    routeName: "openapp",
     // routeName: 'development',
-    appName: 'B7SensoryOnline',
-    appStoreId: '',
-    appStoreLocale: '',
-    playStoreId: 'com.b7.sensoryonline',
+    appName: "B7SensoryOnline",
+    appStoreId: "",
+    appStoreLocale: "",
+    playStoreId: "com.b7.sensoryonline",
   },
   {
-    id: '3',
-    title: 'Ekspedisi Online',
-    color: 'white',
-    icon: require('../../general/assets/logos/eo.png'),
-    routeName: 'EkspedisiOnline',
+    id: "3",
+    title: "Ekspedisi Online",
+    color: "white",
+    icon: require("../../general/assets/logos/eo.png"),
+    routeName: "EkspedisiOnline",
   },
 ];
 
-const HomeScreen = props => {
+const HomeScreen = (props) => {
   const toast = useRef(null);
 
   const [refreshing, setRefreshing] = useState(false);
   const [redeemable, setRedeemable] = useState();
   const [numOfNotifications, setNumOfNotifications] = useState();
-  const activeUser = useSelector(state => state.auth.activeUser);
+  const activeUser = useSelector((state) => state.auth.activeUser);
 
   const dispatch = useDispatch();
 
@@ -91,7 +91,7 @@ const HomeScreen = props => {
     if (activeUser == [] || activeUser == null || activeUser == undefined) {
       dispatch(actions.logout()).then(() => {
         props.navigation.navigate({
-          routeName: 'Auth',
+          routeName: "Auth",
         });
       });
     }
@@ -100,26 +100,26 @@ const HomeScreen = props => {
       0,
       0,
       0,
-      0,
+      0
     );
     let endDate = new Date(activeUser.tanggal_akhir_redeem).setHours(
       0,
       0,
       0,
-      0,
+      0
     );
     let timeToRedeem = today <= endDate && today >= startDate;
     if (timeToRedeem) {
-      setRedeemable('true');
+      setRedeemable("true");
     } else {
-      setRedeemable('false');
+      setRedeemable("false");
     }
     setNumOfNotifications(activeUser.jumlah_notifikasi);
   }, [dispatch]);
 
-  const renderGridItemImage = itemData => {
+  const renderGridItemImage = (itemData) => {
     const urlSO =
-      'http://play.google.com/store/apps/details?id=com.b7.sensoryonline';
+      "http://play.google.com/store/apps/details?id=com.b7.sensoryonline";
     const appName = itemData.item.appName;
     const appStoreId = itemData.item.appStoreId;
     const appStoreLocale = itemData.item.appStoreLocale;
@@ -132,17 +132,17 @@ const HomeScreen = props => {
         tipe="kategori"
         icon={itemData.item.icon}
         onSelect={() => {
-          if (itemData.item.routeName == 'development') {
-            toast.current.show('The app is under development');
-          } else if (itemData.item.routeName == 'openapp') {
-            Platform.OS == 'android'
+          if (itemData.item.routeName == "development") {
+            toast.current.show("The app is under development");
+          } else if (itemData.item.routeName == "openapp") {
+            Platform.OS == "android"
               ? AppLink.maybeOpenURL(urlSO, {
                   appName,
                   appStoreId,
                   appStoreLocale,
                   playStoreId,
                 })
-              : Alert.alert('This app is only available on Android Play Store');
+              : Alert.alert("This app is only available on Android Play Store");
           } else {
             props.navigation.navigate(itemData.item.routeName);
           }
@@ -157,11 +157,12 @@ const HomeScreen = props => {
 
   return (
     <Block flex style={styles.profile}>
-      <Block flex style={{backgroundColor: 'white'}}>
+      <Block flex style={{ backgroundColor: "white" }}>
         <ImageBackground
-          source={require('../assets/banner2.png')}
+          source={require("../assets/banner2.png")}
           style={styles.profileContainer}
-          imageStyle={styles.profileImage}>
+          imageStyle={styles.profileImage}
+        >
           {/* <Block flex style={styles.notificationBar}>
             <Block style={styles.notificationIcon}>
               <MaterialIcon
@@ -231,8 +232,9 @@ const HomeScreen = props => {
         <Block
           row
           space="between"
-          style={{paddingVertical: 16, alignItems: 'baseline'}}>
-          <Text size={16} style={{fontFamily: 'Milliard-Book'}}>
+          style={{ paddingVertical: 16, alignItems: "baseline" }}
+        >
+          <Text size={16} style={{ fontFamily: "Milliard-Book" }}>
             Application List
           </Text>
           {/* <Text
@@ -251,8 +253,8 @@ const HomeScreen = props => {
           style={styles.appList}
           contentContainerStyle={
             listAplikasi.length >= 5
-              ? {alignSelf: 'center'}
-              : {alignSelf: 'flex-start'}
+              ? { alignSelf: "center" }
+              : { alignSelf: "flex-start" }
           }
           refreshControl={
             <RefreshControl
@@ -277,7 +279,7 @@ const HomeScreen = props => {
           </Block> */}
         {/* </ScrollView> */}
       </Block>
-      <RemotePushController />
+      {/* <RemotePushController /> */}
     </Block>
   );
 };
@@ -292,17 +294,17 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: width * 1.1,
-    height: 'auto',
-    resizeMode: 'stretch',
+    height: "auto",
+    resizeMode: "stretch",
   },
   profileContainer: {
     width: width,
     height: 250,
     // height: height / 3,
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
   },
   notificationBar: {
-    marginTop: Platform.OS == 'android' ? 10 : 20,
+    marginTop: Platform.OS == "android" ? 10 : 20,
     // justifyContent: 'flex-end',
     // position: 'relative',
   },
@@ -314,8 +316,8 @@ const styles = StyleSheet.create({
   notificationIcon: {
     // backgroundColor: 'white',
     paddingHorizontal: theme.SIZES.BASE,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
   // profileTexts: {
   //   paddingHorizontal: theme.SIZES.BASE * 2,
@@ -334,15 +336,15 @@ const styles = StyleSheet.create({
     marginRight: theme.SIZES.BASE / 2,
   },
   options: {
-    position: 'relative',
+    position: "relative",
     padding: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE * 0.7,
     marginTop: -theme.SIZES.BASE * 20,
     borderTopLeftRadius: 13,
     borderTopRightRadius: 13,
-    backgroundColor: 'white',
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 0},
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
     shadowRadius: 8,
     shadowOpacity: 0.2,
     zIndex: 2,
@@ -350,7 +352,7 @@ const styles = StyleSheet.create({
   thumb: {
     borderRadius: 4,
     marginVertical: 4,
-    alignSelf: 'center',
+    alignSelf: "center",
     width: thumbMeasure,
     height: thumbMeasure,
   },
@@ -359,8 +361,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: '30%',
-    position: 'absolute',
+    height: "30%",
+    position: "absolute",
   },
   poinBisaContainer: {
     // flex: 1,
@@ -370,7 +372,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: Colors.softBlue,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     // borderStyle: 'dashed',
   },
   redeemContainerDisabled: {
@@ -390,16 +392,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
   },
   redeemButton: {
-    flexDirection: 'row',
+    flexDirection: "row",
     // justifyContent: 'center',
     // alignContent: 'center',
   },
   redeemText: {
     fontFamily: Fonts.primaryFont,
-    color: 'white',
-    marginTop: Platform.OS === 'android' ? 1 : 4,
+    color: "white",
+    marginTop: Platform.OS === "android" ? 1 : 4,
   },
   appList: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 });

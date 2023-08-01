@@ -5,6 +5,7 @@
 #endif
 
 #import "RNSplashScreen.h" //tambahan
+#import "RNNotifications.h" //tambahan
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -60,6 +61,7 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
   
   [RNSplashScreen show]; //tambahan
+  [RNNotifications startMonitorNotifications]; //tambahan
   return YES;
 }
 
@@ -71,5 +73,19 @@ static void InitializeFlipper(UIApplication *application) {
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
+
+//tambahan react-native-notifications
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+  [RNNotifications didReceiveBackgroundNotification:userInfo withCompletionHandler:completionHandler];
+}
+//tambahan react-native-notifications
 
 @end

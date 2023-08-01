@@ -13,10 +13,6 @@ export const fetchUserPendingTask = (username) => {
       fetchLoadingState: true,
     });
 
-    const data = {
-      username,
-    };
-
     const goodToGo = await isReachable();
     if (goodToGo === true) {
       try {
@@ -63,7 +59,7 @@ export const fetchUserPendingTask = (username) => {
               // item.ID,
               item.IDAPPS_FK,
               item.APPSNAME,
-              item.MODULID,
+              item.MODULID_FK,
               item.MODULNAME,
               item.MENUNAME,
               item.IDTRANSC,
@@ -205,13 +201,12 @@ export const approveTransaction = (data) => {
       type: APPROVE_TRANSACTION,
       approvalLoadingState: true,
     });
-
     // console.log('masok func action atas');
     const goodToGo = await isReachable();
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapproval/api/approve",
+          "https://portal.bintang7.com/masterapprovalgeneral/api/approve",
           {
             method: "POST",
             headers: {
@@ -226,12 +221,20 @@ export const approveTransaction = (data) => {
           throw new Error("Something went wrong!");
         }
 
+        console.log("1");
         let responseData = await response.json();
+        console.log("respon approve");
+        console.log(responseData);
+        console.log("2");
         let statusResult = "";
-        responseData = responseData[0];
-        statusResult = responseData.Status;
+        console.log("3");
+        // responseData = responseData[0];
+        console.log("4");
+        // statusResult = responseData.Status;
+        console.log("5");
 
-        // console.log(responseData);
+        console.log("respon approve");
+        console.log(responseData);
 
         // let userPendingTask = [];
         // let detailTransaksi = null;
@@ -285,6 +288,7 @@ export const approveTransaction = (data) => {
           statusApproval: statusResult,
           approvalLoadingState: false,
         });
+        // fetchUserPendingTask(data.username);
       } catch (err) {
         return;
         // throw err;

@@ -35,8 +35,8 @@ import BannerCarousel from "../components/BannerCarousel";
 import CarouselCards from "../components/CarouselCards";
 
 import * as actions from "../redux/actions";
-import { LocalNotification } from "../services/LocalPushController";
-import RemotePushController from "../services/RemotePushController";
+// import { LocalNotification } from "../services/LocalPushController";
+// import RemotePushController from "../services/RemotePushController";
 
 const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;

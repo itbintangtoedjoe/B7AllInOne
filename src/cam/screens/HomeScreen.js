@@ -64,7 +64,7 @@ const HomeScreen = (props) => {
       let newList = [];
       //cocokin keywords dengan no transaksi/requestor/remarks
       userPendingTask.filter((task) => {
-        console.log(task);
+        // console.log(task);
         // return task.judul.toLowerCase().match(input);
         if (task.TransactionID.toLowerCase().match(input)) {
           newList.push(task);

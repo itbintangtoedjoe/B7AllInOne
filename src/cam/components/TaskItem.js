@@ -1,4 +1,4 @@
-import React, { useState, useSelector } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,10 +10,12 @@ import {
   Linking,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Modal from "react-native-modal";
 import { withNavigation } from "react-navigation";
+import { useDispatch, useSelector } from "react-redux";
 
 import * as actions from "../redux/actions/camAction";
 import Colors from "../../general/constants/Colors";
@@ -22,9 +24,13 @@ import Card from "./Card";
 import Fonts from "../../general/constants/Fonts";
 
 const TaskItem = (props) => {
+  const dispatch = useDispatch();
+
   const [showDetails, setShowDetails] = useState(false);
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   const [alasanReject, setAlasanReject] = useState("");
+  const loadingState = useSelector((state) => state.cam.approvalLoadingState);
+  const statusApproval = useSelector((state) => state.cam.statusApproval);
   // const approvalLoadingState = useSelector(
   //   (state) => state.cam.approvalLoadingState
   // );
@@ -45,13 +51,24 @@ const TaskItem = (props) => {
         {
           text: "Approve",
           onPress: () => {
+            console.log("approve clicked");
             const data = {
-              username: activeUser.username,
+              username: props.activeUser,
               appsID: props.appID,
               modulID: props.modulID,
               transactionID: props.transactionID,
             };
-            dispatch(actions.updateStatusPengiriman(data));
+            dispatch(actions.approveTransaction(data)).then(
+              // dispatch(actions.fetchUserPendingTask(props.activeUser))
+              () => {
+                console.log("statusApproval");
+                console.log(statusApproval);
+                if (statusApproval == "DONE") {
+                  Alert.alert("Successfully approved!");
+                  dispatch(actions.fetchUserPendingTask(props.activeUser));
+                }
+              }
+            );
           },
         },
       ],
@@ -81,7 +98,7 @@ const TaskItem = (props) => {
   };
 
   const viewTransactionDetail = (url) => {
-    console.log(url);
+    // console.log(url);
     // console.log('urlnya ini bro: ' + JSON.stringify(url));
     // console.log(JSON.stringify(url));
     props.navigation.navigate({
@@ -104,94 +121,78 @@ const TaskItem = (props) => {
   //   });
   // };
 
-  const ContentContainer = () => {
-    return (
-      <View style={styles.touchable}>
-        <Card style={styles.taskItem}>
-          <View style={styles.summary}>
-            <View style={styles.rowSpaceBetween}>
-              <Text style={styles.detailTitle}>Application</Text>
-              <Text style={styles.textDetail}>{props.appName}</Text>
-            </View>
-            <View style={styles.rowSpaceBetween}>
-              <Text style={styles.detailTitle}>Transaction Number</Text>
-              <Text style={styles.textDetail}>{props.transactionID}</Text>
-            </View>
-            <View style={styles.rowSpaceBetween}>
-              <Text style={styles.detailTitle}>Transaction Date</Text>
-              <Text style={styles.textDetail}>{props.date}</Text>
-            </View>
-            <View style={styles.rowSpaceBetween}>
-              <Text style={styles.detailTitle}>Requestor</Text>
-              <Text style={styles.textDetail}>{props.requestor}</Text>
-            </View>
-            <View>
-              <Text style={styles.detailTitle}>Remarks</Text>
-              <Text style={styles.textDetail}>{props.remarks}</Text>
-            </View>
-            {(props.multipleData == false || showDetails) && (
-              <View style={styles.buttons}>
-                <TouchableOpacity
-                  onPress={
-                    //   () => {
-                    //   Linking.openURL(props.url).catch(err =>
-                    //     console.error("Couldn't load page", err),
-                    //   );
-                    // }
-                    viewTransactionDetail(props)
-                  }
-                  style={(styles.button, styles.buttonView)}
-                >
-                  <View style={styles.buttonDetails}>
-                    <Icon name="search" size={20} color="black" />
-                    <Text style={styles.buttonText}>View</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={handleRejectModal}
-                  style={(styles.button, styles.buttonReject)}
-                >
-                  <View style={styles.buttonDetails}>
-                    <Icon name="remove" size={20} color="white" />
-                    <Text style={styles.buttonTextWhite}>Reject</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={approveTransaction}
-                  style={(styles.button, styles.buttonApprove)}
-                >
-                  <View style={styles.buttonDetails}>
-                    <Icon name="check" size={20} color="white" />
-                    <Text style={styles.buttonTextWhite}>Approve</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </Card>
-      </View>
-    );
-  };
+  // const ContentContainer = () => {
+  //   return (
+  //     <View style={styles.touchable}>
+  //       <Card style={styles.taskItem}>
+  //         <View style={styles.summary}>
+  //           <View style={styles.rowSpaceBetween}>
+  //             <Text style={styles.detailTitle}>Application</Text>
+  //             <Text style={styles.textDetail}>{props.appName}</Text>
+  //           </View>
+  //           <View style={styles.rowSpaceBetween}>
+  //             <Text style={styles.detailTitle}>Transaction Number</Text>
+  //             <Text style={styles.textDetail}>{props.transactionID}</Text>
+  //           </View>
+  //           <View style={styles.rowSpaceBetween}>
+  //             <Text style={styles.detailTitle}>Transaction Date</Text>
+  //             <Text style={styles.textDetail}>{props.date}</Text>
+  //           </View>
+  //           <View style={styles.rowSpaceBetween}>
+  //             <Text style={styles.detailTitle}>Requestor</Text>
+  //             <Text style={styles.textDetail}>{props.requestor}</Text>
+  //           </View>
+  //           <View>
+  //             <Text style={styles.detailTitle}>Remarks</Text>
+  //             <Text style={styles.textDetail}>{props.remarks}</Text>
+  //           </View>
+  //           {(props.multipleData == false || showDetails) && (
+  //             <View style={styles.buttons}>
+  //               <TouchableOpacity
+  //                 onPress={
+  //                   //   () => {
+  //                   //   Linking.openURL(props.url).catch(err =>
+  //                   //     console.error("Couldn't load page", err),
+  //                   //   );
+  //                   // }
+  //                   viewTransactionDetail(props)
+  //                 }
+  //                 style={(styles.button, styles.buttonView)}
+  //               >
+  //                 <View style={styles.buttonDetails}>
+  //                   <Icon name="search" size={20} color="black" />
+  //                   <Text style={styles.buttonText}>View</Text>
+  //                 </View>
+  //               </TouchableOpacity>
+  //               <TouchableOpacity
+  //                 onPress={handleRejectModal}
+  //                 style={(styles.button, styles.buttonReject)}
+  //               >
+  //                 <View style={styles.buttonDetails}>
+  //                   <Icon name="remove" size={20} color="white" />
+  //                   <Text style={styles.buttonTextWhite}>Reject</Text>
+  //                 </View>
+  //               </TouchableOpacity>
+  //               <TouchableOpacity
+  //                 onPress={approveTransaction}
+  //                 style={(styles.button, styles.buttonApprove)}
+  //               >
+  //                 <View style={styles.buttonDetails}>
+  //                   <Icon name="check" size={20} color="white" />
+  //                   <Text style={styles.buttonTextWhite}>Approve</Text>
+  //                 </View>
+  //               </TouchableOpacity>
+  //             </View>
+  //           )}
+  //         </View>
+  //       </Card>
+  //     </View>
+  //   );
+  // };
 
-  return (
-    <>
-      {/* {props.multipleData ? (
-        <TouchableNativeFeedback
-          activeOpacity={0.5}
-          onPress={() => {
-            setShowDetails(!showDetails);
-          }}
-          background={TouchableNativeFeedback.Ripple('white', false)}
-          // useForeground={true}
-        >
-          <ContentContainer />
-        </TouchableNativeFeedback>
-      ) : (
-        <TouchableNativeFeedback>
-          <ContentContainer />
-        </TouchableNativeFeedback>
-      )} */}
-      {props.multipleData == true ? (
+  const ContentContainer = () => {
+    if (props.multipleData == true) {
+      return (
         <TouchableNativeFeedback
           activeOpacity={0.5}
           onPress={() => {
@@ -282,7 +283,9 @@ const TaskItem = (props) => {
             </Card>
           </View>
         </TouchableNativeFeedback>
-      ) : (
+      );
+    } else {
+      return (
         <View>
           <View style={styles.touchable}>
             <Card style={styles.taskItem}>
@@ -366,7 +369,35 @@ const TaskItem = (props) => {
             </Card>
           </View>
         </View>
-      )}
+      );
+    }
+  };
+
+  return (
+    <>
+      {/* {props.multipleData ? (
+        <TouchableNativeFeedback
+          activeOpacity={0.5}
+          onPress={() => {
+            setShowDetails(!showDetails);
+          }}
+          background={TouchableNativeFeedback.Ripple('white', false)}
+          // useForeground={true}
+        >
+          <ContentContainer />
+        </TouchableNativeFeedback>
+      ) : (
+        <TouchableNativeFeedback>
+          <ContentContainer />
+        </TouchableNativeFeedback>
+      )} */}
+      {/* {loadingState ? (
+        <View style={styles.touchable}>
+          <ActivityIndicator size="large" color="white" />
+        </View>
+      ) : ( */}
+      <ContentContainer />
+      {/* )} */}
 
       <Modal
         isVisible={isRejectModalVisible}

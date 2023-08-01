@@ -2,7 +2,8 @@ import {
   GET_USER_NOTIFICATIONS,
   GET_APP_BANNERS,
   CHECK_APP_VERSION,
-} from '../actions';
+  SAVE_DEVICE_TOKEN,
+} from "../actions";
 
 const initialState = {
   userNotifications: [],
@@ -12,8 +13,10 @@ const initialState = {
   bannerLoadingState: false,
   loadingState: false,
 
-  latestAppVersion: '',
+  latestAppVersion: "",
   checkingVerLoadingState: false,
+
+  deviceToken: "",
 };
 
 export default (state = initialState, action) => {
@@ -35,6 +38,11 @@ export default (state = initialState, action) => {
         ...state,
         latestAppVersion: action.latestAppVersion,
         checkingVerLoadingState: action.loadingState,
+      };
+    case SAVE_DEVICE_TOKEN:
+      return {
+        ...state,
+        deviceToken: action.deviceToken,
       };
     default:
       return state;

@@ -2,11 +2,21 @@ import { Alert } from "react-native";
 import { isReachable } from "./authAction";
 import Notification from "../../models/Notification";
 
+export const SAVE_DEVICE_TOKEN = "SAVE_DEVICE_TOKEN";
 export const SAVE_USER_TOKEN = "SAVE_USER_TOKEN";
 export const GET_USER_NOTIFICATIONS = "GET_USER_NOTIFICATIONS";
 export const READ_RECEIPT = "READ_RECEIPT";
 export const GET_APP_BANNERS = "GET_APP_BANNERS";
 export const CHECK_APP_VERSION = "CHECK_APP_VERSION";
+
+export const saveDeviceToken = (token) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: SAVE_DEVICE_TOKEN,
+      deviceToken: token,
+    });
+  };
+};
 
 export const saveUserToken = (nik, token) => {
   return async (dispatch, getState) => {

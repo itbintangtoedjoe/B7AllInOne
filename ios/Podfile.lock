@@ -264,6 +264,8 @@ PODS:
     - React-Core
   - react-native-camera/RN (3.44.3):
     - React-Core
+  - react-native-notifications (4.3.5):
+    - React-Core
   - react-native-pdf (6.3.0):
     - React-Core
   - react-native-progress-bar-android (1.0.4):
@@ -432,6 +434,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-camera (from `../node_modules/react-native-camera`)
+  - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - "react-native-progress-bar-android (from `../node_modules/@react-native-community/progress-bar-android`)"
   - "react-native-progress-view (from `../node_modules/@react-native-community/progress-view`)"
@@ -514,6 +517,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-camera:
     :path: "../node_modules/react-native-camera"
+  react-native-notifications:
+    :path: "../node_modules/react-native-notifications"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
   react-native-progress-bar-android:
@@ -603,6 +608,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8c077bef1c64430b6034f27df1000d194551e2eb
   React-jsinspector: d4f6973dd474357dbaaf6f52f31ffc713bf3e766
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
+  react-native-notifications: 504143d59f9628c3b0c22fd0ccf34b65b9182d01
   react-native-pdf: ef641e79a6d550cfabe5d7ec1916799726514c43
   react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40
   react-native-progress-view: 9e6b6a5305a9115c2157ae3b8852081aba0aab7c
@@ -634,6 +640,6 @@ SPEC CHECKSUMS:
   Yoga: d1fc3575b8b68891ff5ef3c276daa855e841eb32
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 352634c65970b4f0a178650f6dabcdedfe6cd72f
+PODFILE CHECKSUM: f65459bd562c3606370a62426a7d5da5c842fddd
 
 COCOAPODS: 1.11.2
