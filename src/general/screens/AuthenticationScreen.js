@@ -28,8 +28,8 @@ import User from "../models/User";
 const AuthenticationScreen = (props) => {
   const DEFAULTPASSWORD = "b7c#default";
   const [email, setEmail] = useState({
-    // value: "laura.odin@gmail.com",
-    value: "dennyirawan9@gmail.com",
+    value: "bong.tonny@icloud.com",
+    // value: "dennyirawan9@gmail.com",
     // value: "feliciabrilliantb@gmail.com",
     error: "",
   });

@@ -1,24 +1,35 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { WebView } from "react-native-webview";
 
-import Card from '../components/Card';
-import TaskItem from '../components/TaskItem';
-import Colors from '../../general/constants/Colors';
-import * as actions from '../redux/actions/camAction';
+import Card from "../components/Card";
+import TaskItem from "../components/TaskItem";
+import Colors from "../../general/constants/Colors";
+import * as actions from "../redux/actions/camAction";
 
-const CAMDetailScreen = props => {
-  const transactionID = props.navigation.getParam('transactionID');
-  const appID = props.navigation.getParam('appID');
-  const activeUser = useSelector(state => state.auth.activeUser);
-  const detailTransaksi = useSelector(state => state.cam.detailTransaksi);
-  const loadingState = useSelector(state => state.cam.fetchDetailLoadingState);
+const CAMDetailScreen = (props) => {
+  const transactionID = props.navigation.getParam("transactionID");
+  const appID = props.navigation.getParam("appID");
+  const transactionLink = props.navigation.getParam("link");
+  const activeUser = useSelector((state) => state.auth.activeUser);
+  const detailTransaksi = useSelector((state) => state.cam.detailTransaksi);
+  const loadingState = useSelector(
+    (state) => state.cam.fetchDetailLoadingState
+  );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("props cam detail");
+    const link = props.navigation.getParam("link");
+    console.log(link);
+  }, []);
+
+  useEffect(() => {
     // console.log('masok dispatch');
-    const data = {appID, transactionID, username: activeUser.user_ad};
+    const data = { appID, transactionID, username: activeUser.user_ad };
+    // console.log("di detail dispatch");
     // console.log(data);
     dispatch(actions.fetchTransactionDetail(data));
   }, [dispatch]);
@@ -63,19 +74,27 @@ const CAMDetailScreen = props => {
     //   buttons="open"
     //   // onPress={() => openEmbeddedBrowser(detailTransaksi)}
     // />
-    <View>
-      <TaskItem
-        transactionID={detailTransaksi.TransactionID}
-        date={detailTransaksi.TransactionDate}
-        appName={detailTransaksi.AppName}
-        url={detailTransaksi.Url}
-        requestor={detailTransaksi.Requestor}
-        remarks={detailTransaksi.Remarks}
-        onPress={() => console.log(detailTransaksi.Url)}
-        multipleData={false}
-        // onPress={() => openEmbeddedBrowser(detailTransaksi)}
-      />
-    </View>
+    // <View>
+    //   <Text>yoi</Text>
+    //   {/* <TaskItem
+    //     transactionID={detailTransaksi.TransactionID}
+    //     date={detailTransaksi.TransactionDate}
+    //     appName={detailTransaksi.AppName}
+    //     url={detailTransaksi.Url}
+    //     requestor={detailTransaksi.Requestor}
+    //     remarks={detailTransaksi.Remarks}
+    //     onPress={() => console.log(detailTransaksi.Url)}
+    //     multipleData={false}
+    //     // onPress={() => openEmbeddedBrowser(detailTransaksi)}
+    //   /> */}
+    // </View>
+
+    <WebView
+      source={{
+        uri: transactionLink,
+        // 'http://k2.service:1w3EaF9o0%40pf@kf-dc1k2app.kalbe.id:8080/Invoice/ViewRFP?id=522956'
+      }}
+    />
     // {detailTransaksi&&<TaskItem
     //   transactionID={detailTransaksi.TransactionID}
     //   date={detailTransaksi.TransactionDate}
@@ -167,8 +186,8 @@ const CAMDetailScreen = props => {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
     margin: 10,

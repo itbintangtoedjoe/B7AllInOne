@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,11 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome";
+import DropdownAlert, {
+  DropdownAlertData,
+  DropdownAlertType,
+  DropdownAlertColor,
+} from "react-native-dropdownalert";
 
 import * as actions from "../redux/actions/camAction";
 import Colors from "../../general/constants/Colors";
@@ -33,6 +38,29 @@ const HomeScreen = (props) => {
   const [searchInput, setSearchInput] = useState("");
 
   const dispatch = useDispatch();
+
+  //toast
+  const defaultSelected = {
+    name: "Default",
+    color: "red",
+  };
+  const [selected, setSelected] = useState(defaultSelected);
+  const [processing, setProcessing] = useState(false);
+  let alert = useRef(
+    (_data) => new Promise() < DropdownAlertData > ((res) => res)
+  );
+  let dismiss = useRef(() => {});
+
+  const onSelect = (item) => {
+    setSelected(item);
+    // setTimeout(async () => {
+    setProcessing(true);
+    alert.current(item.alertData);
+    setProcessing(false);
+    dispatch(actions.fetchUserPendingTask(activeUser.user_ad));
+    // }, 500);
+  };
+  //toast
 
   useEffect(() => {
     // console.log('activeUser: ', activeUser.user_ad);
@@ -125,6 +153,9 @@ const HomeScreen = (props) => {
             remarks={itemData.item.Remarks}
             activeUser={activeUser.user_ad}
             multipleData={true}
+            toastMessageAction={onSelect}
+            selected={selected}
+            processing={processing}
             // onPress={() => console.log(itemData.item.Url)}
             // onPress={() => openEmbeddedBrowser(itemData.item)}
           />
@@ -202,6 +233,9 @@ const HomeScreen = (props) => {
             remarks={itemData.item.Remarks}
             activeUser={activeUser.user_ad}
             multipleData={true}
+            toastMessageAction={onSelect}
+            selected={selected}
+            processing={processing}
           />
         )}
       />
@@ -243,6 +277,11 @@ const HomeScreen = (props) => {
         />
       </View>
       <PendingTaskContent />
+      <DropdownAlert
+        alert={(func) => (alert.current = func)}
+        dismiss={(func) => (dismiss.current = func)}
+        {...selected.alertProps}
+      />
     </View>
   );
 

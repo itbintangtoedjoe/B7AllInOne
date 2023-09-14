@@ -3,7 +3,7 @@ import {
   FETCH_TRANSACTION_DETAIL,
   APPROVE_TRANSACTION,
   REJECT_TRANSACTION,
-} from '../actions/camAction';
+} from "../actions/camAction";
 
 const initialState = {
   userPendingTask: [],
@@ -11,6 +11,7 @@ const initialState = {
   fetchLoadingState: false,
   fetchDetailLoadingState: false,
   approvalLoadingState: false,
+  statusApproval: "",
 };
 
 export default (state = initialState, action) => {
@@ -32,10 +33,22 @@ export default (state = initialState, action) => {
         detailTransaksi: action.detailTransaksi,
       };
     case APPROVE_TRANSACTION:
+      console.log("di reducer");
+      console.log(action.statusApproval);
       return {
         ...state,
         approvalLoadingState: action.approvalLoadingState,
         detailTransaksi: action.detailTransaksi,
+        statusApproval: action.statusApproval,
+      };
+    case REJECT_TRANSACTION:
+      console.log("di reducer");
+      console.log(action.statusApproval);
+      return {
+        ...state,
+        approvalLoadingState: action.approvalLoadingState,
+        detailTransaksi: action.detailTransaksi,
+        statusApproval: action.statusApproval,
       };
     default:
       return state;

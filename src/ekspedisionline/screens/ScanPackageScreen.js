@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,31 +12,33 @@ import {
   useColorScheme,
   ScrollView,
   KeyboardAvoidingView,
-} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import {useDispatch, useSelector} from 'react-redux';
-import {Picker} from '@react-native-picker/picker';
+} from "react-native";
+import { ActivityIndicator } from "react-native-paper";
+import QRCodeScanner from "react-native-qrcode-scanner";
+import { useDispatch, useSelector } from "react-redux";
+import { Picker } from "@react-native-picker/picker";
 
-import Colors from '../../general/constants/Colors';
-import * as actions from '../redux/actions';
-import {COMPLETED_DELIVERY, NOT_FOUND, NO_CHANGES} from '../redux/actions';
+import Colors from "../../general/constants/Colors";
+import * as actions from "../redux/actions";
+import { COMPLETED_DELIVERY, NOT_FOUND, NO_CHANGES } from "../redux/actions";
 
-const ScanPackageScreen = props => {
-  const action = props.navigation.getParam('action');
-  const activeUser = useSelector(state => state.auth.activeUser);
-  const activeUserEO = useSelector(state => state.auth.activeUserEO);
+const ScanPackageScreen = (props) => {
+  const action = props.navigation.getParam("action");
+  const activeUser = useSelector((state) => state.auth.activeUser);
+  const activeUserEO = useSelector((state) => state.auth.activeUserEO);
   const loadingState = useSelector(
-    state => state.eoEkspedisi.fetchDetailLoadingState,
+    (state) => state.eoEkspedisi.fetchDetailLoadingState
   );
-  const uploadingState = useSelector(state => state.eoEkspedisi.uploadingState);
+  const uploadingState = useSelector(
+    (state) => state.eoEkspedisi.uploadingState
+  );
   const detailPengiriman = useSelector(
-    state => state.eoEkspedisi.detailPengiriman,
+    (state) => state.eoEkspedisi.detailPengiriman
   );
-  const [keterangan, setKeterangan] = useState('');
-  const [namaPenerima, setNamaPenerima] = useState('');
-  const [input2, setInput2] = useState('');
-  const [jenisPenerimaan, setJenisPenerimaan] = useState('Perantara');
+  const [keterangan, setKeterangan] = useState("");
+  const [namaPenerima, setNamaPenerima] = useState("");
+  const [input2, setInput2] = useState("");
+  const [jenisPenerimaan, setJenisPenerimaan] = useState("Perantara");
 
   const [scan, setScan] = useState(true);
   const [scanResult, setScanResult] = useState(false);
@@ -47,7 +49,7 @@ const ScanPackageScreen = props => {
 
   const dispatch = useDispatch();
 
-  const onSuccess = e => {
+  const onSuccess = (e) => {
     setNomorResi(e.data);
     setScan(false);
     setScanResult(true);
@@ -66,17 +68,17 @@ const ScanPackageScreen = props => {
     setScan(true);
     setScanResult(false);
     setDataLoaded(false);
-    setJenisPenerimaan('');
-    setKeterangan('');
-    setNamaPenerima('');
+    setJenisPenerimaan("");
+    setKeterangan("");
+    setNamaPenerima("");
     setPenerimaContentState(false);
   };
 
   const cariDataPengiriman = () => {
-    setJenisPenerimaan('');
-    setKeterangan('');
+    setJenisPenerimaan("");
+    setKeterangan("");
     dispatch(
-      actions.fetchDetailPengiriman('resi', nomorResi, 'scan', activeUser.nik),
+      actions.fetchDetailPengiriman("resi", nomorResi, "scan", activeUser.nik)
     );
     setDataLoaded(true);
   };
@@ -85,25 +87,25 @@ const ScanPackageScreen = props => {
     // console.log('ok');
     let jenis_penerimaan = jenisPenerimaan;
     let ket = keterangan;
-    if (jenisPenerimaan == 'Perwakilan' && keterangan.length < 5) {
-      Alert.alert('Gagal', 'Alasan perwakilan minimal 5 karakter');
+    if (jenisPenerimaan == "Perwakilan" && keterangan.length < 5) {
+      Alert.alert("Gagal", "Alasan perwakilan minimal 5 karakter");
       return;
     } else if (
-      action == 'TerimaPetugas' &&
-      activeUserEO.nama_role == 'Driver'
+      action == "TerimaPetugas" &&
+      activeUserEO.nama_role == "Driver"
     ) {
       if (namaPenerima.length < 3) {
         Alert.alert(
-          'Gagal',
-          'Mohon masukkan nama penerima yang benar (minimal 3 karakter)',
+          "Gagal",
+          "Mohon masukkan nama penerima yang benar (minimal 3 karakter)"
         );
         return;
       }
-      jenis_penerimaan = 'Perwakilan Driver';
+      jenis_penerimaan = "Perwakilan Driver";
       ket = namaPenerima.toUpperCase();
     } else {
-      if (keterangan.trim() == '') {
-        ket = '-';
+      if (keterangan.trim() == "") {
+        ket = "-";
       }
     }
     const data = {
@@ -134,7 +136,7 @@ const ScanPackageScreen = props => {
   };
 
   const TextButtonUpdateStatus = () => {
-    if (action == 'KirimPetugas') {
+    if (action == "KirimPetugas") {
       return <Text style={styles.buttonTextStyle}>KIRIM BARANG</Text>;
     } else {
       return <Text style={styles.buttonTextStyle}>BARANG DITERIMA</Text>;
@@ -146,7 +148,7 @@ const ScanPackageScreen = props => {
     return (
       <View>
         <View style={styles.divider10}></View>
-        <Text style={{fontWeight: 'bold'}}>PENERIMA</Text>
+        <Text style={{ fontWeight: "bold" }}>PENERIMA</Text>
         <Text>
           <Text>Nama:</Text> {detailPengiriman.nama_penerima}
         </Text>
@@ -169,7 +171,7 @@ const ScanPackageScreen = props => {
     ) {
       return (
         <View>
-          <Text style={{...styles.inputLabel, fontWeight: 'bold'}}>
+          <Text style={{ ...styles.inputLabel, fontWeight: "bold" }}>
             Penerimaan barang sebagai admin:
           </Text>
           <View style={styles.pickerContainer}>
@@ -178,7 +180,8 @@ const ScanPackageScreen = props => {
               mode="dropdown"
               onValueChange={(itemValue, itemIndex) =>
                 setJenisPenerimaan(itemValue)
-              }>
+              }
+            >
               <Picker.Item
                 label="Perantara"
                 value="Perantara"
@@ -269,7 +272,7 @@ const ScanPackageScreen = props => {
         <View>
           <View style={styles.cardSecondary}>
             <View style={scanResult ? styles.scanCardView : styles.cardView}>
-              <Text style={{fontWeight: 'bold'}}>PENGIRIM</Text>
+              <Text style={{ fontWeight: "bold" }}>PENGIRIM</Text>
               <Text>
                 <Text>Nama:</Text> {detailPengiriman.nama_pengirim}
               </Text>
@@ -279,17 +282,17 @@ const ScanPackageScreen = props => {
               <Penerima />
               <View style={styles.divider10}></View>
               <Text>
-                <Text style={{fontWeight: 'bold'}}>JENIS BARANG:</Text>{' '}
+                <Text style={{ fontWeight: "bold" }}>JENIS BARANG:</Text>{" "}
                 {detailPengiriman.jenis_barang}
               </Text>
               <View style={styles.divider5}></View>
               <Text>
-                <Text style={{fontWeight: 'bold'}}>KETERANGAN:</Text>{' '}
+                <Text style={{ fontWeight: "bold" }}>KETERANGAN:</Text>{" "}
                 {detailPengiriman.keterangan}
               </Text>
               <View style={styles.divider5}></View>
               <Text>
-                <Text style={{fontWeight: 'bold'}}>STATUS TERAKHIR:</Text>{' '}
+                <Text style={{ fontWeight: "bold" }}>STATUS TERAKHIR:</Text>{" "}
                 {detailPengiriman.detail_status}
               </Text>
               <View style={styles.divider10} />
@@ -298,7 +301,7 @@ const ScanPackageScreen = props => {
           </View>
           <View style={styles.buttonContainer}>
             {uploadingState ? (
-              <View style={{marginTop: 25}}>
+              <View style={{ marginTop: 25 }}>
                 {/* <View style={styles.content}> */}
                 <ActivityIndicator
                   size="small"
@@ -312,7 +315,8 @@ const ScanPackageScreen = props => {
                 style={{
                   ...styles.buttonTouchable,
                   backgroundColor: Colors.ekspedisiAccentColor,
-                }}>
+                }}
+              >
                 <TextButtonUpdateStatus />
               </TouchableOpacity>
             )}
@@ -331,7 +335,7 @@ const ScanPackageScreen = props => {
           <View style={styles.content}>
             <View style={styles.cardSecondary}>
               <View style={scanResult ? styles.scanCardView : styles.cardView}>
-                <Text style={{fontWeight: 'bold'}}>
+                <Text style={{ fontWeight: "bold" }}>
                   Nomor Resi: {nomorResi}
                 </Text>
               </View>
@@ -342,47 +346,51 @@ const ScanPackageScreen = props => {
                 onPress={scanAgain}
                 style={{
                   ...styles.optionButton,
-                  backgroundColor: '#b8bfba',
-                }}>
+                  backgroundColor: "#b8bfba",
+                }}
+              >
                 <Text style={styles.buttonTextStyle}>SCAN ULANG</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={cariDataPengiriman}
                 style={{
                   ...styles.optionButton,
-                  backgroundColor: '#e6e225',
-                }}>
+                  backgroundColor: "#e6e225",
+                }}
+              >
                 <Text style={styles.buttonTextStyle}>CARI DATA</Text>
               </TouchableOpacity>
             </View>
             {penerimaContentState &&
-            activeUserEO.nama_role == 'Driver' &&
-            action == 'TerimaPetugas' ? (
+            activeUserEO.nama_role == "Driver" &&
+            action == "TerimaPetugas" ? (
               <View style={styles.cardSecondary}>
-                <Text style={{fontWeight: 'bold'}}>Masukkan nama penerima</Text>
-                <Text style={{fontWeight: 'bold', color: 'red'}}>
+                <Text style={{ fontWeight: "bold" }}>
+                  Masukkan nama penerima
+                </Text>
+                <Text style={{ fontWeight: "bold", color: "red" }}>
                   WAJIB DIISI
                 </Text>
                 <View style={styles.divider5}></View>
                 <TextInput
                   value={namaPenerima}
-                  onChangeText={itemValue => setNamaPenerima(itemValue)}
+                  onChangeText={(itemValue) => setNamaPenerima(itemValue)}
                   style={styles.inputMultiline}
                 />
               </View>
             ) : null}
-            {jenisPenerimaan == 'Perwakilan' ? (
+            {jenisPenerimaan == "Perwakilan" ? (
               <View style={styles.cardSecondary}>
-                <Text style={{fontWeight: 'bold'}}>
+                <Text style={{ fontWeight: "bold" }}>
                   Masukkan alasan yang jelas
                 </Text>
-                <Text style={{fontWeight: 'bold', color: 'red'}}>
+                <Text style={{ fontWeight: "bold", color: "red" }}>
                   WAJIB DIISI
                 </Text>
                 <View style={styles.divider5}></View>
                 <TextInput
                   value={keterangan}
-                  onChangeText={itemValue => setKeterangan(itemValue)}
+                  onChangeText={(itemValue) => setKeterangan(itemValue)}
                   multiline={true}
                   style={styles.inputMultiline}
                 />
@@ -390,7 +398,7 @@ const ScanPackageScreen = props => {
             ) : null}
 
             {loadingState ? (
-              <View style={{marginTop: 25}}>
+              <View style={{ marginTop: 25 }}>
                 <View style={styles.content}>
                   <ActivityIndicator
                     size="small"
@@ -552,8 +560,8 @@ const ScanPackageScreen = props => {
   //   );
 };
 
-const deviceWidth = Dimensions.get('screen').width;
-const deviceHeight = Dimensions.get('screen').height;
+const deviceWidth = Dimensions.get("screen").width;
+const deviceHeight = Dimensions.get("screen").height;
 
 const styles = StyleSheet.create({
   title: {
@@ -561,43 +569,43 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 32,
     color: Colors.ekspedisiThirdColor,
-    fontFamily: 'Milliard-Book',
+    fontFamily: "Milliard-Book",
   },
   textBold: {
-    fontWeight: '500',
-    color: '#000',
+    fontWeight: "500",
+    color: "#000",
   },
   buttonText: {
     fontSize: 21,
-    color: 'rgb(0,122,255)',
+    color: "rgb(0,122,255)",
   },
   buttonTouchable: {
     fontSize: 21,
     marginTop: 15,
     width: deviceWidth - 30,
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 44,
   },
   buttonTextStyle: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   buttonContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   optionButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   optionButton: {
     flex: 1 / 2,
     fontSize: 21,
     marginTop: 15,
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 44,
     marginHorizontal: 15,
   },
@@ -611,14 +619,14 @@ const styles = StyleSheet.create({
   cardSecondary: {
     marginTop: 15,
     marginHorizontal: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 8,
   },
   pickerContainer: {
     borderWidth: 1,
     borderColor: Colors.ekspedisiPrimaryColor,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 5,
     marginTop: 5,
     marginBottom: 8,
@@ -631,11 +639,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.ekspedisiPrimaryColor,
     borderRadius: 5,
     borderWidth: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 5,
     height: 75,
-    alignItems: 'flex-start',
-    textAlignVertical: 'top',
+    alignItems: "flex-start",
+    textAlignVertical: "top",
     paddingHorizontal: 12,
   },
   divider5: {
