@@ -23,6 +23,7 @@ import SplashScreen from "react-native-splash-screen";
 import { ToastProvider } from "react-native-toast-notifications";
 import { useSelector, useDispatch } from "react-redux";
 import { Notifications } from "react-native-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Colors from "./src/general/constants/Colors";
 import MilliardText from "./src/general/components/MilliardText";
@@ -31,7 +32,8 @@ import { store } from "./src/general/redux/store";
 import NavigationService from "./src/general/NavigationService";
 // import RemotePushController from "./src/general/services/RemotePushController";
 
-import * as generalAction from "./src/general/redux/actions/generalAction";
+import * as generalActions from "./src/general/redux/actions/generalAction";
+import * as authActions from "./src/general/redux/actions/authAction";
 import { version } from "./package.json";
 
 console.reportErrorsAsExceptions = false;
@@ -203,7 +205,50 @@ const App = () => {
 
   useEffect(() => {
     SplashScreen.hide();
-  });
+  }, []);
+
+  // useEffect(() => {
+  //   fetchUserLogin();
+  // }, []);
+
+  // const fetchUserLogin = async () => {
+  //   const emailSaved = await AsyncStorage.getItem("email");
+  //   const pwdSaved = await AsyncStorage.getItem("pwd");
+
+  //   // if (emailSaved !== null) {
+  //   //   props.navigation.navigate("BaseApp");
+  //   // } else {
+  //   //   console.log("zonk");
+  //   // }
+  //   console.log("***************");
+  //   console.log("email app: " + emailSaved);
+  //   console.log("pass app: " + pwdSaved);
+
+  //   if (emailSaved !== null) {
+  //     const data = { email: emailSaved, password: pwdSaved };
+  //     const isssLoggedin = await dispatch(authActions.fetchActiveUser(data));
+  //     console.log("isssLoggedin app: " + isssLoggedin);
+  //     if (isssLoggedin) {
+  //       console.log("4");
+  //       dispatch(generalActions.saveUserToken(activeUser.nik, deviceToken));
+  //       if (password.value == DEFAULTPASSWORD) {
+  //         console.log("5");
+  //         props.navigation.navigate("ChangePasswordAuthenticated", {
+  //           origin: "login",
+  //         });
+  //       } else {
+  //         console.log("6");
+  //         SplashScreen.hide();
+  //         props.navigation.navigate("BaseApp");
+  //       }
+  //     }
+  //   } else {
+  //     SplashScreen.hide();
+  //     props.navigation.navigate({
+  //       routeName: "BaseAuth",
+  //     });
+  //   }
+  // };
   // useEffect(() => {
   //   const backAction = () => {
   //     Alert.alert(
@@ -233,7 +278,7 @@ const App = () => {
     Notifications.events().registerRemoteNotificationsRegistered((event) => {
       // TODO: Send the token to my server so it could send back push notifications...
       console.log("Device Token Received", event.deviceToken);
-      dispatch(generalAction.saveDeviceToken(event.deviceToken));
+      dispatch(generalActions.saveDeviceToken(event.deviceToken));
     });
     Notifications.events().registerRemoteNotificationsRegistrationFailed(
       (event) => {

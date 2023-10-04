@@ -7,6 +7,7 @@ import {
   Platform,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import Modal from "react-native-modal";
 
@@ -15,34 +16,31 @@ import MilliardText from "../../general/components/MilliardText";
 import Colors from "../../general/constants/Colors";
 import Strings from "../../general/constants/Strings";
 
-const ModalReasonCAM = (props) => {
+const ModalK2Login = (props) => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
   const [buttonText, setButtonText] = useState("");
 
-  const reasonChangeHandler = (val) => {
-    props.onReasonChange(val);
+  useEffect(() => {
+    console.log(props.usernameValue);
+    console.log(props);
+  }, []);
+
+  const usernameChangeHandler = (val) => {
+    props.onUsernameChange(val);
   };
 
-  useEffect(() => {
-    if (props.action == "Reject") {
-      setModalTitle("Reject Transaction?");
-      setModalBody("Are you sure you want to reject selected transaction?");
-      setButtonText("Reject Transaction");
-    } else {
-      setModalTitle("Revise Transaction?");
-      setModalBody("Are you sure you want to revise selected transaction?");
-      setButtonText("Revise Transaction");
-    }
-  }, [props.action]);
+  const pwdChangeHandler = (val) => {
+    props.onPwdChange(val);
+  };
 
   return (
     <Modal
       isVisible={props.isVisible}
       animationIn="zoomIn"
       animationOut="zoomOut"
-      onBackdropPress={props.handleRejectModal}
-      onBackButtonPress={props.handleRejectModal}
+      onBackdropPress={props.handleLoginK2Modal}
+      onBackButtonPress={props.handleLoginK2Modal}
     >
       <View
         style={{
@@ -54,18 +52,43 @@ const ModalReasonCAM = (props) => {
           borderRadius: 7,
         }}
       >
-        <MilliardText style={styles.alertTitle}>{modalTitle}</MilliardText>
-        <MilliardText style={styles.alertBody}>{modalBody}</MilliardText>
-        <Text style={styles.textDetail15}>Please explain why</Text>
+        {/* <MilliardText style={styles.alertTitle}>
+          Please log in with your K2 account
+        </MilliardText> */}
+        <MilliardText style={styles.alertBody}>
+          Please log in with your K2 password
+        </MilliardText>
+        {props.isPwdWrong ? (
+          <MilliardText style={styles.alertErrorMessage}>
+            Wrong password, please try again.
+          </MilliardText>
+        ) : (
+          <View></View>
+        )}
+        {/* <MilliardText style={styles.alertErrorMessage}>
+          Wrong password. {props.attemptsLeft > 0 ? props.attemptsLeft : 0}{" "}
+          attempts left.
+        </MilliardText> */}
+        {/* <Text style={styles.textDetail15}>Please explain why</Text> */}
         <View style={styles.listDataContainer}>
           {/* <ReasonInput /> */}
+          {/* <TextInput
+            value={props.usernameValue}
+            onChangeText={usernameChangeHandler}
+            style={styles.inputMultiline}
+            autoFocus={true}
+            selectionColor={Colors.camPrimaryColor}
+            placeholder="username"
+            placeholderTextColor={Colors.gray}
+          /> */}
           <TextInput
-            value={props.actionReason}
-            onChangeText={reasonChangeHandler}
-            multiline={true}
+            value={props.pwdValue}
+            onChangeText={pwdChangeHandler}
             style={styles.inputMultiline}
             // autoFocus={true}
             selectionColor={Colors.camPrimaryColor}
+            placeholder="password"
+            placeholderTextColor={Colors.gray}
           />
         </View>
         {/* {list()} */}
@@ -73,25 +96,15 @@ const ModalReasonCAM = (props) => {
         <TouchableOpacity
           style={{
             ...styles.buttonConfirm,
-            backgroundColor: props.actionColor,
+            backgroundColor: Colors.camDarkerGreen,
           }}
-          onPress={
-            props.action == "Reject"
-              ? props.onRejectConfirmed
-              : props.onReviseConfirmed
-          }
+          onPress={props.onLoginClicked}
         >
-          <Text style={styles.buttonTextWhite}>{buttonText}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ ...styles.buttonCancel, borderColor: props.actionColor }}
-          onPress={props.handleRejectModal}
-        >
-          <Text
-            style={{ ...styles.buttonCancelText, color: props.actionColor }}
-          >
-            Cancel
-          </Text>
+          {props.k2LoadingState === true ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <Text style={styles.buttonTextWhite}>Log in to K2</Text>
+          )}
         </TouchableOpacity>
       </View>
     </Modal>
@@ -169,7 +182,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     // borderColor: Colors.camRed,
     // borderWidth: 1,
-    marginTop: 15,
+    // marginTop: 15,
   },
   buttonCancel: {
     height: 40,
@@ -187,12 +200,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: 5,
-    height: 75,
+    // paddingHorizontal: 5,
+    height: 40,
     alignItems: "flex-start",
     textAlignVertical: "top",
     paddingHorizontal: 12,
     color: Colors.gray,
+    marginBottom: 10,
     // width: "100%",
   },
   textDetail15: {
@@ -210,6 +224,13 @@ const styles = StyleSheet.create({
   alertBody: {
     fontSize: 16,
     color: Colors.gray,
+    marginBottom: 10,
+  },
+  alertErrorMessage: {
+    fontSize: 14,
+    color: Colors.camRed,
+    marginBottom: 10,
+    marginTop: -5,
   },
   view: {
     flex: 1,
@@ -235,4 +256,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalReasonCAM;
+export default ModalK2Login;

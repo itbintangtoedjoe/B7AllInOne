@@ -35,9 +35,14 @@ import {
   OrderHistoryScreen as PBOrderHistoryScreen,
 } from "../poinbisa/screens";
 
-import { HomeScreen as CAMHomeScreen, CAMDetailScreen } from "../cam/screens";
+import {
+  HomeScreen as CAMHomeScreen,
+  CAMDetailScreen,
+  TestingCAMScreen,
+} from "../cam/screens";
 
 import {
+  SplashScreen,
   HomeScreen as BaseHomeScreen,
   AuthenticationScreen,
   ChangePasswordScreen,
@@ -609,6 +614,12 @@ const BaseHomeTabNavigator =
 
 const BaseStackNavigator = createStackNavigator(
   {
+    SplashScreen: {
+      screen: SplashScreen,
+      navigationOptions: {
+        headerShown: false,
+      },
+    },
     BaseHome: {
       screen: BaseHomeTabNavigator,
       navigationOptions: {
@@ -687,8 +698,8 @@ const BaseStackNavigator = createStackNavigator(
 );
 
 const BaseNavigator = createSwitchNavigator({
-  BaseAuth: AuthenticationNavigator,
   BaseApp: BaseStackNavigator,
+  BaseAuth: AuthenticationNavigator,
   ChangePasswordAuthenticated: ChangePasswordAuthenticated,
 });
 

@@ -31,7 +31,7 @@ const CAMDetailScreen = (props) => {
     const data = { appID, transactionID, username: activeUser.user_ad };
     // console.log("di detail dispatch");
     // console.log(data);
-    dispatch(actions.fetchTransactionDetail(data));
+    // dispatch(actions.fetchTransactionDetail(data));
   }, [dispatch]);
 
   // useEffect(() => {
@@ -88,13 +88,14 @@ const CAMDetailScreen = (props) => {
     //     // onPress={() => openEmbeddedBrowser(detailTransaksi)}
     //   /> */}
     // </View>
-
+    // <View>
     <WebView
       source={{
         uri: transactionLink,
-        // 'http://k2.service:1w3EaF9o0%40pf@kf-dc1k2app.kalbe.id:8080/Invoice/ViewRFP?id=522956'
+        // uri: "http://k2.service:1w3EaF9o0%40pf@kf-dc1k2app.kalbe.id:8080/Invoice/ViewRFP?id=522956",
       }}
     />
+    // </View>
     // {detailTransaksi&&<TaskItem
     //   transactionID={detailTransaksi.TransactionID}
     //   date={detailTransaksi.TransactionDate}

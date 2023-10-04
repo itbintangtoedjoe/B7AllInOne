@@ -1,4 +1,8 @@
-import { FETCH_ACTIVE_USER, LOGOUT } from "../../../tara/redux/actions";
+import {
+  FETCH_ACTIVE_USER,
+  LOGOUT,
+  LOGIN_RADIUS,
+} from "../../../tara/redux/actions";
 
 const initialState = {
   activeUser: null,
@@ -7,6 +11,11 @@ const initialState = {
   loadingState: false,
   isLoggedIn: false,
   loginStatus: "none",
+
+  //radius
+  loginRadiusStatus: "none",
+  loginRadiusLoadingState: false,
+  isRadiusLoggedIn: false,
 };
 
 export default (state = initialState, action) => {
@@ -20,6 +29,15 @@ export default (state = initialState, action) => {
         activeUserEO: action.activeUserEO,
         isLoggedIn: action.isLoggedIn,
         loginStatus: action.loginStatus,
+      };
+    case LOGIN_RADIUS:
+      console.log("user radius di reducer: ");
+      console.log(action);
+      return {
+        ...state,
+        loginRadiusLoadingState: action.loadingState,
+        isRadiusLoggedIn: action.isLoggedIn,
+        loginRadiusStatus: action.loginStatus,
       };
     case LOGOUT:
       return {

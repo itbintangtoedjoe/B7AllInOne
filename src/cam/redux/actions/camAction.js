@@ -6,6 +6,7 @@ export const FETCH_TRANSACTION_DETAIL = "FETCH_TRANSACTION_DETAIL";
 export const APPROVE_TRANSACTION = "APPROVE_TRANSACTION";
 export const REJECT_TRANSACTION = "REJECT_TRANSACTION";
 export const REVISE_TRANSACTION = "REVISE_TRANSACTION";
+export const SAVE_USER_K2 = "SAVE_USER_K2";
 
 export const fetchUserPendingTask = (username) => {
   return async (dispatch, getState) => {
@@ -231,7 +232,7 @@ export const approveTransaction = (data) => {
         // console.log("1");
         let responseData = await response.json();
         // console.log("respon approve");
-        console.log(responseData);
+        // console.log(responseData);
         // console.log("2");
         // console.log("3");
         // responseData = responseData[0];
@@ -410,6 +411,63 @@ export const reviseTransaction = (data) => {
     } else {
       dispatch({
         type: REVISE_TRANSACTION,
+        statusApproval: "",
+        approvalLoadingState: false,
+      });
+      return goodToGo;
+    }
+  };
+};
+
+export const saveUserK2 = (data) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: APPROVE_TRANSACTION,
+      approvalLoadingState: true,
+    });
+
+    const goodToGo = await isReachable();
+    if (goodToGo === true) {
+      try {
+        const response = await fetch(
+          "https://portal.bintang7.com/masterapprovalgeneral/api/approve",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              // 'Content-Type': 'multipart/form-data',
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+
+        // console.log("1");
+        let responseData = await response.json();
+        // console.log("respon approve");
+        // console.log(responseData);
+        // console.log("2");
+        // console.log("3");
+        // responseData = responseData[0];
+        // console.log("4");
+        let statusResult = responseData.Status;
+
+        dispatch({
+          type: APPROVE_TRANSACTION,
+          statusApproval: statusResult,
+          approvalLoadingState: false,
+        });
+        // fetchUserPendingTask(data.username);
+      } catch (err) {
+        return;
+        // throw err;
+      }
+    } else {
+      dispatch({
+        type: APPROVE_TRANSACTION,
         statusApproval: "",
         approvalLoadingState: false,
       });

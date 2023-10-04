@@ -33,8 +33,8 @@ export default (state = initialState, action) => {
         detailTransaksi: action.detailTransaksi,
       };
     case APPROVE_TRANSACTION:
-      console.log("di reducer");
-      console.log(action.statusApproval);
+      // console.log("di reducer");
+      // console.log(action.statusApproval);
       return {
         ...state,
         approvalLoadingState: action.approvalLoadingState,
@@ -42,8 +42,8 @@ export default (state = initialState, action) => {
         statusApproval: action.statusApproval,
       };
     case REJECT_TRANSACTION:
-      console.log("di reducer");
-      console.log(action.statusApproval);
+      // console.log("di reducer");
+      // console.log(action.statusApproval);
       return {
         ...state,
         approvalLoadingState: action.approvalLoadingState,

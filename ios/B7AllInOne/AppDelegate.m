@@ -60,7 +60,7 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  [RNSplashScreen show]; //tambahan
+  // [RNSplashScreen show]; //tambahan
   [RNNotifications startMonitorNotifications]; //tambahan
   return YES;
 }

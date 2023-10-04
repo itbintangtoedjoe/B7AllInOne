@@ -1,10 +1,14 @@
+//140923 auth action
+
 import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import User from "../../models/User";
 import UserEO from "../../../ekspedisionline/models/UserEO";
 
 export const FETCH_ACTIVE_USER = "FETCH_ACTIVE_USER";
 export const LOGOUT = "LOGOUT";
+export const LOGIN_RADIUS = "LOGIN_RADIUS";
 
 export const isReachable = async () => {
   const timeout = new Promise((resolve, reject) => {
@@ -78,6 +82,10 @@ export const fetchActiveUser = (data) => {
         if (responseDataBase.Status) {
           isLoggedIn = true;
           loginStatus = "success";
+
+          AsyncStorage.setItem("email", data.email);
+          AsyncStorage.setItem("pwd", data.password);
+
           user = new User(
             responseDataBase.Data.NIK,
             responseDataBase.Data.Role.NamaRole,
@@ -129,6 +137,88 @@ export const fetchActiveUser = (data) => {
           isLoggedIn: isLoggedIn,
           loginStatus: loginStatus,
         });
+
+        // return isLoggedIn;
+      } catch (err) {
+        throw err;
+      }
+    } else {
+      return goodToGo;
+    }
+  };
+};
+
+export const loginRadius = (data) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: LOGIN_RADIUS,
+      loadingState: true,
+    });
+    // console.log(JSON.stringify(data));
+    const goodToGo = await isReachable();
+    if (goodToGo === true) {
+      try {
+        //get user untuk base app (db tara)
+        const responseBase = await fetch(
+          "https://portal.bintang7.com/auth-prod/login",
+          // 'https://b7connect.bintang7.com/b7connect/users/get-active-user',
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        if (!responseBase.ok) {
+          throw new Error("Something went wrong!");
+          // console.log(responseBase);
+        }
+
+        const responseDataBase = await responseBase.json();
+        console.log("login k2 action");
+        console.log(responseDataBase);
+
+        // let user = responseDataBase.Data;
+        let returnCode = responseDataBase.Status;
+        let loginStatus = responseDataBase.message;
+        let isLoggedIn = false;
+        if (loginStatus == "Success") {
+          isLoggedIn = true;
+        }
+
+        // let userEO = null;
+        // // console.log('isLoggedIn:' + isLoggedIn);
+        // if (responseDataBase.Status) {
+        //   isLoggedIn = true;
+        //   loginStatus = "success";
+        //   user = new User(
+        //     responseDataBase.Data.NIK,
+        //     responseDataBase.Data.Role.NamaRole,
+        //     responseDataBase.Data.NamaUser,
+        //     responseDataBase.Data.Email,
+        //     responseDataBase.Data.UserAD,
+        //     responseDataBase.Data.TotalPoinBISA,
+        //     responseDataBase.Data.IsAdmin,
+        //     responseDataBase.Data.TanggalAwalRedeem,
+        //     responseDataBase.Data.TanggalAkhirRedeem,
+        //     responseDataBase.Data.JumlahNotifikasi
+        //   );
+        // }
+        console.log("isLoggedIn: " + isLoggedIn);
+        console.log("loginStatus: " + responseDataBase.message);
+
+        dispatch({
+          type: LOGIN_RADIUS,
+          // activeUser: user,
+          // activeUserEO: userEO,
+          isLoggedIn: isLoggedIn,
+          loginStatus: loginStatus,
+          loadingState: false,
+        });
+
+        // return isLoggedIn;
       } catch (err) {
         throw err;
       }
@@ -140,6 +230,11 @@ export const fetchActiveUser = (data) => {
 
 export const logout = () => {
   return async (dispatch, getState) => {
+    let keys = ["email", "pwd"];
+    AsyncStorage.multiRemove(keys);
+
+    // AsyncStorage.setItem("email", "");
+    // AsyncStorage.setItem("pwd", "");
     dispatch({
       type: LOGOUT,
       activeUser: null,

@@ -1,3 +1,5 @@
+//140923 authen screen
+
 import React, { useEffect, useState } from "react";
 import {
   TouchableOpacity,
@@ -24,13 +26,15 @@ import { passwordValidator } from "../helpers/passwordValidator";
 import * as authActions from "../redux/actions/authAction";
 import * as generalActions from "../redux/actions/generalAction";
 import User from "../models/User";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AuthenticationScreen = (props) => {
   const DEFAULTPASSWORD = "b7c#default";
   const [email, setEmail] = useState({
-    value: "bong.tonny@icloud.com",
+    // value: "bong.tonny@icloud.com",
     // value: "dennyirawan9@gmail.com",
     // value: "feliciabrilliantb@gmail.com",
+    value: "agus_lemans@yahoo.com",
     error: "",
   });
   const [password, setPassword] = useState({ value: "zuppass.", error: "" });
@@ -47,6 +51,108 @@ const AuthenticationScreen = (props) => {
   //   console.log('app ver: ' + version);
   // }, []);
 
+  const fetchUserLogin = async () => {
+    const emailSaved = await AsyncStorage.getItem("email");
+    const pwdSaved = await AsyncStorage.getItem("pwd");
+
+    // if (emailSaved !== null) {
+    //   props.navigation.navigate("BaseHome");
+    // } else {
+    //   console.log("zonk");
+    // }
+    // console.log("----------------");
+    // console.log("email: " + emailSaved);
+    // console.log("pass: " + pwdSaved);
+    if (emailSaved !== null) {
+      const data = { email: emailSaved, password: pwdSaved };
+      const isssLoggedin = await dispatch(authActions.fetchActiveUser(data));
+      if (isssLoggedin) {
+        dispatch(generalActions.saveUserToken(activeUser.nik, deviceToken));
+        if (password.value == DEFAULTPASSWORD) {
+          props.navigation.navigate("ChangePasswordAuthenticated", {
+            origin: "login",
+          });
+        } else {
+          props.navigation.navigate("BaseHome");
+        }
+      } else {
+        if (loginStatus == "success") {
+          if (password.value == DEFAULTPASSWORD) {
+            props.navigation.navigate("ChangePasswordAuthenticated", {
+              origin: "login",
+            });
+          } else {
+            props.navigation.navigate("BaseHome");
+          }
+        } else if (
+          loginStatus != "none" &&
+          loginStatus != undefined &&
+          loginStatus != "success"
+        ) {
+          if (loginStatus == "no access") {
+            Alert.alert("Authentication failed", "Acccount not found");
+          } else if (loginStatus == "wrong password") {
+            Alert.alert("Authentication failed", "Wrong password");
+          } else if (loginStatus == "not active") {
+            Alert.alert(
+              "Authentication failed",
+              "You account is currently inactive. Please contact GA."
+            );
+          } else {
+            Alert.alert(loginStatus);
+          }
+        }
+      }
+    }
+    // else {
+    // .then(() => {
+    //   console.log("3");
+    //   console.log("isloggedin: " + isLoggedIn);
+    //   if (isLoggedIn) {
+    //     console.log("4");
+    //     dispatch(generalActions.saveUserToken(activeUser.nik, deviceToken));
+    //     if (password.value == DEFAULTPASSWORD) {
+    //       console.log("5");
+    //       props.navigation.navigate("ChangePasswordAuthenticated", {
+    //         origin: "login",
+    //       });
+    //     } else {
+    //       console.log("6");
+    //       props.navigation.navigate("BaseHome");
+    //     }
+    //   } else {
+    //     console.log("7");
+    //     if (
+    //       loginStatus != "none" &&
+    //       loginStatus != undefined &&
+    //       loginStatus != "success"
+    //     ) {
+    //       console.log("8");
+    //       if (loginStatus == "no access") {
+    //         Alert.alert("Authentication failed", "Acccount not found");
+    //       } else if (loginStatus == "wrong password") {
+    //         Alert.alert("Authentication failed", "Wrong password");
+    //       } else if (loginStatus == "not active") {
+    //         Alert.alert(
+    //           "Authentication failed",
+    //           "You account is currently inactive. Please contact GA."
+    //         );
+    //       } else {
+    //         console.log("9");
+    //         Alert.alert(loginStatus);
+    //       }
+    //     }
+    //   }
+    //   });
+    // } else {
+    //   console.log("1b");
+    // }
+  };
+
+  useEffect(() => {
+    fetchUserLogin();
+  }, []);
+
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(generalActions.saveUserToken(activeUser.nik, deviceToken));
@@ -55,7 +161,7 @@ const AuthenticationScreen = (props) => {
           origin: "login",
         });
       } else {
-        props.navigation.navigate("BaseApp");
+        props.navigation.navigate("BaseHome");
       }
     } else {
       if (
@@ -64,11 +170,14 @@ const AuthenticationScreen = (props) => {
         loginStatus != "success"
       ) {
         if (loginStatus == "no access") {
-          Alert.alert("Login gagal", "Anda tidak memiliki akses");
+          Alert.alert("Authentication failed", "Acccount not found");
         } else if (loginStatus == "wrong password") {
-          Alert.alert("Login gagal", "Password salah");
+          Alert.alert("Authentication failed", "Wrong password");
         } else if (loginStatus == "not active") {
-          Alert.alert("Login gagal", "Akun Anda tidak aktif. Mohon hubungi GA");
+          Alert.alert(
+            "Authentication failed",
+            "You account is currently inactive. Please contact GA."
+          );
         } else {
           Alert.alert(loginStatus);
         }
@@ -76,7 +185,7 @@ const AuthenticationScreen = (props) => {
     }
   }, [dispatch, loginStatus]);
 
-  const onLoginPressed = () => {
+  const onLoginPressed = async () => {
     setLoadingState(true);
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
@@ -88,7 +197,7 @@ const AuthenticationScreen = (props) => {
     }
     const data = { email: email.value, password: password.value };
 
-    dispatch(authActions.fetchActiveUser(data)).then(() => {
+    await dispatch(authActions.fetchActiveUser(data)).then(() => {
       setLoadingState(false);
     });
   };

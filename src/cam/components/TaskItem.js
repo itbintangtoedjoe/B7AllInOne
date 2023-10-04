@@ -15,12 +15,12 @@ import {
   Pressable,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-// import Modal from "react-native-modal";
 import { withNavigation } from "react-navigation";
 import { useDispatch, useSelector } from "react-redux";
 import AwesomeAlert from "react-native-awesome-alerts";
 import Modal from "react-native-modal";
 
+import * as authActions from "../../general/redux/actions/authAction";
 import * as actions from "../redux/actions/camAction";
 import Colors from "../../general/constants/Colors";
 import Card from "./Card";
@@ -28,13 +28,16 @@ import Card from "./Card";
 import Fonts from "../../general/constants/Fonts";
 import MilliardText from "../../general/components/MilliardText";
 import ModalReasonCAM from "./ModalReasonCAM";
+import ModalK2Login from "./ModalK2Login";
 
 const TaskItem = (props) => {
   const dispatch = useDispatch();
 
+  const activeUser = useSelector((state) => state.auth.activeUser);
   const [showDetails, setShowDetails] = useState(false);
   const [isApproveModalVisible, setIsApproveModalVisible] = useState(false);
   const [isModalReasonVisible, setIsModalReasonVisible] = useState(false);
+  const [isModalK2LoginVisible, setIsModalK2LoginVisible] = useState(false);
   // const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   // const [isReviseModalVisible, setIsReviseModalVisible] = useState(false);
   const [isModalLoadingVisible, setIsModalLoadingVisible] = useState(false);
@@ -47,6 +50,12 @@ const TaskItem = (props) => {
     (state) => state.cam.approvalLoadingState
   );
   const statusApproval = useSelector((state) => state.cam.statusApproval);
+  const k2LoginStatus = useSelector((state) => state.auth.loginRadiusStatus);
+  const k2LoadingState = useSelector(
+    (state) => state.auth.loginRadiusLoadingState
+  );
+  const isK2LoggedIn = useSelector((state) => state.auth.isRadiusLoggedIn);
+
   const [showAlert, setShowAlert] = useState(false);
   //alert props
   const [alertTitle, setaAlertTitle] = useState("Title");
@@ -56,6 +65,15 @@ const TaskItem = (props) => {
   const [actionClicked, setActionClicked] = useState("Approve");
   const [actionColor, setActionColor] = useState(Colors.camDarkerGreen);
   const [reason, setReason] = useState("");
+  const [detailTransUrl, setDetailTransUrl] = useState(props.url);
+  const [usernameInput, setUsernameInput] = useState("k2.service");
+  const [pwdInput, setPwdInput] = useState("Welcome12345");
+  const [isTransK2, setIsTransK2] = useState(false);
+  const [numOfAttempts, setNumOfAttempts] = useState(0);
+  const loginK2 = useSelector((state) => state.cam.statusApproval);
+  const [isPwdWrong, setIsPwdWrong] = useState(false);
+  // const [usernameInput, setUsernameInput] = useState("");
+  // const [pwdInput, setPwdInput] = useState("");
 
   useEffect(() => {
     if (actionClicked == "Approve") {
@@ -67,14 +85,14 @@ const TaskItem = (props) => {
     }
   }, [actionClicked]);
 
-  useEffect(() => {
-    console.log(props);
-  }, []);
+  // useEffect(() => {
+  //   console.log(props);
+  // }, []);
 
   // const reactNativeLogoSrc = {
   //   uri: "https://reactnative.dev/docs/assets/favicon.png",
   // };
-  const itemgan = [
+  const toastMaster = [
     {
       name: "ApproveSuccessful",
       alertData: {
@@ -83,7 +101,7 @@ const TaskItem = (props) => {
         message: "Transaction successfully approved!",
         interval: 500,
         // setShowAlert(true);
-        // props.toastMessageAction(itemgan);
+        // props.toastMessageAction(toastMaster);
         // .then(() => {
         //   dispatch(actions.fetchUserPendingTask(props.activeUser));
         // });
@@ -115,7 +133,7 @@ const TaskItem = (props) => {
         message: "Transaction successfully rejected!",
         interval: 500,
         // setShowAlert(true);
-        // props.toastMessageAction(itemgan);
+        // props.toastMessageAction(toastMaster);
         // .then(() => {
         //   dispatch(actions.fetchUserPendingTask(props.activeUser));
         // });
@@ -147,7 +165,7 @@ const TaskItem = (props) => {
         message: "Transaction successfully revised!",
         interval: 500,
         // setShowAlert(true);
-        // props.toastMessageAction(itemgan);
+        // props.toastMessageAction(toastMaster);
         // .then(() => {
         //   dispatch(actions.fetchUserPendingTask(props.activeUser));
         // });
@@ -164,6 +182,19 @@ const TaskItem = (props) => {
         title: "Failed",
         message: statusApproval,
         // source: reactNativeLogoSrc,
+        interval: 500,
+      },
+      alertProps: {
+        alertViewStyle: styles.alertView,
+      },
+      color: Colors.camDarkerGreen,
+    },
+    {
+      name: "LoginK2Success",
+      alertData: {
+        type: "",
+        title: "Success",
+        message: "Transaction successfully revised!",
         interval: 500,
       },
       alertProps: {
@@ -195,8 +226,20 @@ const TaskItem = (props) => {
     setReason("");
   };
 
+  const handleK2LoginModal = () => {
+    setIsModalK2LoginVisible(() => !isModalK2LoginVisible);
+  };
+
   const reasonHandler = (val) => {
     setReason(val);
+  };
+
+  const usernameHandler = (val) => {
+    setUsernameInput(val);
+  };
+
+  const pwdHandler = (val) => {
+    setPwdInput(val);
   };
 
   const ActionAlert = () => {
@@ -342,6 +385,8 @@ const TaskItem = (props) => {
         isVisible={isApproveModalVisible}
         animationIn="zoomIn"
         animationOut="zoomOut"
+        onBackdropPress={handleApproveModal}
+        onBackButtonPress={handleApproveModal}
       >
         <View
           style={{
@@ -580,7 +625,7 @@ const TaskItem = (props) => {
           // setaAlertBody("Transaction successfully approved!");
           // setShowAlert(true);
           props.toastMessageAction(
-            itemgan.find((obj) => obj.name === "ApproveSuccessful")
+            toastMaster.find((obj) => obj.name === "ApproveSuccessful")
           );
           // .then(() => {
           //   dispatch(actions.fetchUserPendingTask(props.activeUser));
@@ -588,13 +633,13 @@ const TaskItem = (props) => {
         } else {
           if (statusApproval == "") {
             props.toastMessageAction(
-              itemgan.find((obj) => obj.name === "ApproveSuccessful")
+              toastMaster.find((obj) => obj.name === "ApproveSuccessful")
             );
           } else {
             // setaAlertTitle("Failed");
             // setaAlertBody(statusApproval);
             props.toastMessageAction(
-              itemgan.find((obj) => obj.name === "ApproveFailed")
+              toastMaster.find((obj) => obj.name === "ApproveFailed")
             );
           }
           // dispatch(actions.fetchUserPendingTask(props.activeUser));
@@ -602,7 +647,7 @@ const TaskItem = (props) => {
       }
     );
     // .then(() => {
-    //   props.toastMessageAction(itemgan.find(obj => obj.name === 'Team2'));
+    //   props.toastMessageAction(toastMaster.find(obj => obj.name === 'Team2'));
     //   dispatch(actions.fetchUserPendingTask(props.activeUser));
     // });
   };
@@ -634,7 +679,7 @@ const TaskItem = (props) => {
           // setaAlertBody("Transaction successfully approved!");
           // setShowAlert(true);
           props.toastMessageAction(
-            itemgan.find((obj) => obj.name === "RejectSuccessful")
+            toastMaster.find((obj) => obj.name === "RejectSuccessful")
           );
           // .then(() => {
           //   dispatch(actions.fetchUserPendingTask(props.activeUser));
@@ -642,13 +687,13 @@ const TaskItem = (props) => {
         } else {
           if (statusApproval == "") {
             props.toastMessageAction(
-              itemgan.find((obj) => obj.name === "RejectSuccessful")
+              toastMaster.find((obj) => obj.name === "RejectSuccessful")
             );
           } else {
             // setaAlertTitle("Failed");
             // setaAlertBody(statusApproval);
             props.toastMessageAction(
-              itemgan.find((obj) => obj.name === "ApproveFailed")
+              toastMaster.find((obj) => obj.name === "ApproveFailed")
             );
           }
         }
@@ -683,7 +728,7 @@ const TaskItem = (props) => {
           // setaAlertBody("Transaction successfully approved!");
           // setShowAlert(true);
           props.toastMessageAction(
-            itemgan.find((obj) => obj.name === "ReviseSuccessful")
+            toastMaster.find((obj) => obj.name === "ReviseSuccessful")
           );
           // .then(() => {
           //   dispatch(actions.fetchUserPendingTask(props.activeUser));
@@ -691,13 +736,13 @@ const TaskItem = (props) => {
         } else {
           if (statusApproval == "") {
             props.toastMessageAction(
-              itemgan.find((obj) => obj.name === "ReviseSuccessful")
+              toastMaster.find((obj) => obj.name === "ReviseSuccessful")
             );
           } else {
             // setaAlertTitle("Failed");
             // setaAlertBody(statusApproval);
             props.toastMessageAction(
-              itemgan.find((obj) => obj.name === "ReviseFailed")
+              toastMaster.find((obj) => obj.name === "ReviseFailed")
             );
           }
         }
@@ -705,20 +750,135 @@ const TaskItem = (props) => {
     );
   };
 
-  const viewTransactionDetail = (url) => {
+  const viewTransactionDetail = (appName, url) => {
+    // props.navigation.navigate({
+    //   // routeName: "EmbeddedBrowser",
+    //   routeName: "CAMDetail",
+    //   params: {
+    //     // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133",
+    //     link: detailTransUrl,
+    //   },
+    // });
     // console.log(url);
     // console.log('urlnya ini bro: ' + JSON.stringify(url));
     // console.log(JSON.stringify(url));
-    props.navigation.navigate({
-      // routeName: "EmbeddedBrowser",
-      routeName: "CAMDetail",
-      params: {
-        // link: "https://portal.bintang7.com/sensoryonline",
-        link: url,
-      },
-    });
+    if (appName.toLowerCase().includes("k2")) {
+      setIsTransK2(true);
+      setIsModalK2LoginVisible(true);
+    } else {
+      setIsTransK2(false);
+      props.navigation.navigate({
+        // routeName: "EmbeddedBrowser",
+        routeName: "CAMDetail",
+        params: {
+          // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
+          link: url,
+        },
+      });
+    }
   };
 
+  useEffect(() => {
+    // if (isTransK2) {
+    //   props.navigation.navigate({
+    //     // routeName: "EmbeddedBrowser",
+    //     routeName: "CAMDetail",
+    //     params: {
+    //       // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
+    //       link: detailTransUrl,
+    //     },
+    //   });
+    // }
+    console.log("k2LoginStatus1: " + k2LoginStatus);
+    console.log("isRadiusLoggedIn1: " + isK2LoggedIn);
+    if (isK2LoggedIn) {
+      if (k2LoginStatus == "Success") {
+        setIsPwdWrong(false);
+        console.log("k2LoginStatus2: " + k2LoginStatus);
+        props.navigation.navigate({
+          // routeName: "EmbeddedBrowser",
+          routeName: "CAMDetail",
+          params: {
+            // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
+            link: detailTransUrl,
+          },
+        });
+      }
+    } else {
+      setIsPwdWrong(true);
+    }
+  }, [dispatch, k2LoginStatus]);
+
+  const loginToK2 = async (url) => {
+    // setNumOfAttempts((num) => num + 1);
+    if (pwdInput.length == 0) {
+      Alert.alert("Please enter your password");
+    } else {
+      // if ((pwdInput = "11")) {
+      //   setK2LoginStatus(true);
+      // } else {
+      //   setK2LoginStatus(false);
+      // }
+      let creds = activeUser.user_ad + ":" + pwdInput + "@";
+      let finalUrl = url;
+      // let creds = "k2.service:1w3EaF9o0%40pf@";
+      url = url.split("://");
+      console.log(url);
+      setDetailTransUrl(url[0] + "://" + creds + url[1]);
+      const data = { username: activeUser.user_ad, password: pwdInput };
+      console.log("2");
+      finalUrl = url[0] + "://" + creds + url[1];
+      console.log(finalUrl);
+      await dispatch(authActions.loginRadius(data)).then(
+        // dispatch(actions.fetchUserPendingTask(props.activeUser))
+        () => {
+          console.log("k2LoginStatus3: " + k2LoginStatus);
+          if (k2LoginStatus == "Success") {
+            console.log("k2LoginStatus4: " + k2LoginStatus);
+            props.navigation.navigate({
+              // routeName: "EmbeddedBrowser",
+              routeName: "CAMDetail",
+              params: {
+                // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
+                link: finalUrl,
+              },
+            });
+          } else if (k2LoginStatus == "Wrong Password") {
+            console.log("wrong password");
+            setIsPwdWrong(true);
+            setPwdInput("");
+          } else {
+          }
+          console.log("di view app");
+          console.log("'" + statusApproval + "'");
+          // if (statusApproval == "DONE") {
+          //   // setaAlertTitle("Success");
+          //   // setaAlertBody("Transaction successfully approved!");
+          //   // setShowAlert(true);
+          //   props.toastMessageAction(
+          //     toastMaster.find((obj) => obj.name === "ApproveSuccessful")
+          //   );
+          //   // .then(() => {
+          //   //   dispatch(actions.fetchUserPendingTask(props.activeUser));
+          //   // });
+          // } else {
+          //   if (statusApproval == "") {
+          //     props.toastMessageAction(
+          //       toastMaster.find((obj) => obj.name === "ApproveSuccessful")
+          //     );
+          //   } else {
+          //     // setaAlertTitle("Failed");
+          //     // setaAlertBody(statusApproval);
+          //     props.toastMessageAction(
+          //       toastMaster.find((obj) => obj.name === "ApproveFailed")
+          //     );
+          //   }
+          //   // dispatch(actions.fetchUserPendingTask(props.activeUser));
+          // }
+        }
+      );
+    }
+  };
   // const viewTransactionDetail = () => {
   //   console.log(props);
   //   props.navigation.navigate({
@@ -815,23 +975,25 @@ const TaskItem = (props) => {
             <View style={styles.summary}>
               <View style={styles.rowSpaceBetween}>
                 <Text style={styles.detailTitle}>Application</Text>
-                <Text style={styles.textDetail}>{props.appName}</Text>
+                <Text style={styles.textDetailSmall}>{props.appName}</Text>
               </View>
               <View style={styles.rowSpaceBetween}>
                 <Text style={styles.detailTitle}>Transaction Number</Text>
-                <Text style={styles.textDetail}>{props.transactionID}</Text>
+                <Text style={styles.textDetailSmall}>
+                  {props.transactionID}
+                </Text>
               </View>
               <View style={styles.rowSpaceBetween}>
                 <Text style={styles.detailTitle}>Transaction Date</Text>
-                <Text style={styles.textDetail}>{props.date}</Text>
+                <Text style={styles.textDetailSmall}>{props.date}</Text>
               </View>
               <View style={styles.rowSpaceBetween}>
                 <Text style={styles.detailTitle}>Requestor</Text>
-                <Text style={styles.textDetail}>{props.requestor}</Text>
+                <Text style={styles.textDetailSmall}>{props.requestor}</Text>
               </View>
               <View>
                 <Text style={styles.detailTitle}>Remarks</Text>
-                <Text style={styles.textDetail}>{props.remarks}</Text>
+                <Text style={styles.textDetailSmall}>{props.remarks}</Text>
               </View>
               {(props.multipleData == false || showDetails) && (
                 <>
@@ -844,7 +1006,7 @@ const TaskItem = (props) => {
                         //   );
                         // }
                         () => {
-                          viewTransactionDetail(props.url);
+                          viewTransactionDetail(props.appName, props.url);
                         }
                       }
                       style={(styles.button, styles.buttonView)}
@@ -1041,21 +1203,35 @@ const TaskItem = (props) => {
         action={actionClicked}
         actionColor={actionColor}
         isVisible={isModalReasonVisible}
+        actionReason={reason}
         onReasonChange={reasonHandler}
         onRejectConfirmed={rejectTransaction}
         onReviseConfirmed={reviseTransaction}
-        actionReason={reason}
         handleRejectModal={handleRejectModal}
         handleReviseModal={handleReviseModal}
+      />
+      <ModalK2Login
+        action={actionClicked}
+        actionColor={actionColor}
+        isVisible={isModalK2LoginVisible}
+        usernameValue={activeUser.user_ad}
+        pwdValue={pwdInput}
+        onUsernameChange={usernameHandler}
+        onPwdChange={pwdHandler}
+        onLoginClicked={() => loginToK2(props.url)}
+        handleLoginK2Modal={handleK2LoginModal}
+        attemptsLeft={3 - numOfAttempts}
+        isPwdWrong={isPwdWrong}
+        k2LoadingState={k2LoadingState}
       />
       {/* <ModalRevise /> */}
       <ModalLoading />
       {/* <TouchableOpacity
-        style={[styles.item, { backgroundColor: itemgan.color }]}
-        onPress={() => props.toastMessageAction(itemgan)}
+        style={[styles.item, { backgroundColor: toastMaster.color }]}
+        onPress={() => props.toastMessageAction(toastMaster)}
         disabled={props.processing}
       >
-        <Text style={styles.name}>{itemgan.name}</Text>
+        <Text style={styles.name}>{toastMaster.name}</Text>
       </TouchableOpacity> */}
       {/* )} */}
     </>
@@ -1102,6 +1278,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.gray,
     marginBottom: 8,
+  },
+  textDetailSmall: {
+    fontFamily: Fonts.primaryFont,
+    fontSize: 12,
   },
   date: {
     color: "#888",
