@@ -34,6 +34,7 @@ const HomeScreen = (props) => {
   //   (state) => state.cam.approvalLoadingState
   // );
   const refreshing = false;
+  // const isFocused = useIsFocused();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
@@ -66,7 +67,7 @@ const HomeScreen = (props) => {
     // console.log('activeUser: ', activeUser.user_ad);
     dispatch(actions.fetchUserPendingTask(activeUser.user_ad));
     // console.log('fetchUserPendingTask: ', userPendingTask);
-  }, [dispatch]);
+  }, []);
 
   const onRefresh = useCallback(async () => {
     dispatch(actions.fetchUserPendingTask(activeUser.user_ad));
@@ -90,6 +91,7 @@ const HomeScreen = (props) => {
     if (!loadingState) {
       let input = text.toLowerCase();
       let newList = [];
+      console.log(userPendingTask);
       //cocokin keywords dengan no transaksi/requestor/remarks
       userPendingTask.filter((task) => {
         // console.log(task);
@@ -149,6 +151,7 @@ const HomeScreen = (props) => {
             appName={itemData.item.AppName}
             modulID={itemData.item.ModulID}
             url={itemData.item.Url}
+            isK2={itemData.item.IsK2}
             requestor={itemData.item.Requestor}
             remarks={itemData.item.Remarks}
             activeUser={activeUser.user_ad}
@@ -228,6 +231,7 @@ const HomeScreen = (props) => {
             appName={itemData.item.AppName}
             modulID={itemData.item.ModulID}
             url={itemData.item.Url}
+            isK2={itemData.item.IsK2}
             // url="https://portal.bintang7.com/SensoryOnline/Sensory/Sensory?Nomor=TRITEST/PLG/0622/00012"
             requestor={itemData.item.Requestor}
             remarks={itemData.item.Remarks}

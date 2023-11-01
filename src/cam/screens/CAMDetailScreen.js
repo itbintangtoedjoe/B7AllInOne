@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  BackHandler,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { WebView } from "react-native-webview";
 
@@ -26,13 +32,29 @@ const CAMDetailScreen = (props) => {
     console.log(link);
   }, []);
 
-  useEffect(() => {
-    // console.log('masok dispatch');
-    const data = { appID, transactionID, username: activeUser.user_ad };
-    // console.log("di detail dispatch");
-    // console.log(data);
-    // dispatch(actions.fetchTransactionDetail(data));
-  }, [dispatch]);
+  const handleBackButtonClick = async () => {
+    dispatch(actions.fetchUserPendingTask(activeUser.user_ad));
+    // navigation.goBack();
+    // return true;
+  };
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+  //   return () => {
+  //     BackHandler.removeEventListener(
+  //       "hardwareBackPress",
+  //       handleBackButtonClick
+  //     );
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   // console.log('masok dispatch');
+  //   const data = { appID, transactionID, username: activeUser.user_ad };
+  //   // console.log("di detail dispatch");
+  //   // console.log(data);
+  //   // dispatch(actions.fetchTransactionDetail(data));
+  // }, [dispatch]);
 
   // useEffect(() => {
   //   console.log('use effect');

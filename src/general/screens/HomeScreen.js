@@ -43,13 +43,13 @@ const thumbMeasure = (width - 48 - 32) / 3;
 const redeemState = true;
 
 const listAplikasiAndroid = [
-  {
-    id: "1",
-    title: "CAM",
-    color: "white",
-    icon: require("../../general/assets/logos/approval.png"),
-    routeName: "CAM",
-  },
+  // {
+  //   id: "1",
+  //   title: "CAM",
+  //   color: "white",
+  //   icon: require("../../general/assets/logos/approval.png"),
+  //   routeName: "CAM",
+  // },
   {
     id: "2",
     title: "TARA",
@@ -405,7 +405,7 @@ const HomeScreen = (props) => {
           </View>
         </ImageBackground>
         {/* NOTIFICATION ICON */}
-        <Block flex style={styles.notificationBar}>
+        {/* <Block flex style={styles.notificationBar}>
           <Block style={styles.notificationIcon}>
             <MaterialIcon
               name={numOfNotifications == 0 ? "bell-outline" : "bell-ring"}
@@ -417,7 +417,7 @@ const HomeScreen = (props) => {
               }}
             />
           </Block>
-        </Block>
+        </Block> */}
         {/* NOTIFICATION ICON */}
       </Block>
       <Block
@@ -427,7 +427,7 @@ const HomeScreen = (props) => {
         {/* <CarouselCards data={appBanners} /> */}
       </Block>
       {/* POIN BISA */}
-      <Block row space="between" style={styles.poinBisaContainer}>
+      {/* <Block row space="between" style={styles.poinBisaContainer}>
         <Block middle>
           {activeUser !== undefined && activeUser !== null ? (
             <NumberFormat
@@ -466,7 +466,7 @@ const HomeScreen = (props) => {
             </Text>
           </TouchableOpacity>
         </Block>
-      </Block>
+      </Block> */}
       {/* POIN BISA */}
       <Block style={styles.pageSection}>
         {/* <BannerCarousel data={bannerContents} /> */}

@@ -65,7 +65,15 @@ export const fetchActiveUser = (data) => {
             body: JSON.stringify(data),
           }
         );
+        // .then((dataaaaaa) => {
+        //   console.log(dataaaaaa);
+        // })
+        // .catch((e) => {
+        //   console.log("masuk catch");
+        //   // console.log(e);
+        // });
         if (!responseBase.ok) {
+          // console.log(responseBase.json());
           throw new Error("Something went wrong!");
           // console.log(responseBase);
         }
@@ -230,7 +238,7 @@ export const loginRadius = (data) => {
 
 export const logout = () => {
   return async (dispatch, getState) => {
-    let keys = ["email", "pwd"];
+    let keys = ["email", "pwd", "pwdRadius"];
     AsyncStorage.multiRemove(keys);
 
     // AsyncStorage.setItem("email", "");

@@ -5,21 +5,22 @@ import {
   StyleSheet,
   Button,
   Platform,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import Modal from "react-native-modal";
+import { TextInput, Card } from "react-native-paper";
 
 import Fonts from "../../general/constants/Fonts";
 import MilliardText from "../../general/components/MilliardText";
 import Colors from "../../general/constants/Colors";
 import Strings from "../../general/constants/Strings";
 
-const ModalK2Login = (props) => {
+const ModalRadiusLogin = (props) => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
   const [buttonText, setButtonText] = useState("");
+  const [hidePass, setHidePass] = useState(true);
 
   useEffect(() => {
     console.log(props.usernameValue);
@@ -56,7 +57,7 @@ const ModalK2Login = (props) => {
           Please log in with your K2 account
         </MilliardText> */}
         <MilliardText style={styles.alertBody}>
-          Please log in with your K2 password
+          Please log in with your password
         </MilliardText>
         {props.isPwdWrong ? (
           <MilliardText style={styles.alertErrorMessage}>
@@ -84,11 +85,25 @@ const ModalK2Login = (props) => {
           <TextInput
             value={props.pwdValue}
             onChangeText={pwdChangeHandler}
-            style={styles.inputMultiline}
+            style={styles.pwdInput}
             // autoFocus={true}
             selectionColor={Colors.camPrimaryColor}
             placeholder="password"
             placeholderTextColor={Colors.gray}
+            autoCapitalize="none"
+            theme={{
+              colors: {
+                primary: "transparent",
+                text: Colors.gray,
+              },
+            }}
+            secureTextEntry={hidePass ? true : false}
+            right={
+              <TextInput.Icon
+                name={hidePass ? "eye-off" : "eye"}
+                onPress={() => setHidePass(!hidePass)}
+              />
+            }
           />
         </View>
         {/* {list()} */}
@@ -103,7 +118,7 @@ const ModalK2Login = (props) => {
           {props.k2LoadingState === true ? (
             <ActivityIndicator size="small" color="white" />
           ) : (
-            <Text style={styles.buttonTextWhite}>Log in to K2</Text>
+            <Text style={styles.buttonTextWhite}>Log in</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -195,16 +210,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 10,
   },
-  inputMultiline: {
+  pwdInput: {
     borderColor: Colors.gray,
     borderRadius: 5,
     borderWidth: 1,
     backgroundColor: "#fff",
     // paddingHorizontal: 5,
     height: 40,
-    alignItems: "flex-start",
-    textAlignVertical: "top",
-    paddingHorizontal: 12,
+    // alignItems: "flex-start",
+    // textAlignVertical: "top",
+    // paddingHorizontal: 12,
     color: Colors.gray,
     marginBottom: 10,
     // width: "100%",
@@ -256,4 +271,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalK2Login;
+export default ModalRadiusLogin;

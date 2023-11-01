@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -19,6 +19,7 @@ import { withNavigation } from "react-navigation";
 import { useDispatch, useSelector } from "react-redux";
 import AwesomeAlert from "react-native-awesome-alerts";
 import Modal from "react-native-modal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as authActions from "../../general/redux/actions/authAction";
 import * as actions from "../redux/actions/camAction";
@@ -26,9 +27,11 @@ import Colors from "../../general/constants/Colors";
 import Card from "./Card";
 // import Button from '../../general/components/template/Button';
 import Fonts from "../../general/constants/Fonts";
+import Strings from "../../general/constants/Strings";
 import MilliardText from "../../general/components/MilliardText";
 import ModalReasonCAM from "./ModalReasonCAM";
-import ModalK2Login from "./ModalK2Login";
+import ModalRadiusLogin from "./ModalRadiusLogin";
+import moment, { min } from "moment/moment";
 
 const TaskItem = (props) => {
   const dispatch = useDispatch();
@@ -37,7 +40,8 @@ const TaskItem = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const [isApproveModalVisible, setIsApproveModalVisible] = useState(false);
   const [isModalReasonVisible, setIsModalReasonVisible] = useState(false);
-  const [isModalK2LoginVisible, setIsModalK2LoginVisible] = useState(false);
+  const [isModalRadiusLoginVisible, setIsModalRadiusLoginVisible] =
+    useState(false);
   // const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   // const [isReviseModalVisible, setIsReviseModalVisible] = useState(false);
   const [isModalLoadingVisible, setIsModalLoadingVisible] = useState(false);
@@ -67,11 +71,12 @@ const TaskItem = (props) => {
   const [reason, setReason] = useState("");
   const [detailTransUrl, setDetailTransUrl] = useState(props.url);
   const [usernameInput, setUsernameInput] = useState("k2.service");
-  const [pwdInput, setPwdInput] = useState("Welcome12345");
+  const [pwdInput, setPwdInput] = useState("");
   const [isTransK2, setIsTransK2] = useState(false);
   const [numOfAttempts, setNumOfAttempts] = useState(0);
   const loginK2 = useSelector((state) => state.cam.statusApproval);
   const [isPwdWrong, setIsPwdWrong] = useState(false);
+  const [pwdSession, setPwdSession] = useState(false);
   // const [usernameInput, setUsernameInput] = useState("");
   // const [pwdInput, setPwdInput] = useState("");
 
@@ -221,13 +226,16 @@ const TaskItem = (props) => {
   };
 
   const handleReviseModal = () => {
+    let keys = ["pwdRadius"];
+    AsyncStorage.multiRemove(keys);
     setActionClicked("Revise");
     setIsModalReasonVisible(() => !isModalReasonVisible);
     setReason("");
   };
 
   const handleK2LoginModal = () => {
-    setIsModalK2LoginVisible(() => !isModalK2LoginVisible);
+    setIsModalRadiusLoginVisible(() => !isModalRadiusLoginVisible);
+    setIsPwdWrong(false);
   };
 
   const reasonHandler = (val) => {
@@ -750,7 +758,7 @@ const TaskItem = (props) => {
     );
   };
 
-  const viewTransactionDetail = (appName, url) => {
+  const viewTransactionDetail = async (isK2, url) => {
     // props.navigation.navigate({
     //   // routeName: "EmbeddedBrowser",
     //   routeName: "CAMDetail",
@@ -762,11 +770,34 @@ const TaskItem = (props) => {
     // console.log(url);
     // console.log('urlnya ini bro: ' + JSON.stringify(url));
     // console.log(JSON.stringify(url));
-    if (appName.toLowerCase().includes("k2")) {
-      setIsTransK2(true);
-      setIsModalK2LoginVisible(true);
+    // console.log("is k2 gan: " + isK2);
+    if (isK2 === true) {
+      const pwdRadiusSaved = await AsyncStorage.getItem("pwdRadius");
+      console.log("pwd radius: " + pwdRadiusSaved);
+      //kalau udah ada session radius masuk
+      if (pwdRadiusSaved !== null) {
+        let creds = activeUser.user_ad + ":" + pwdRadiusSaved + "@";
+        // let creds = "k2.service:1w3EaF9o0%40pf@";
+        url = url.split("://");
+        console.log(url);
+        let finalUrl = url[0] + "://" + creds + url[1];
+        props.navigation.navigate({
+          // routeName: "EmbeddedBrowser",
+          routeName: "CAMDetail",
+          params: {
+            // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
+            link: finalUrl,
+          },
+        });
+        //kalo session radius kosong, tampilkan modal login
+      } else {
+        setPwdInput("");
+        setIsTransK2(true);
+        setIsModalRadiusLoginVisible(true);
+      }
     } else {
       setIsTransK2(false);
+      setIsModalRadiusLoginVisible(false);
       props.navigation.navigate({
         // routeName: "EmbeddedBrowser",
         routeName: "CAMDetail",
@@ -776,6 +807,45 @@ const TaskItem = (props) => {
         },
       });
     }
+  };
+
+  const storeRadiusSession = async () => {
+    //untuk login pertama kali (belum ada session radius tersimpan)
+    if (k2LoginStatus == "Success" && pwdInput != "") {
+      await AsyncStorage.setItem("pwdRadius", pwdInput);
+      let nowDate = new Date();
+      nowDate = moment(nowDate, "DD-MM-YYYY hh:mm:ss").format(
+        "DD-MM-YYYY hh:mm:ss"
+      );
+      console.log("nowdate: " + nowDate);
+      // let expDate = nowDate.add(5, "seconds");
+      let expDate = new Date().setSeconds(new Date().getSeconds + 5);
+      console.log("expDate: " + expDate);
+      // AsyncStorage.setItem("expDatePwdRadius", new Date(now) + min());
+      setIsPwdWrong(false);
+      console.log("k2LoginStatus2: " + k2LoginStatus);
+      setPwdSession(true);
+    }
+  };
+
+  const goToCAMDetail = () => {
+    console.log(detailTransUrl);
+    let url = detailTransUrl;
+    let finalUrl = detailTransUrl;
+    // let creds = "k2.service:1w3EaF9o0%40pf@";
+    let creds = activeUser.user_ad + ":" + pwdInput + "@";
+    url = url.split("://");
+    console.log(url);
+    finalUrl = url[0] + "://" + creds + url[1];
+    console.log(finalUrl);
+    props.navigation.navigate({
+      // routeName: "EmbeddedBrowser",
+      routeName: "CAMDetail",
+      params: {
+        // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
+        link: finalUrl,
+      },
+    });
   };
 
   useEffect(() => {
@@ -791,20 +861,13 @@ const TaskItem = (props) => {
     // }
     console.log("k2LoginStatus1: " + k2LoginStatus);
     console.log("isRadiusLoggedIn1: " + isK2LoggedIn);
+    console.log("pwdinpitL " + pwdInput);
     if (isK2LoggedIn) {
-      if (k2LoginStatus == "Success") {
-        setIsPwdWrong(false);
-        console.log("k2LoginStatus2: " + k2LoginStatus);
-        props.navigation.navigate({
-          // routeName: "EmbeddedBrowser",
-          routeName: "CAMDetail",
-          params: {
-            // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
-            link: detailTransUrl,
-          },
-        });
-      }
-    } else {
+      // storeRadiusSession().then(() => {
+      // goToCAMDetail();
+      // });
+    } else if (k2LoginStatus == Strings.radiusWrongPassword) {
+      console.log("mashok wrong");
       setIsPwdWrong(true);
     }
   }, [dispatch, k2LoginStatus]);
@@ -828,6 +891,7 @@ const TaskItem = (props) => {
       const data = { username: activeUser.user_ad, password: pwdInput };
       console.log("2");
       finalUrl = url[0] + "://" + creds + url[1];
+      setDetailTransUrl(finalUrl);
       console.log(finalUrl);
       await dispatch(authActions.loginRadius(data)).then(
         // dispatch(actions.fetchUserPendingTask(props.activeUser))
@@ -843,14 +907,14 @@ const TaskItem = (props) => {
                 link: finalUrl,
               },
             });
-          } else if (k2LoginStatus == "Wrong Password") {
+          } else if (k2LoginStatus == Strings.radiusWrongPassword) {
             console.log("wrong password");
             setIsPwdWrong(true);
             setPwdInput("");
           } else {
           }
-          console.log("di view app");
-          console.log("'" + statusApproval + "'");
+          // console.log("di view app");
+          // console.log("'" + statusApproval + "'");
           // if (statusApproval == "DONE") {
           //   // setaAlertTitle("Success");
           //   // setaAlertBody("Transaction successfully approved!");
@@ -1006,7 +1070,7 @@ const TaskItem = (props) => {
                         //   );
                         // }
                         () => {
-                          viewTransactionDetail(props.appName, props.url);
+                          viewTransactionDetail(props.isK2, props.url);
                         }
                       }
                       style={(styles.button, styles.buttonView)}
@@ -1210,10 +1274,10 @@ const TaskItem = (props) => {
         handleRejectModal={handleRejectModal}
         handleReviseModal={handleReviseModal}
       />
-      <ModalK2Login
+      <ModalRadiusLogin
         action={actionClicked}
         actionColor={actionColor}
-        isVisible={isModalK2LoginVisible}
+        isVisible={isModalRadiusLoginVisible}
         usernameValue={activeUser.user_ad}
         pwdValue={pwdInput}
         onUsernameChange={usernameHandler}

@@ -68,7 +68,8 @@ export const fetchUserPendingTask = (username) => {
               item.TRANSACTIONDATE,
               requestor,
               remarks,
-              item.URL
+              item.URL,
+              item.ISK2
             )
           );
         });
@@ -162,7 +163,8 @@ export const fetchTransactionDetail = (data) => {
               item.TRANSACTIONDATE,
               requestor,
               remarks,
-              item.URL
+              item.URL,
+              item.ISK2
             )
           );
         });
