@@ -6,3 +6,4 @@ export { default as ChangePasswordScreen } from "./ChangePasswordScreen";
 export { default as ChangePasswordAuthenticated } from "./ChangePasswordAuthenticatedScreen";
 export { default as NotificationScreen } from "./NotificationScreen";
 export { default as EmbeddedBrowserScreen } from "./EmbeddedBrowserScreen";
+export { default as RegisterUserScreen } from "./RegisterUserScreen";

@@ -64,6 +64,7 @@ const HomeScreen = (props) => {
   //toast
 
   useEffect(() => {
+    console.log("cam opened");
     // console.log('activeUser: ', activeUser.user_ad);
     dispatch(actions.fetchUserPendingTask(activeUser.user_ad));
     // console.log('fetchUserPendingTask: ', userPendingTask);

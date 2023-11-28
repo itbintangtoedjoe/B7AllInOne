@@ -76,9 +76,12 @@ const TaskItem = (props) => {
   const [numOfAttempts, setNumOfAttempts] = useState(0);
   const loginK2 = useSelector((state) => state.cam.statusApproval);
   const [isPwdWrong, setIsPwdWrong] = useState(false);
-  const [pwdSession, setPwdSession] = useState(false);
+  const [startDateRadiusSession, setStartDateRadiusSession] = useState();
+  const [expDateRadiusSession, setExpDateRadiusSession] = useState();
   // const [usernameInput, setUsernameInput] = useState("");
   // const [pwdInput, setPwdInput] = useState("");
+
+  // console.log("0. Exp Date Open: ", expDateRadiusSession);
 
   useEffect(() => {
     if (actionClicked == "Approve") {
@@ -283,7 +286,7 @@ const TaskItem = (props) => {
           color: actionColor,
         }}
         onCancelPressed={() => {
-          console.log("Cancel button pressed");
+          // console.log("Cancel button pressed");
           setShowAlert(false);
         }}
         showConfirmButton={true}
@@ -300,7 +303,7 @@ const TaskItem = (props) => {
           fontFamily: Fonts.primaryFont,
         }}
         onConfirmPressed={() => {
-          console.log("Confirm button pressed");
+          // console.log("Confirm button pressed");
           setShowAlert(false);
         }}
         // showProgress={true}
@@ -626,8 +629,8 @@ const TaskItem = (props) => {
     dispatch(actions.approveTransaction(data)).then(
       // dispatch(actions.fetchUserPendingTask(props.activeUser))
       () => {
-        console.log("di view app");
-        console.log("'" + statusApproval + "'");
+        // console.log("di view app");
+        // console.log("'" + statusApproval + "'");
         if (statusApproval == "DONE") {
           // setaAlertTitle("Success");
           // setaAlertBody("Transaction successfully approved!");
@@ -680,8 +683,8 @@ const TaskItem = (props) => {
     dispatch(actions.rejectTransaction(data)).then(
       // dispatch(actions.fetchUserPendingTask(props.activeUser))
       () => {
-        console.log("di view rej");
-        console.log("'" + statusApproval + "'");
+        // console.log("di view rej");
+        // console.log("'" + statusApproval + "'");
         if (statusApproval == "DONE") {
           // setaAlertTitle("Success");
           // setaAlertBody("Transaction successfully approved!");
@@ -729,8 +732,8 @@ const TaskItem = (props) => {
     dispatch(actions.reviseTransaction(data)).then(
       // dispatch(actions.fetchUserPendingTask(props.activeUser))
       () => {
-        console.log("di view rev");
-        console.log("'" + statusApproval + "'");
+        // console.log("di view rev");
+        // console.log("'" + statusApproval + "'");
         if (statusApproval == "DONE") {
           // setaAlertTitle("Success");
           // setaAlertBody("Transaction successfully approved!");
@@ -771,15 +774,43 @@ const TaskItem = (props) => {
     // console.log('urlnya ini bro: ' + JSON.stringify(url));
     // console.log(JSON.stringify(url));
     // console.log("is k2 gan: " + isK2);
+    // console.log("startradiussession: ", startDateRadiusSession);
+    // console.log("expradiussession: ", expDateRadiusSession);
     if (isK2 === true) {
       const pwdRadiusSaved = await AsyncStorage.getItem("pwdRadius");
-      console.log("pwd radius: " + pwdRadiusSaved);
+      //const startDate = await AsyncStorage.getItem("startDate");
+      const expDate = await AsyncStorage.getItem("expDateRadius");
+      // console.log("expDate ", expDate);
+      // console.log("15) pwd radius: " + pwdRadiusSaved);
+      const expirationDate = new Date(expDate);
+      //const expDateDate = new Date(expDateString);
+      //const expDateDate = new Date()
       //kalau udah ada session radius masuk
       if (pwdRadiusSaved !== null) {
+        // console.log("ataz");
+        /* console.log(startDateRadiusSession.getTime());
+        console.log(expDateRadiusSession.getTime()); */
+        // console.log("Date Now: ", new Date());
+        // console.log("Exp Date: ", expirationDate);
+        if (expirationDate >= new Date()) {
+          // console.log("masih bisa");
+        } else if (expirationDate < new Date()) {
+          // console.log("keluar gan");
+          await AsyncStorage.removeItem("pwdRadius");
+          await AsyncStorage.removeItem("expDateRadius");
+
+          setPwdInput("");
+          setIsTransK2(true);
+          setIsModalRadiusLoginVisible(true);
+          // Alert.alert("Access Denied", "Please input your password again. ty");
+          return;
+        } else {
+        }
+        // console.log("----");
         let creds = activeUser.user_ad + ":" + pwdRadiusSaved + "@";
         // let creds = "k2.service:1w3EaF9o0%40pf@";
         url = url.split("://");
-        console.log(url);
+        // console.log("16) " + url);
         let finalUrl = url[0] + "://" + creds + url[1];
         props.navigation.navigate({
           // routeName: "EmbeddedBrowser",
@@ -791,6 +822,7 @@ const TaskItem = (props) => {
         });
         //kalo session radius kosong, tampilkan modal login
       } else {
+        // console.log("17) else");
         setPwdInput("");
         setIsTransK2(true);
         setIsModalRadiusLoginVisible(true);
@@ -809,25 +841,57 @@ const TaskItem = (props) => {
     }
   };
 
-  const storeRadiusSession = async () => {
+  const storeRadiusSession = async (message) => {
     //untuk login pertama kali (belum ada session radius tersimpan)
-    if (k2LoginStatus == "Success" && pwdInput != "") {
+    // console.log("storeRadius");
+    // console.log("12a) k2LoginStatus:" + message);
+    // console.log("12b) pwdInput:" + pwdInput);
+    if (message == "Success" && pwdInput != "") {
       await AsyncStorage.setItem("pwdRadius", pwdInput);
-      let nowDate = new Date();
-      nowDate = moment(nowDate, "DD-MM-YYYY hh:mm:ss").format(
-        "DD-MM-YYYY hh:mm:ss"
-      );
-      console.log("nowdate: " + nowDate);
-      // let expDate = nowDate.add(5, "seconds");
-      let expDate = new Date().setSeconds(new Date().getSeconds + 5);
-      console.log("expDate: " + expDate);
+      // console.log("1. Date Now: ", new Date());
+      if (expDateRadiusSession == undefined) {
+        // console.log("2. Access Date Undefined");
+        /* let nowDate = new Date();
+        nowDate = moment(nowDate, "DD-MM-YYYY hh:mm:ss").format(
+          "DD-MM-YYYY hh:mm:ss"
+        );
+        console.log("13) nowdate: " + nowDate); */
+        // let expDate = nowDate.add(5, "seconds");
+        //let expDate = new Date().setSeconds(new Date().getSeconds + 5);
+        const startDate = new Date();
+        /* const expDate1 = startDate.setSeconds(startDate.getSeconds() + 20);
+        let expDate = new Date(expDate1);
+        expDate = moment(expDate, "DD-MM-YYYY hh:mm:ss").format(
+          "DD-MM-YYYY hh:mm:ss"
+        ); */
+        const expDateRN = new Date();
+        const expDateAdded = expDateRN.setSeconds(expDateRN.getSeconds() + 10);
+        const expDate = new Date(expDateAdded);
+        await AsyncStorage.setItem("expDateRadius", expDate.toISOString());
+      } else {
+        // checkExpirationDate(expDateRadiusSession);
+      }
       // AsyncStorage.setItem("expDatePwdRadius", new Date(now) + min());
       setIsPwdWrong(false);
-      console.log("k2LoginStatus2: " + k2LoginStatus);
-      setPwdSession(true);
+      // console.log("15) k2LoginStatus2: " + message);
     }
   };
 
+  /* function checkExpirationDate(expDate) {
+    if (expDate >= new Date()) {
+      console.log("3a. Access Granted");
+      console.log("4. Start Date: ", startDateRadiusSession);
+      console.log("5. Exp Date: ", expDateRadiusSession);
+    } else if (expDate < new Date()) {
+      console.log("3b. Access Expired");
+    } else {
+    }
+  }
+
+  useEffect(() => {
+    checkExpirationDate(expDateRadiusSession);
+  }, [startDateRadiusSession, expDateRadiusSession]);
+ */
   const goToCAMDetail = () => {
     console.log(detailTransUrl);
     let url = detailTransUrl;
@@ -859,88 +923,94 @@ const TaskItem = (props) => {
     //     },
     //   });
     // }
-    console.log("k2LoginStatus1: " + k2LoginStatus);
-    console.log("isRadiusLoggedIn1: " + isK2LoggedIn);
-    console.log("pwdinpitL " + pwdInput);
+    // console.log("9) k2LoginStatus1: " + k2LoginStatus);
+    // console.log("10) isRadiusLoggedIn1: " + isK2LoggedIn);
+    // console.log("11) pwdinpitL " + pwdInput);
     if (isK2LoggedIn) {
-      // storeRadiusSession().then(() => {
+      // console.log("11a) mashok gan");
+      storeRadiusSession();
+      // .then(() => {
       // goToCAMDetail();
       // });
     } else if (k2LoginStatus == Strings.radiusWrongPassword) {
-      console.log("mashok wrong");
+      // console.log("12) mashok wrong");
       setIsPwdWrong(true);
     }
   }, [dispatch, k2LoginStatus]);
 
+  // async function loginPassword(){
+  //   const status = await
+
+  //   return status;
+  // }
+
   const loginToK2 = async (url) => {
+    // console.log("1) loginToK2 clicked");
     // setNumOfAttempts((num) => num + 1);
     if (pwdInput.length == 0) {
       Alert.alert("Please enter your password");
     } else {
-      // if ((pwdInput = "11")) {
-      //   setK2LoginStatus(true);
-      // } else {
-      //   setK2LoginStatus(false);
-      // }
       let creds = activeUser.user_ad + ":" + pwdInput + "@";
       let finalUrl = url;
       // let creds = "k2.service:1w3EaF9o0%40pf@";
       url = url.split("://");
-      console.log(url);
+      // console.log("2) " + url);
       setDetailTransUrl(url[0] + "://" + creds + url[1]);
       const data = { username: activeUser.user_ad, password: pwdInput };
-      console.log("2");
+
+      const response = await authActions.loginRadius(data);
+      const message = response.message;
+
+      // console.log("aaaaaaaaaa ", message);
       finalUrl = url[0] + "://" + creds + url[1];
       setDetailTransUrl(finalUrl);
-      console.log(finalUrl);
-      await dispatch(authActions.loginRadius(data)).then(
-        // dispatch(actions.fetchUserPendingTask(props.activeUser))
-        () => {
-          console.log("k2LoginStatus3: " + k2LoginStatus);
-          if (k2LoginStatus == "Success") {
-            console.log("k2LoginStatus4: " + k2LoginStatus);
-            props.navigation.navigate({
-              // routeName: "EmbeddedBrowser",
-              routeName: "CAMDetail",
-              params: {
-                // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
-                link: finalUrl,
-              },
-            });
-          } else if (k2LoginStatus == Strings.radiusWrongPassword) {
-            console.log("wrong password");
-            setIsPwdWrong(true);
-            setPwdInput("");
-          } else {
-          }
-          // console.log("di view app");
-          // console.log("'" + statusApproval + "'");
-          // if (statusApproval == "DONE") {
-          //   // setaAlertTitle("Success");
-          //   // setaAlertBody("Transaction successfully approved!");
-          //   // setShowAlert(true);
-          //   props.toastMessageAction(
-          //     toastMaster.find((obj) => obj.name === "ApproveSuccessful")
-          //   );
-          //   // .then(() => {
-          //   //   dispatch(actions.fetchUserPendingTask(props.activeUser));
-          //   // });
-          // } else {
-          //   if (statusApproval == "") {
-          //     props.toastMessageAction(
-          //       toastMaster.find((obj) => obj.name === "ApproveSuccessful")
-          //     );
-          //   } else {
-          //     // setaAlertTitle("Failed");
-          //     // setaAlertBody(statusApproval);
-          //     props.toastMessageAction(
-          //       toastMaster.find((obj) => obj.name === "ApproveFailed")
-          //     );
-          //   }
-          //   // dispatch(actions.fetchUserPendingTask(props.activeUser));
-          // }
-        }
-      );
+      // console.log("3) " + finalUrl);
+
+      if (message == "Success") {
+        storeRadiusSession(message);
+        // console.log("7) k2LoginStatus4: " + message);
+        props.navigation.navigate({
+          // routeName: "EmbeddedBrowser",
+          routeName: "CAMDetail",
+          params: {
+            // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
+            link: finalUrl,
+          },
+        });
+      } else if (message == Strings.radiusWrongPassword) {
+        // console.log("8) wrong password");
+        setIsPwdWrong(true);
+        setPwdInput("");
+      } else {
+      }
+      // console.log("di view app");
+      // console.log("'" + statusApproval + "'");
+      // if (statusApproval == "DONE") {
+      //   // setaAlertTitle("Success");
+      //   // setaAlertBody("Transaction successfully approved!");
+      //   // setShowAlert(true);
+      //   props.toastMessageAction(
+      //     toastMaster.find((obj) => obj.name === "ApproveSuccessful")
+      //   );
+      //   // .then(() => {
+      //   //   dispatch(actions.fetchUserPendingTask(props.activeUser));
+      //   // });
+      // } else {
+      //   if (statusApproval == "") {
+      //     props.toastMessageAction(
+      //       toastMaster.find((obj) => obj.name === "ApproveSuccessful")
+      //     );
+      //   } else {
+      //     // setaAlertTitle("Failed");
+      //     // setaAlertBody(statusApproval);
+      //     props.toastMessageAction(
+      //       toastMaster.find((obj) => obj.name === "ApproveFailed")
+      //     );
+      //   }
+      //   // dispatch(actions.fetchUserPendingTask(props.activeUser));
+      // }
+      //   }
+      // );
     }
   };
   // const viewTransactionDetail = () => {

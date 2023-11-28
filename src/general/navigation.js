@@ -50,6 +50,7 @@ import {
   ChangePasswordAuthenticated,
   NotificationScreen,
   EmbeddedBrowserScreen,
+  RegisterUserScreen,
 } from "./screens";
 
 import Colors from "../general/constants/Colors";
@@ -543,6 +544,7 @@ const AuthenticationNavigator = createStackNavigator(
   {
     Login: AuthenticationScreen,
     ChangePassword: ChangePasswordScreen,
+    RegisterUser: RegisterUserScreen,
   },
   {
     defaultNavigationOptions: noHeaderOptions,

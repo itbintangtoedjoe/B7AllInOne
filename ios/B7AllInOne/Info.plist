@@ -17,24 +17,20 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>B7 Connect needs permission to use your camera to scan QR codes</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>
@@ -72,23 +68,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-	<!-- tambahan start -->
-	<key>NSCameraUsageDescription</key>
-	<string>B7 Connect needs permission to use your camera to scan QR codes</string>
-	<!-- <string>B7 Connect needs permission to use your camera to run necessary functions</string> -->
-
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-	</dict>
-
-	<!-- <key>NSPhotoLibraryUsageDescription</key>
-	<string>B7 Connect needs permission to use your camera roll</string>
-
-	<key>NSMicrophoneUsageDescription</key>
-	<string>B7 Connect needs permission to use your microphone when needed</string> -->
-	<!-- tambahan end -->
 </dict>
 </plist>

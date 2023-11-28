@@ -9,6 +9,7 @@ import {
   Alert,
   Image,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector, useDispatch } from "react-redux";
@@ -245,6 +246,23 @@ const AuthenticationScreen = (props) => {
       >
         Forgot password?
       </MilliardText>
+      {Platform.OS == "ios" ? (
+        <>
+          <View style={styles.dividerTen}></View>
+          <MilliardText
+            style={styles.forgetPassword}
+            onPress={() => {
+              setLoadingState(false);
+              props.navigation.navigate("RegisterUser");
+            }}
+          >
+            Don't have an account?
+          </MilliardText>
+        </>
+      ) : (
+        <></>
+      )}
+
       <View style={styles.dividerTen}></View>
       {loadingState ? (
         <ActivityIndicator size="small" color={Colors.primaryColor} />
@@ -335,6 +353,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: Colors.primaryColor,
     textAlign: "center",
+  },
+  dividerFive: {
+    marginBottom: 5,
   },
   dividerTen: {
     marginBottom: 15,

@@ -43,13 +43,13 @@ const thumbMeasure = (width - 48 - 32) / 3;
 const redeemState = true;
 
 const listAplikasiAndroid = [
-  // {
-  //   id: "1",
-  //   title: "CAM",
-  //   color: "white",
-  //   icon: require("../../general/assets/logos/approval.png"),
-  //   routeName: "CAM",
-  // },
+  {
+    id: "1",
+    title: "CAM",
+    color: "white",
+    icon: require("../../general/assets/logos/approval.png"),
+    routeName: "CAM",
+  },
   {
     id: "2",
     title: "TARA",
@@ -81,20 +81,20 @@ const listAplikasiAndroid = [
 
 const listAplikasiIOS = [
   // {
-  {
-    id: "1",
-    title: "CAM",
-    color: "white",
-    icon: require("../../general/assets/logos/approval.png"),
-    routeName: "CAM",
-  },
-  {
-    id: "2",
-    title: "TARA",
-    color: "white",
-    icon: require("../../general/assets/logos/tara.png"),
-    routeName: "TARA",
-  },
+  // {
+  //   id: "1",
+  //   title: "CAM",
+  //   color: "white",
+  //   icon: require("../../general/assets/logos/approval.png"),
+  //   routeName: "CAM",
+  // },
+  // {
+  //   id: "2",
+  //   title: "TARA",
+  //   color: "white",
+  //   icon: require("../../general/assets/logos/tara.png"),
+  //   routeName: "TARA",
+  // },
   {
     id: "3",
     title: "Ekspedisi Online",
@@ -430,18 +430,19 @@ const HomeScreen = (props) => {
       {/* <Block row space="between" style={styles.poinBisaContainer}>
         <Block middle>
           {activeUser !== undefined && activeUser !== null ? (
-            <NumberFormat
-              value={activeUser.poin_bisa}
-              displayType={"text"}
-              thousandSeparator={true}
-              renderText={(value) => (
-                <MilliardText style={styles.amount}>
-                  POIN BISA:&nbsp;{value}
-                </MilliardText>
-              )}
-            />
+            <MilliardText style={styles.amount}>POIN BISA: N/A</MilliardText>
           ) : (
-            <MilliardText style={styles.amount}>POIN BISA: 0</MilliardText>
+            // <NumberFormat
+            //   value={activeUser.poin_bisa}
+            //   displayType={"text"}
+            //   thousandSeparator={true}
+            //   renderText={(value) => (
+            //     <MilliardText style={styles.amount}>
+            //       POIN BISA:&nbsp;{value}
+            //     </MilliardText>
+            //   )}
+            // />
+            <MilliardText style={styles.amount}>POIN BISA: N/A</MilliardText>
           )}
         </Block>
         <Block

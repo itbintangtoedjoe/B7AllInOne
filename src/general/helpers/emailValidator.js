@@ -1,6 +1,6 @@
 export function emailValidator(email) {
   const re = /\S+@\S+\.\S+/;
-  if (!email) return 'Email tidak boleh kosong';
-  if (!re.test(email)) return 'Oops! Alamat email tidak valid.';
-  return '';
+  if (!email) return "Email can't be empty";
+  if (!re.test(email)) return "Oops! Email address is invalid";
+  return "";
 }

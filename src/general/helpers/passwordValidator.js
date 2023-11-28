@@ -1,4 +1,4 @@
 export function passwordValidator(password) {
-  if (!password) return 'Password tidak boleh kosong';
-  return '';
+  if (!password) return "Password can't be empty";
+  return "";
 }

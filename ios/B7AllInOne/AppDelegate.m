@@ -62,6 +62,11 @@ static void InitializeFlipper(UIApplication *application) {
   
   // [RNSplashScreen show]; //tambahan
   [RNNotifications startMonitorNotifications]; //tambahan
+  //tambahan
+  UIStoryboard *sb = [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil];
+  UIViewController *vc = [sb instantiateInitialViewController];
+  rootView.loadingView = vc.view;
+  //tambahan
   return YES;
 }
 

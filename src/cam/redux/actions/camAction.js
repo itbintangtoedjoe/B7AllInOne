@@ -19,7 +19,9 @@ export const fetchUserPendingTask = (username) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
+          // "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
+          //   username,
+          "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
             username,
           {
             method: "GET",
@@ -109,7 +111,9 @@ export const fetchTransactionDetail = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
+          // "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
+          //   data.username,
+          "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
             data.username,
           {
             method: "GET",
@@ -216,7 +220,8 @@ export const approveTransaction = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapprovalgeneral/api/approve",
+          // "https://portal.bintang7.com/masterapprovalgeneral/api/approve",
+          "https://portal.bintang7.com/masterapproval/api/approve",
           {
             method: "POST",
             headers: {
@@ -327,7 +332,8 @@ export const rejectTransaction = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapprovalgeneral/api/reject",
+          // "https://portal.bintang7.com/masterapprovalgeneral/api/reject",
+          "https://portal.bintang7.com/masterapproval/api/reject",
           {
             method: "POST",
             headers: {
@@ -381,7 +387,8 @@ export const reviseTransaction = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          "https://portal.bintang7.com/masterapprovalgeneral/api/revise",
+          // "https://portal.bintang7.com/masterapprovalgeneral/api/revise",
+          "https://portal.bintang7.com/masterapproval/api/revise",
           {
             method: "POST",
             headers: {
@@ -413,63 +420,6 @@ export const reviseTransaction = (data) => {
     } else {
       dispatch({
         type: REVISE_TRANSACTION,
-        statusApproval: "",
-        approvalLoadingState: false,
-      });
-      return goodToGo;
-    }
-  };
-};
-
-export const saveUserK2 = (data) => {
-  return async (dispatch, getState) => {
-    dispatch({
-      type: APPROVE_TRANSACTION,
-      approvalLoadingState: true,
-    });
-
-    const goodToGo = await isReachable();
-    if (goodToGo === true) {
-      try {
-        const response = await fetch(
-          "https://portal.bintang7.com/masterapprovalgeneral/api/approve",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              // 'Content-Type': 'multipart/form-data',
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Something went wrong!");
-        }
-
-        // console.log("1");
-        let responseData = await response.json();
-        // console.log("respon approve");
-        // console.log(responseData);
-        // console.log("2");
-        // console.log("3");
-        // responseData = responseData[0];
-        // console.log("4");
-        let statusResult = responseData.Status;
-
-        dispatch({
-          type: APPROVE_TRANSACTION,
-          statusApproval: statusResult,
-          approvalLoadingState: false,
-        });
-        // fetchUserPendingTask(data.username);
-      } catch (err) {
-        return;
-        // throw err;
-      }
-    } else {
-      dispatch({
-        type: APPROVE_TRANSACTION,
         statusApproval: "",
         approvalLoadingState: false,
       });

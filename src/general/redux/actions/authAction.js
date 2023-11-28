@@ -74,6 +74,7 @@ export const fetchActiveUser = (data) => {
         // });
         if (!responseBase.ok) {
           // console.log(responseBase.json());
+          Alert.alert("Something went wrong!");
           throw new Error("Something went wrong!");
           // console.log(responseBase);
         }
@@ -121,8 +122,9 @@ export const fetchActiveUser = (data) => {
             }
           );
           if (!responseEO.ok) {
-            return;
-            // throw new Error('Something went wrong!');
+            // return;
+            Alert.alert("Something went wrong!");
+            throw new Error("Something went wrong!");
             // console.log(responseEO);
           }
           const responseDataEO = await responseEO.json();
@@ -156,85 +158,102 @@ export const fetchActiveUser = (data) => {
   };
 };
 
-export const loginRadius = (data) => {
-  return async (dispatch, getState) => {
-    dispatch({
-      type: LOGIN_RADIUS,
-      loadingState: true,
-    });
-    // console.log(JSON.stringify(data));
-    const goodToGo = await isReachable();
-    if (goodToGo === true) {
-      try {
-        //get user untuk base app (db tara)
-        const responseBase = await fetch(
-          "https://portal.bintang7.com/auth-prod/login",
-          // 'https://b7connect.bintang7.com/b7connect/users/get-active-user',
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        if (!responseBase.ok) {
-          throw new Error("Something went wrong!");
-          // console.log(responseBase);
-        }
-
-        const responseDataBase = await responseBase.json();
-        console.log("login k2 action");
-        console.log(responseDataBase);
-
-        // let user = responseDataBase.Data;
-        let returnCode = responseDataBase.Status;
-        let loginStatus = responseDataBase.message;
-        let isLoggedIn = false;
-        if (loginStatus == "Success") {
-          isLoggedIn = true;
-        }
-
-        // let userEO = null;
-        // // console.log('isLoggedIn:' + isLoggedIn);
-        // if (responseDataBase.Status) {
-        //   isLoggedIn = true;
-        //   loginStatus = "success";
-        //   user = new User(
-        //     responseDataBase.Data.NIK,
-        //     responseDataBase.Data.Role.NamaRole,
-        //     responseDataBase.Data.NamaUser,
-        //     responseDataBase.Data.Email,
-        //     responseDataBase.Data.UserAD,
-        //     responseDataBase.Data.TotalPoinBISA,
-        //     responseDataBase.Data.IsAdmin,
-        //     responseDataBase.Data.TanggalAwalRedeem,
-        //     responseDataBase.Data.TanggalAkhirRedeem,
-        //     responseDataBase.Data.JumlahNotifikasi
-        //   );
-        // }
-        console.log("isLoggedIn: " + isLoggedIn);
-        console.log("loginStatus: " + responseDataBase.message);
-
-        dispatch({
-          type: LOGIN_RADIUS,
-          // activeUser: user,
-          // activeUserEO: userEO,
-          isLoggedIn: isLoggedIn,
-          loginStatus: loginStatus,
-          loadingState: false,
-        });
-
-        // return isLoggedIn;
-      } catch (err) {
-        throw err;
-      }
-    } else {
-      return goodToGo;
+export async function loginRadius(data) {
+  const response = await fetch(
+    "https://portal.bintang7.com/auth-prod/login",
+    // 'https://b7connect.bintang7.com/b7connect/users/get-active-user',
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     }
-  };
-};
+  );
+  const value = response.json();
+  return value;
+}
+
+// export const loginRadius = (data) => {
+//   return async (dispatch, getState) => {
+//     dispatch({
+//       type: LOGIN_RADIUS,
+//       loadingState: true,
+//     });
+//     // console.log(JSON.stringify(data));
+//     const goodToGo = await isReachable();
+//     if (goodToGo === true) {
+//       try {
+//         //get user untuk base app (db tara)
+//         const responseBase = await fetch(
+//           "https://portal.bintang7.com/auth-prod/login",
+//           // 'https://b7connect.bintang7.com/b7connect/users/get-active-user',
+//           {
+//             method: "POST",
+//             headers: {
+//               Accept: "application/json",
+//               "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(data),
+//           }
+//         );
+//         if (!responseBase.ok) {
+//           throw new Error("Something went wrong!");
+//           // console.log(responseBase);
+//         }
+
+//         const responseDataBase = await responseBase.json();
+//         console.log("login k2 action");
+//         console.log(responseDataBase);
+
+//         // let user = responseDataBase.Data;
+//         let returnCode = responseDataBase.Status;
+//         let loginStatus = responseDataBase.message;
+//         let isLoggedIn = false;
+//         if (loginStatus == "Success") {
+//           isLoggedIn = true;
+//         }
+
+//         // let userEO = null;
+//         // // console.log('isLoggedIn:' + isLoggedIn);
+//         // if (responseDataBase.Status) {
+//         //   isLoggedIn = true;
+//         //   loginStatus = "success";
+//         //   user = new User(
+//         //     responseDataBase.Data.NIK,
+//         //     responseDataBase.Data.Role.NamaRole,
+//         //     responseDataBase.Data.NamaUser,
+//         //     responseDataBase.Data.Email,
+//         //     responseDataBase.Data.UserAD,
+//         //     responseDataBase.Data.TotalPoinBISA,
+//         //     responseDataBase.Data.IsAdmin,
+//         //     responseDataBase.Data.TanggalAwalRedeem,
+//         //     responseDataBase.Data.TanggalAkhirRedeem,
+//         //     responseDataBase.Data.JumlahNotifikasi
+//         //   );
+//         // }
+//         console.log("isLoggedIn: " + isLoggedIn);
+//         console.log("loginStatus: " + responseDataBase.message);
+
+//         dispatch({
+//           type: LOGIN_RADIUS,
+//           // activeUser: user,
+//           // activeUserEO: userEO,
+//           isLoggedIn: isLoggedIn,
+//           loginStatus: loginStatus,
+//           loadingState: false,
+//         });
+
+//         // return isLoggedIn;
+//       } catch (err) {
+//         throw err;
+//       }
+//     } else {
+//       return goodToGo;
+//     }
+//   };
+// };
 
 export const logout = () => {
   return async (dispatch, getState) => {
@@ -248,6 +267,9 @@ export const logout = () => {
       activeUser: null,
       activeUserEO: null,
       isLoggedIn: false,
+      loginRadiusStatus: "none",
+      loginRadiusLoadingState: false,
+      isRadiusLoggedIn: false,
     });
   };
 };
