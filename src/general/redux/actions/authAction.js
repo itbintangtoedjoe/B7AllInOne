@@ -257,7 +257,7 @@ export async function loginRadius(data) {
 
 export const logout = () => {
   return async (dispatch, getState) => {
-    let keys = ["email", "pwd", "pwdRadius"];
+    let keys = ["email", "pwd", "pwdRadius", "expDateRadius"];
     AsyncStorage.multiRemove(keys);
 
     // AsyncStorage.setItem("email", "");

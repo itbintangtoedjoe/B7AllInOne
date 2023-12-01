@@ -31,32 +31,32 @@ const SplashScreen = (props) => {
     // } else {
     //   console.log("zonk");
     // }
-    console.log("----------------");
-    console.log("email: " + emailSaved);
-    console.log("pass: " + pwdSaved);
-    console.log("1");
+    // console.log("----------------");
+    // console.log("email: " + emailSaved);
+    // console.log("pass: " + pwdSaved);
+    // console.log("1");
     if (emailSaved !== null) {
-      console.log("1a");
+      // console.log("1a");
       const data = { email: emailSaved, password: pwdSaved };
-      console.log("2");
+      // console.log("2");
       const isssLoggedin = await dispatch(authActions.fetchActiveUser(data));
-      console.log("isssLoggedin: " + isssLoggedin);
+      // console.log("isssLoggedin: " + isssLoggedin);
       if (isssLoggedin) {
-        console.log("4");
+        // console.log("4");
         dispatch(generalActions.saveUserToken(activeUser.nik, deviceToken));
         if (password.value == DEFAULTPASSWORD) {
-          console.log("5");
+          // console.log("5");
           props.navigation.navigate("ChangePasswordAuthenticated", {
             origin: "login",
           });
         } else {
-          console.log("6");
+          // console.log("6");
           props.navigation.navigate("BaseHome");
         }
       }
     } else {
       props.navigation.navigate("BaseAuth");
-      console.log("8");
+      // console.log("8");
     }
   };
 

@@ -27,5 +27,5 @@ export default {
   camGray: "#DFE7EB",
 
   //notif
-  notifUnread: "#cdcefa",
+  notifUnread: "#d0dcf2",
 };

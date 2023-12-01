@@ -100,7 +100,7 @@ const ModalRadiusLogin = (props) => {
             secureTextEntry={hidePass ? true : false}
             right={
               <TextInput.Icon
-                name={hidePass ? "eye-off" : "eye"}
+                name={hidePass ? "eye" : "eye-off"}
                 onPress={() => setHidePass(!hidePass)}
               />
             }

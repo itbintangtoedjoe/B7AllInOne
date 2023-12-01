@@ -28,13 +28,14 @@ import { color } from "react-native-reanimated";
 
 const ChangePasswordAuthenticatedScreen = (props) => {
   const origin = props.navigation.getParam("origin");
+  const userEmail = props.navigation.getParam("userEmail");
   const [password, setPassword] = useState({ value: "", error: "" });
   const [confirmPassword, setConfirmPassword] = useState({
     value: "",
     error: "",
   });
   const activeUser = useSelector((state) => state.auth.activeUser);
-  const [email, setEmail] = useState({ value: activeUser.email, error: "" });
+  const [email, setEmail] = useState({ value: userEmail, error: "" });
   const [loadingState, setLoadingState] = useState(false);
   const [statusLogin, setStatusLogin] = useState(
     useSelector((state) => state.auth.statusLogin)
@@ -102,7 +103,11 @@ const ChangePasswordAuthenticatedScreen = (props) => {
       const responseData = await response.json();
       if (responseData == "success") {
         Alert.alert("Success", "Password changed successfully");
-        props.navigation.navigate("BaseApp");
+        dispatch(authActions.logout()).then(() => {
+          props.navigation.navigate({
+            routeName: "BaseAuth",
+          });
+        });
       } else {
         Alert.alert("Failed", responseData);
       }

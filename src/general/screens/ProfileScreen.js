@@ -67,6 +67,7 @@ const ProfileScreen = (props) => {
   const changePasswordHandler = () => {
     props.navigation.navigate("ChangePasswordAuthenticated", {
       origin: "profile",
+      userEmail: activeUser.email,
     });
     // dispatch(actions.logout()).then(() => {
     //   props.navigation.navigate({
@@ -149,7 +150,9 @@ const ProfileScreen = (props) => {
                 ? activeUser.nama_user
                 : ""}
             </MilliardText>
-            <MilliardText style={styles.email}>
+            <MilliardText
+              style={Platform.OS == "android" ? styles.email : styles.emailIOS}
+            >
               {activeUser !== undefined && activeUser !== null
                 ? activeUser.email
                 : ""}
@@ -268,6 +271,11 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 14,
     color: Colors.primaryColor,
+  },
+  emailIOS: {
+    fontSize: 14,
+    color: Colors.primaryColor,
+    marginTop: 5,
   },
   buttonContainer: {
     marginVertical: 30,

@@ -397,7 +397,13 @@ const HomeScreen = (props) => {
             <MilliardText style={{ color: "white", fontSize: 16 }}>
               Welcome,
             </MilliardText>
-            <MilliardText style={{ color: "white", fontSize: 18 }}>
+            <MilliardText
+              style={
+                Platform.OS == "android"
+                  ? styles.usernameText
+                  : styles.usernameTextIOS
+              }
+            >
               {activeUser !== undefined && activeUser !== null
                 ? activeUser.nama_user
                 : ""}
@@ -405,7 +411,7 @@ const HomeScreen = (props) => {
           </View>
         </ImageBackground>
         {/* NOTIFICATION ICON */}
-        {/* <Block flex style={styles.notificationBar}>
+        <Block flex style={styles.notificationBar}>
           <Block style={styles.notificationIcon}>
             <MaterialIcon
               name={numOfNotifications == 0 ? "bell-outline" : "bell-ring"}
@@ -417,7 +423,7 @@ const HomeScreen = (props) => {
               }}
             />
           </Block>
-        </Block> */}
+        </Block>
         {/* NOTIFICATION ICON */}
       </Block>
       <Block
@@ -427,7 +433,7 @@ const HomeScreen = (props) => {
         {/* <CarouselCards data={appBanners} /> */}
       </Block>
       {/* POIN BISA */}
-      {/* <Block row space="between" style={styles.poinBisaContainer}>
+      <Block row space="between" style={styles.poinBisaContainer}>
         <Block middle>
           {activeUser !== undefined && activeUser !== null ? (
             <MilliardText style={styles.amount}>POIN BISA: N/A</MilliardText>
@@ -467,7 +473,7 @@ const HomeScreen = (props) => {
             </Text>
           </TouchableOpacity>
         </Block>
-      </Block> */}
+      </Block>
       {/* POIN BISA */}
       <Block style={styles.pageSection}>
         {/* <BannerCarousel data={bannerContents} /> */}
@@ -553,6 +559,15 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     marginHorizontal: 15,
+  },
+  usernameText: {
+    color: "white",
+    fontSize: 18,
+  },
+  usernameTextIOS: {
+    color: "white",
+    fontSize: 18,
+    marginTop: 5,
   },
   nameSection: {
     flex: 1,

@@ -185,6 +185,57 @@ export const setNotificationIsRead = (notifID) => {
   };
 };
 
+export const setAllNotificationsRead = (nik) => {
+  return async (dispatch, getState) => {
+    let data = {
+      nik: nik,
+    };
+    dispatch({
+      type: READ_RECEIPT,
+      loadingState: true,
+    });
+    // console.log(JSON.stringify(data));
+    const goodToGo = await isReachable();
+    if (goodToGo === true) {
+      try {
+        const response = await fetch(
+          "https://portal.bintang7.com/tara/notification/read-all-user-notifications",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+        await response.json();
+
+        dispatch({
+          type: READ_RECEIPT,
+          loadingState: false,
+        });
+      } catch (err) {
+        console.log(err.message);
+
+        dispatch({
+          type: READ_RECEIPT,
+          loadingState: false,
+        });
+      }
+    } else {
+      dispatch({
+        type: READ_RECEIPT,
+        loadingState: false,
+      });
+      return goodToGo;
+    }
+  };
+};
+
 export const getAppBanners = () => {
   // console.log('masok func');
   return async (dispatch, getState) => {

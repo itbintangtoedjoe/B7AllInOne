@@ -813,10 +813,8 @@ const TaskItem = (props) => {
         // console.log("16) " + url);
         let finalUrl = url[0] + "://" + creds + url[1];
         props.navigation.navigate({
-          // routeName: "EmbeddedBrowser",
           routeName: "CAMDetail",
           params: {
-            // link: "http://k2.service:1w3EaF9o0%40pf@10.103.1.133/PromotionProposal/GetApprovePromotionProposal?processId=10538&documentNo=CPG/2HLMA/2302/00001/00607",
             link: finalUrl,
           },
         });
@@ -865,7 +863,7 @@ const TaskItem = (props) => {
           "DD-MM-YYYY hh:mm:ss"
         ); */
         const expDateRN = new Date();
-        const expDateAdded = expDateRN.setSeconds(expDateRN.getSeconds() + 10);
+        const expDateAdded = expDateRN.setHours(expDateRN.getHours() + 1);
         const expDate = new Date(expDateAdded);
         await AsyncStorage.setItem("expDateRadius", expDate.toISOString());
       } else {
