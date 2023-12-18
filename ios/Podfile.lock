@@ -274,6 +274,8 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
+  - react-native-screenguard (0.3.2):
+    - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
   - react-native-webview (11.23.1):
@@ -441,6 +443,7 @@ DEPENDENCIES:
   - "react-native-progress-bar-android (from `../node_modules/@react-native-community/progress-bar-android`)"
   - "react-native-progress-view (from `../node_modules/@react-native-community/progress-view`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-screenguard (from `../node_modules/react-native-screenguard`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -530,6 +533,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/progress-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-screenguard:
+    :path: "../node_modules/react-native-screenguard"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   react-native-webview:
@@ -618,6 +623,7 @@ SPEC CHECKSUMS:
   react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40
   react-native-progress-view: 9e6b6a5305a9115c2157ae3b8852081aba0aab7c
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
+  react-native-screenguard: e20bb5e073955a75b9a80c1d3b6984bfaa1778b9
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 5a890ca0911669421b7611661e9b58f91c805f5c

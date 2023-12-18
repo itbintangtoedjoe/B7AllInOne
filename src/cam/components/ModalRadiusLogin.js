@@ -23,8 +23,8 @@ const ModalRadiusLogin = (props) => {
   const [hidePass, setHidePass] = useState(true);
 
   useEffect(() => {
-    console.log(props.usernameValue);
-    console.log(props);
+    // console.log(props.usernameValue);
+    // console.log(props);
   }, []);
 
   const usernameChangeHandler = (val) => {

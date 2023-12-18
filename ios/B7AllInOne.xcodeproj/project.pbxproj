@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		5022F7262B2FF98E003119C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5022F7252B2FF98E003119C0 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		AC392B022AAC7AF379D03DF9 /* libPods-B7AllInOne.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A64F61EC2AE685F5CD1635 /* libPods-B7AllInOne.a */; };
 		AD791943C29358D768B0B445 /* libPods-B7AllInOne-B7AllInOneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 586801C11244367E33893211 /* libPods-B7AllInOne-B7AllInOneTests.a */; };
@@ -47,6 +48,8 @@
 		48B58E0A7F844A8997936CC5 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		493AABE33FB04E0BA1039B16 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		5022F7232B14630F003119C0 /* B7AllInOneRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = B7AllInOneRelease.entitlements; path = B7AllInOne/B7AllInOneRelease.entitlements; sourceTree = "<group>"; };
+		5022F7242B2C573F003119C0 /* B7AllInOneDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = B7AllInOneDebug.entitlements; path = B7AllInOne/B7AllInOneDebug.entitlements; sourceTree = "<group>"; };
+		5022F7252B2FF98E003119C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../supporting files/org.b7.b7connects/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		55007B62A5BF1A06E82247C0 /* Pods-B7AllInOne-B7AllInOneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-B7AllInOne-B7AllInOneTests.debug.xcconfig"; path = "Target Support Files/Pods-B7AllInOne-B7AllInOneTests/Pods-B7AllInOne-B7AllInOneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		586801C11244367E33893211 /* libPods-B7AllInOne-B7AllInOneTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-B7AllInOne-B7AllInOneTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E07C59CB9B64B87A43A4ECA /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
@@ -107,6 +110,8 @@
 		13B07FAE1A68108700A75B9A /* B7AllInOne */ = {
 			isa = PBXGroup;
 			children = (
+				5022F7252B2FF98E003119C0 /* GoogleService-Info.plist */,
+				5022F7242B2C573F003119C0 /* B7AllInOneDebug.entitlements */,
 				5022F7232B14630F003119C0 /* B7AllInOneRelease.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -292,6 +297,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				5022F7262B2FF98E003119C0 /* GoogleService-Info.plist in Resources */,
 				D5F994B59B224CB78D36237D /* Milliard-Book.otf in Resources */,
 				E1E56295624C4D07A7E4F61E /* Milliard-Bold.otf in Resources */,
 			);
@@ -533,6 +539,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = B7AllInOne/B7AllInOneDebug.entitlements;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9ZCGL5NAKF;
 				ENABLE_BITCODE = NO;

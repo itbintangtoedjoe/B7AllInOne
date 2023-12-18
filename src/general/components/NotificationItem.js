@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 
 import Colors from "../constants/Colors";
 import MilliardText from "./MilliardText";
@@ -26,7 +32,11 @@ const NotificationItem = (props) => {
       ) : (
         <MilliardBoldText>{props.title}</MilliardBoldText>
       )}
-      <MilliardText style={styles.body}>{props.body}</MilliardText>
+      <MilliardText
+        style={Platform.OS == "android" ? styles.body : styles.bodyIOS}
+      >
+        {props.body}
+      </MilliardText>
       <MilliardText style={styles.date}>{props.date}</MilliardText>
     </TouchableOpacity>
   );
@@ -59,6 +69,10 @@ const styles = StyleSheet.create({
   },
   body: {
     color: "#69696e",
+  },
+  bodyIOS: {
+    color: "#69696e",
+    marginVertical: "1.5%",
   },
   date: {
     color: "gray",

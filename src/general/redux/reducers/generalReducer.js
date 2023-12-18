@@ -3,6 +3,7 @@ import {
   GET_APP_BANNERS,
   CHECK_APP_VERSION,
   SAVE_DEVICE_TOKEN,
+  USER_REQUEST_DEACTIVATION,
 } from "../actions";
 
 const initialState = {
@@ -17,6 +18,8 @@ const initialState = {
   checkingVerLoadingState: false,
 
   deviceToken: "",
+
+  deactivationLoadingState: false,
 };
 
 export default (state = initialState, action) => {
@@ -43,6 +46,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         deviceToken: action.deviceToken,
+      };
+    case USER_REQUEST_DEACTIVATION:
+      return {
+        ...state,
+        deactivationLoadingState: action.loadingState,
       };
     default:
       return state;

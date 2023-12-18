@@ -1,7 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Dimensions,
+  Alert,
+} from "react-native";
 import Pdf from "react-native-pdf";
 import { useDispatch } from "react-redux";
+import ScreenGuardModule from "react-native-screenguard";
+
+import Colors from "../../general/constants/Colors";
+
+//ios only
+//modify taken screenshot to only show a block of color
+ScreenGuardModule.register(Colors.primaryColor, (_) => {
+  Alert.alert("Taking a screenshot of the app is prohibited");
+});
 
 const DocumentViewerScreen = (props) => {
   let url = props.navigation.getParam("docUrl");

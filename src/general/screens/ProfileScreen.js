@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Dimensions,
   ImageBackground,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { Header } from "react-navigation-stack";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,8 +22,8 @@ import Colors from "../constants/Colors";
 import Strings from "../constants/Strings";
 import MilliardText from "../components/MilliardText";
 import Card from "../components/UI/Card";
-import * as actions from "../../tara/redux/actions";
-import { logout } from "../../tara/redux/actions";
+import * as authActions from "../../tara/redux/actions";
+import * as generalActions from "../redux/actions";
 import { Images, materialTheme } from "../constants/galio";
 
 const { width, height } = Dimensions.get("screen");
@@ -33,6 +34,10 @@ const ProfileScreen = (props) => {
   const profileIcon =
     "https://portal.bintang7.com/tara/template/icons/user-blue.png";
   const activeUser = useSelector((state) => state.auth.activeUser);
+  const deactivationLoadingState = useSelector(
+    (state) => state.general.deactivationLoadingState
+  );
+  const [isModalLoadingVisible, setIsModalLoadingVisible] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -47,7 +52,7 @@ const ProfileScreen = (props) => {
         {
           text: "Yes",
           onPress: () => {
-            dispatch(actions.logout()).then(() => {
+            dispatch(authActions.logout()).then(() => {
               props.navigation.navigate({
                 routeName: "BaseAuth",
               });
@@ -57,7 +62,7 @@ const ProfileScreen = (props) => {
       ],
       { cancelable: true }
     );
-    // dispatch(actions.logout()).then(() => {
+    // dispatch(authActions.logout()).then(() => {
     //   props.navigation.navigate({
     //     routeName: 'Auth',
     //   });
@@ -69,11 +74,50 @@ const ProfileScreen = (props) => {
       origin: "profile",
       userEmail: activeUser.email,
     });
-    // dispatch(actions.logout()).then(() => {
+    // dispatch(authActions.logout()).then(() => {
     //   props.navigation.navigate({
     //     routeName: 'ChangePasswordAuthenticated',
     //   });
     // });
+  };
+
+  const deactivateAccountHandler = () => {
+    Alert.alert(
+      "Deactivate Account",
+      "Are you sure you want to deactivate your account?",
+      [
+        {
+          text: "No",
+        },
+        {
+          text: "Yes, send request",
+          onPress: () => {
+            setIsModalLoadingVisible(true);
+            dispatch(
+              generalActions.userRequestDeactivation(activeUser.nik)
+            ).then(() => {
+              Alert.alert(
+                "",
+                "Your deactivation request has been sent. You will be notified by email if the request is approved",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      dispatch(authActions.logout()).then(() => {
+                        props.navigation.navigate({
+                          routeName: "BaseAuth",
+                        });
+                      });
+                    },
+                  },
+                ]
+              );
+            });
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   const notificationPressed = () => {
@@ -85,6 +129,42 @@ const ProfileScreen = (props) => {
     //   });
     // });
   };
+
+  const ModalLoading = () => {
+    return (
+      <Modal
+        visible={isModalLoadingVisible}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            // flex: 1,
+            padding: 15,
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingVertical: 30,
+            borderRadius: 7,
+            height: 150,
+            width: 150,
+          }}
+        >
+          <ActivityIndicator size="small" color={Colors.camDarkerGreen} />
+        </View>
+      </Modal>
+    );
+  };
+
+  if (deactivationLoadingState) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      </View>
+    );
+  }
 
   return (
     // <View style={styles.pageContent}>
@@ -169,6 +249,22 @@ const ProfileScreen = (props) => {
             </MilliardText>
           </TouchableOpacity>
           <View style={styles.divider10}></View>
+
+          {Platform.OS == "ios" ? (
+            <>
+              <TouchableOpacity
+                style={styles.buttonRedBorder}
+                onPress={deactivateAccountHandler}
+              >
+                <MilliardText style={styles.buttonTextRed}>
+                  DEACTIVATE MY ACCOUNT
+                </MilliardText>
+              </TouchableOpacity>
+              <View style={styles.divider10}></View>
+            </>
+          ) : (
+            <></>
+          )}
           <TouchableOpacity style={styles.buttonLogout} onPress={logOut}>
             <MilliardText style={styles.buttonLogOutText}>LOG OUT</MilliardText>
           </TouchableOpacity>
@@ -290,6 +386,16 @@ const styles = StyleSheet.create({
     borderColor: Colors.softBlue,
     borderWidth: 1,
   },
+  buttonRedBorder: {
+    height: 40,
+    width: "100%",
+    borderRadius: 4,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: Colors.camRed,
+    borderWidth: 1,
+  },
   buttonLogout: {
     height: 40,
     width: "100%",
@@ -302,11 +408,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.primaryColor,
-    fontWeight: "bold",
+    // fontWeight: "bold",
+  },
+  buttonTextRed: {
+    color: Colors.camRed,
   },
   buttonLogOutText: {
     color: "white",
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontFamily: "serif",
   },
   description: {

@@ -19,10 +19,10 @@ export const fetchUserPendingTask = (username) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          // "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
-          //   username,
-          "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
+          "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
             username,
+          // "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
+          //   username,
           {
             method: "GET",
             headers: {
@@ -111,10 +111,10 @@ export const fetchTransactionDetail = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          // "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
-          //   data.username,
-          "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
+          "https://portal.bintang7.com/masterapprovalgeneral/list/getpendingtask?username=" +
             data.username,
+          // "https://portal.bintang7.com/masterapproval/list/getpendingtask?username=" +
+          //   data.username,
           {
             method: "GET",
             headers: {
@@ -220,8 +220,8 @@ export const approveTransaction = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          // "https://portal.bintang7.com/masterapprovalgeneral/api/approve",
-          "https://portal.bintang7.com/masterapproval/api/approve",
+          "https://portal.bintang7.com/masterapprovalgeneral/api/approve",
+          // "https://portal.bintang7.com/masterapproval/api/approve",
           {
             method: "POST",
             headers: {
@@ -332,8 +332,8 @@ export const rejectTransaction = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          // "https://portal.bintang7.com/masterapprovalgeneral/api/reject",
-          "https://portal.bintang7.com/masterapproval/api/reject",
+          "https://portal.bintang7.com/masterapprovalgeneral/api/reject",
+          // "https://portal.bintang7.com/masterapproval/api/reject",
           {
             method: "POST",
             headers: {
@@ -387,8 +387,8 @@ export const reviseTransaction = (data) => {
     if (goodToGo === true) {
       try {
         const response = await fetch(
-          // "https://portal.bintang7.com/masterapprovalgeneral/api/revise",
-          "https://portal.bintang7.com/masterapproval/api/revise",
+          "https://portal.bintang7.com/masterapprovalgeneral/api/revise",
+          // "https://portal.bintang7.com/masterapproval/api/revise",
           {
             method: "POST",
             headers: {

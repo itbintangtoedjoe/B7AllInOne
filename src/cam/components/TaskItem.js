@@ -812,6 +812,7 @@ const TaskItem = (props) => {
         url = url.split("://");
         // console.log("16) " + url);
         let finalUrl = url[0] + "://" + creds + url[1];
+        props.searchChangeHandler("");
         props.navigation.navigate({
           routeName: "CAMDetail",
           params: {
@@ -828,6 +829,7 @@ const TaskItem = (props) => {
     } else {
       setIsTransK2(false);
       setIsModalRadiusLoginVisible(false);
+      props.searchChangeHandler("");
       props.navigation.navigate({
         // routeName: "EmbeddedBrowser",
         routeName: "CAMDetail",
@@ -900,6 +902,7 @@ const TaskItem = (props) => {
     console.log(url);
     finalUrl = url[0] + "://" + creds + url[1];
     console.log(finalUrl);
+    props.searchChangeHandler("");
     props.navigation.navigate({
       // routeName: "EmbeddedBrowser",
       routeName: "CAMDetail",
@@ -967,6 +970,7 @@ const TaskItem = (props) => {
       if (message == "Success") {
         storeRadiusSession(message);
         // console.log("7) k2LoginStatus4: " + message);
+        props.searchChangeHandler("");
         props.navigation.navigate({
           // routeName: "EmbeddedBrowser",
           routeName: "CAMDetail",
@@ -1124,7 +1128,9 @@ const TaskItem = (props) => {
                 <Text style={styles.textDetailSmall}>{props.requestor}</Text>
               </View>
               <View>
-                <Text style={styles.detailTitle}>Remarks</Text>
+                <Text style={{ ...styles.detailTitle, marginBottom: "1%" }}>
+                  Remarks
+                </Text>
                 <Text style={styles.textDetailSmall}>{props.remarks}</Text>
               </View>
               {(props.multipleData == false || showDetails) && (
@@ -1395,6 +1401,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginVertical: "0.5%",
   },
   detailTitle: {
     fontFamily: Fonts.primaryFont,

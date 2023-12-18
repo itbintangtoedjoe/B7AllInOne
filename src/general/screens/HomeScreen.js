@@ -81,20 +81,19 @@ const listAplikasiAndroid = [
 
 const listAplikasiIOS = [
   // {
-  // {
   //   id: "1",
   //   title: "CAM",
   //   color: "white",
   //   icon: require("../../general/assets/logos/approval.png"),
   //   routeName: "CAM",
   // },
-  // {
-  //   id: "2",
-  //   title: "TARA",
-  //   color: "white",
-  //   icon: require("../../general/assets/logos/tara.png"),
-  //   routeName: "TARA",
-  // },
+  {
+    id: "2",
+    title: "TARA",
+    color: "white",
+    icon: require("../../general/assets/logos/tara.png"),
+    routeName: "TARA",
+  },
   {
     id: "3",
     title: "Ekspedisi Online",
@@ -380,13 +379,6 @@ const HomeScreen = (props) => {
   // };
 
   return (
-    // <View>
-    //   <Text>APA SEH IKI</Text>
-    // </View>
-    // <SafeAreaView style={styles.container}>
-    //   <CarouselCards />
-    // </SafeAreaView>
-
     <Block flex style={styles.profile}>
       <Block style={styles.welcomeSection}>
         <ImageBackground

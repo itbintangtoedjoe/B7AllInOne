@@ -37,6 +37,7 @@ const HomeScreen = (props) => {
   // const isFocused = useIsFocused();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const transIDFromParam = props.navigation.getParam("transactionID");
 
   const dispatch = useDispatch();
 
@@ -64,7 +65,10 @@ const HomeScreen = (props) => {
   //toast
 
   useEffect(() => {
-    console.log("cam opened");
+    if (transIDFromParam != undefined) {
+      setSearchInput(transIDFromParam);
+      searchChangeHandler(transIDFromParam);
+    }
     // console.log('activeUser: ', activeUser.user_ad);
     dispatch(actions.fetchUserPendingTask(activeUser.user_ad));
     // console.log('fetchUserPendingTask: ', userPendingTask);
@@ -92,7 +96,7 @@ const HomeScreen = (props) => {
     if (!loadingState) {
       let input = text.toLowerCase();
       let newList = [];
-      console.log(userPendingTask);
+      // console.log(userPendingTask);
       //cocokin keywords dengan no transaksi/requestor/remarks
       userPendingTask.filter((task) => {
         // console.log(task);
@@ -160,6 +164,7 @@ const HomeScreen = (props) => {
             toastMessageAction={onSelect}
             selected={selected}
             processing={processing}
+            searchChangeHandler={searchChangeHandler}
             // onPress={() => console.log(itemData.item.Url)}
             // onPress={() => openEmbeddedBrowser(itemData.item)}
           />
@@ -381,6 +386,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 8,
     margin: 10,
+    // height: "10%",
   },
   searchInput: {
     borderBottomColor: Colors.camPrimaryColor,

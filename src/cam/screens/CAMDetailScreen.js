@@ -27,9 +27,9 @@ const CAMDetailScreen = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("props cam detail");
-    const link = props.navigation.getParam("link");
-    console.log(link);
+    return () => {
+      dispatch(actions.fetchUserPendingTask(activeUser.user_ad));
+    };
   }, []);
 
   const handleBackButtonClick = async () => {

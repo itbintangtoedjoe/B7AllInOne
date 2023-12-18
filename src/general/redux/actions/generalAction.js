@@ -8,6 +8,7 @@ export const GET_USER_NOTIFICATIONS = "GET_USER_NOTIFICATIONS";
 export const READ_RECEIPT = "READ_RECEIPT";
 export const GET_APP_BANNERS = "GET_APP_BANNERS";
 export const CHECK_APP_VERSION = "CHECK_APP_VERSION";
+export const USER_REQUEST_DEACTIVATION = "USER_REQUEST_DEACTIVATION";
 
 export const saveDeviceToken = (token) => {
   return async (dispatch, getState) => {
@@ -341,6 +342,57 @@ export const checkAppVersion = (data) => {
     } else {
       dispatch({
         type: CHECK_APP_VERSION,
+        loadingState: false,
+      });
+      return goodToGo;
+    }
+  };
+};
+
+export const userRequestDeactivation = (nik) => {
+  return async (dispatch, getState) => {
+    let data = {
+      nik: nik,
+    };
+    dispatch({
+      type: USER_REQUEST_DEACTIVATION,
+      loadingState: true,
+    });
+    // console.log(JSON.stringify(data));
+    const goodToGo = await isReachable();
+    if (goodToGo === true) {
+      try {
+        const response = await fetch(
+          "https://portal.bintang7.com/tara/b7connect/user-request-deactivation",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+        await response.json();
+
+        dispatch({
+          type: USER_REQUEST_DEACTIVATION,
+          loadingState: false,
+        });
+      } catch (err) {
+        console.log(err.message);
+
+        dispatch({
+          type: USER_REQUEST_DEACTIVATION,
+          loadingState: false,
+        });
+      }
+    } else {
+      dispatch({
+        type: USER_REQUEST_DEACTIVATION,
         loadingState: false,
       });
       return goodToGo;

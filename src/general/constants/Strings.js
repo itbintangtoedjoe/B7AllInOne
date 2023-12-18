@@ -1,5 +1,5 @@
 export default {
-  appVersion: "1.1.3-dev",
+  appVersion: "1.2.1-dev",
 
   //cam
   radiusLoginSuccess: "Success",

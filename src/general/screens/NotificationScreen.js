@@ -35,8 +35,9 @@ const NotificationScreen = (props) => {
   }, [refreshing]);
 
   const notifOnClickHandler = (item) => {
-    console.log(item);
-    dispatch(notificationActions.setNotificationIsRead(item.ID));
+    if (item.Status === false) {
+      dispatch(notificationActions.setNotificationIsRead(item.ID));
+    }
     props.navigation.navigate({
       routeName: item.UrlMobile,
       params: {

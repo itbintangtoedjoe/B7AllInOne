@@ -36,11 +36,11 @@ const AuthenticationScreen = (props) => {
     // value: "dennyirawan9@gmail.com",
     // value: "feliciabrilliantb@gmail.com",
     // value: "agus_lemans@yahoo.com",
-    value: "david.herlambang78@gmail.com",
-    // value: "",
+    // value: "david.herlambang78@gmail.com",
+    value: "",
     error: "",
   });
-  const [password, setPassword] = useState({ value: "zuppass.", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
   const activeUser = useSelector((state) => state.auth.activeUser);
   const [loadingState, setLoadingState] = useState(false);
   const loginStatus = useSelector((state) => state.auth.loginStatus);

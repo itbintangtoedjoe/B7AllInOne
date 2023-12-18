@@ -44,15 +44,15 @@ const RegisterUserScreen = (props) => {
   const onSendRequestClicked = async () => {
     setLoadingState(true);
     const nameError = nameValidator(fullName.value);
-    const nikError = nikValidator(nik.value);
+    // const nikError = nikValidator(nik.value);
     const lobError = lobValidator(lob.value);
     const emailError = emailValidator(email.value);
 
-    if (emailError || nikError || lobError || nameError) {
+    if (emailError || lobError || nameError) {
       setEmail({ ...email, error: emailError });
       setFullName({ ...fullName, error: nameError });
       setLOB({ ...nik, error: lobError });
-      setNIK({ ...lob, error: nikError });
+      // setNIK({ ...lob, error: nikError });
       setLoadingState(false);
       return;
     }
@@ -64,6 +64,8 @@ const RegisterUserScreen = (props) => {
       departemen: lob.value,
       isactive: 0,
     };
+
+    console.log(data);
 
     const goodToGo = await authActions.isReachable();
     if (goodToGo === true) {
@@ -89,15 +91,18 @@ const RegisterUserScreen = (props) => {
         Alert.alert("Failed", "NIK is already registered");
       } else if (responseData == "EMAIL EXISTS") {
         Alert.alert("Failed", "Email is already registered");
-      } else if (responseData == "SUCCESS") {
+        //DUMMY only, karna balikannya itu nik. bisa jadi ini failed
+        // } else if (responseData == "SUCCESS") {
+      } else {
         Alert.alert(
           "Success",
           "Your request has been sent. You will be notified by email if the request is approved"
         );
         props.navigation.navigate("Login");
-      } else {
-        Alert.alert("Failed", responseData);
       }
+      // else {
+      //   Alert.alert("Failed", responseData);
+      // }
       setLoadingState(false);
     } else {
       setLoadingState(false);
@@ -112,15 +117,6 @@ const RegisterUserScreen = (props) => {
         style={styles.logo}
       />
       <Header>Request for a New Account</Header>
-      <TextInput
-        label="NIK"
-        returnKeyType="next"
-        value={nik.value}
-        onChangeText={(text) => setNIK({ value: text, error: "" })}
-        error={!!nik.error}
-        errorText={nik.error}
-        autoCapitalize="none"
-      />
       <TextInput
         label="Full Name"
         returnKeyType="next"
@@ -153,6 +149,15 @@ const RegisterUserScreen = (props) => {
         error={!!lob.error}
         errorText={lob.error}
         autoCapitalize="characters"
+      />
+      <TextInput
+        label="NIK (optional)"
+        returnKeyType="next"
+        value={nik.value}
+        onChangeText={(text) => setNIK({ value: text, error: "" })}
+        error={!!nik.error}
+        errorText={nik.error}
+        autoCapitalize="none"
       />
       <TouchableOpacity style={styles.button} onPress={onLoginPressed}>
         <Text style={styles.buttonText}>BACK TO LOGIN</Text>
