@@ -6,6 +6,7 @@
 
 #import "RNSplashScreen.h" //tambahan
 #import "RNNotifications.h" //tambahan
+//#import <Firebase/Firebase.h> //tambahan
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -18,6 +19,7 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -44,6 +46,7 @@ static void InitializeFlipper(UIApplication *application) {
   [bridge moduleForClass:[RCTDevLoadingView class]];
   #endif
   
+  //[FIRApp configure]; //tambahan
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"B7Connect"
                                             initialProperties:nil];

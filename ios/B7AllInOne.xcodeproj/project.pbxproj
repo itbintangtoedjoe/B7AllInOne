@@ -12,6 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		5022F7262B2FF98E003119C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5022F7252B2FF98E003119C0 /* GoogleService-Info.plist */; };
+		5022F7302B3184D5003119C0 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5022F72F2B3184D5003119C0 /* FirebaseAnalytics */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		AC392B022AAC7AF379D03DF9 /* libPods-B7AllInOne.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A64F61EC2AE685F5CD1635 /* libPods-B7AllInOne.a */; };
 		AD791943C29358D768B0B445 /* libPods-B7AllInOne-B7AllInOneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 586801C11244367E33893211 /* libPods-B7AllInOne-B7AllInOneTests.a */; };
@@ -83,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5022F7302B3184D5003119C0 /* FirebaseAnalytics in Frameworks */,
 				AC392B022AAC7AF379D03DF9 /* libPods-B7AllInOne.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,6 +245,9 @@
 			dependencies = (
 			);
 			name = B7AllInOne;
+			packageProductDependencies = (
+				5022F72F2B3184D5003119C0 /* FirebaseAnalytics */,
+			);
 			productName = B7AllInOne;
 			productReference = 13B07F961A680F5B00A75B9A /* B7AllInOne.app */;
 			productType = "com.apple.product-type.application";
@@ -273,6 +278,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				5022F72E2B3184D5003119C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -649,7 +657,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -707,7 +714,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -747,6 +753,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5022F72E2B3184D5003119C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.19.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5022F72F2B3184D5003119C0 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5022F72E2B3184D5003119C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

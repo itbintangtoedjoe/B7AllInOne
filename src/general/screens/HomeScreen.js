@@ -157,6 +157,8 @@ const listAplikasiIOS = [
 // ];
 
 const HomeScreen = (props) => {
+  console.log("props @home");
+  console.log(props.navigation.getParam("customProp"));
   const toast = useRef(null);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -309,7 +311,7 @@ const HomeScreen = (props) => {
       return (
         <View>
           <MilliardText style={styles.bannerText}>
-            Banner tidak ditemukan
+            Banner not found
           </MilliardText>
         </View>
       );

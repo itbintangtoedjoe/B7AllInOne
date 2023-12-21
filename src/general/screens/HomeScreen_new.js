@@ -285,7 +285,7 @@ const HomeScreen = (props) => {
       return (
         <View>
           <MilliardText style={styles.bannerText}>
-            Banner tidak ditemukan
+            Banner not found
           </MilliardText>
         </View>
       );
@@ -346,7 +346,7 @@ const HomeScreen = (props) => {
       return (
         <View>
           <MilliardText style={styles.bannerText}>
-            Banner tidak ditemukan
+            Banner not found
           </MilliardText>
         </View>
       );

@@ -560,9 +560,8 @@ const baseTabScreenConfig = {
         const icon = focused ? "home" : "home-outline";
         return <IonIcon name={icon} size={22} color={Colors.primaryColor} />;
       },
-      // tabBarColor: '#bbcff2',
-      // headerShown: false,
     },
+    params: { customProp: undefined },
   },
   Profile: {
     screen: ProfileNavigator,
